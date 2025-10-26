@@ -17,8 +17,6 @@ import {
   findNearbyAir,
 } from "../utils/my_API";
 
-import {MinecraftEffectTypes} from "@minecraft/vanilla-data";
-
 import {
   ID,
   portalGuns,
@@ -702,39 +700,40 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
   if (!ID.portalGunsIds.includes(portalGunItem.typeId) && !ID.dischargedPortalGuns.includes(portalGunItem.typeId) && !ID.components.portalGunBases.includes(portalGunItem.typeId))
     return;
 
+
+  /*
+  If the portal has no root info, it is removed directly. 
+  If it has a linked dual portal, the root portal is determined and the child list is retrieved. 
+  For chains longer than two portals, either all child portals are removed (if root) or the current portal is removed and the root portal is relinked. 
+  For chains of only two portals, the portals are removed directly. 
+  */
+
+
   const portalIsRoot = portalEntity.getDynamicProperty(portalDP.isRoot);
 
   if (portalIsRoot === undefined) return removePortal(portalEntity, true);
 
   const dualPortal = world.getEntity(portalEntity.getDynamicProperty(portalDP.DualityPortalId));
-  if(dualPortal === undefined) return removePortal(portalEntity, true);
+  if(dualPortal === undefined) return removePortal(portalEntity, false);
   const rootPortal = portalIsRoot ? portalEntity : dualPortal;
   const childListJson = rootPortal.getDynamicProperty(portalDP.childList);
   const childList = childListJson ? JSON.parse(childListJson) : [];
 
   if (childList.length > 2) {
-    const portalToRemove = portalIsRoot ? dualPortal : portalEntity;
+    if(portalIsRoot) {
+      childList.forEach(portalId => {
+        const portal = world.getEntity(portalId);
+        return removePortal(portal, false);
+      });
+    } else {
+      const idx = childList.indexOf(portalEntity.id);
+      if (idx !== -1) childList.splice(idx, 1);
+      rootPortal.setDynamicProperty(portalDP.childList, JSON.stringify(childList));
+      linkPortals(childList[0], childList[childList.length - 1]);
+      return removePortal(portalEntity, false);
 
-    const idx = childList.indexOf(portalToRemove.id);
-    if (idx !== -1) childList.splice(idx, 1);
-    rootPortal.setDynamicProperty(portalDP.childList, JSON.stringify(childList));
-
-    linkPortals(childList[0], childList[childList.length - 1]);
-    return removePortal(portalToRemove, false);
-  } 
-  else return removePortal(dualPortal, true);
-  // const mode = portalGunItem.getDynamicProperty(portalGunDP.mode);
-  // const portalListJson = portalGunItem.getDynamicProperty(portalGunDP.portalList);
-  // let portalIds = portalListJson ? JSON.parse(portalListJson) : [];
-
-  // // Determine if the portal should be removed fully or partially depending on mode
-  // if ((mode == PORTAL_MODES.ROOT || mode == PORTAL_MODES.CUSTOM) && portalIds.length > 2) {
-  //   removePortal(player, portalEntity, false);
-  // } else {
-  //   removePortal(player, portalEntity); c
-  // }
-
-  
+    }
+  } else return removePortal(portalEntity, true);
 });
 
 // It is used to detect when a Portal Gun projectile lands on a block
@@ -759,8 +758,12 @@ world.afterEvents.projectileHitEntity.subscribe((event) => {
     return;
   }
 
-  hitEntity.addEffect("minecraft:fatal_poison", 10, {amplifier: 5, showParticles: false});
-  hitEntity.dimension.spawnParticle("PARTICLE HERE", hitEntity.location);
+  hitEntity.addEffect("minecraft:fatal_poison", 200, {amplifier: 5, showParticles: true});
+  hitEntity.dimension.spawnParticle("ram_portalgun:fluid_poison_particle", hitEntity.location);
+  hitEntity.dimension.spawnParticle("ram_portalgun:fluid_ground_drop", hitEntity.location);
+  hitEntity.dimension.spawnParticle("ram_portalgun:portal_spawn_particle", hitEntity.location);
+  hitEntity.dimension.playSound("ram_portalgun:fluid_burn", hitEntity.location)
+
 });
 
 

@@ -132,6 +132,17 @@
                     "volume": 0.6
                 }
             ]
+        },
+        "ram_portalgun:fluid_burn": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/fluid_burn",
+                    "volume": 0.6
+                }
+            ]
         }
     }
 }
