@@ -7,8 +7,7 @@
 				{
 					"*": "material.default",
 					"tube": "material.tube",
-					"core": "material.default",
-					"glow": "material.glow"
+					"core": "material.default"
 				}
 			],
 			"textures": [

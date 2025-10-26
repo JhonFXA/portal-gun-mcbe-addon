@@ -4,7 +4,6 @@ import {
   portalDP,
   ID,
   portalGunDP,
-  PORTAL_MODES,
   portalGuns
 } from "../utils/ids&variables";
 

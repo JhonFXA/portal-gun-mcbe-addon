@@ -12,6 +12,18 @@
 				"tube": {
 					"rotation": [0, 0, 0],
 					"position": [0, 0, 0]
+				},
+				"glow4": {
+					"scale": 0
+				},
+				"glow2": {
+					"scale": 0
+				},
+				"glow3": {
+					"scale": 0
+				},
+				"glow5": {
+					"position": [0.47087, 2.09734, 7.70581]
 				}
 			}
 		},

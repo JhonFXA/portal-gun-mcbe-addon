@@ -11,7 +11,7 @@
                 "tube": "entity_alphablend"
             },
             "textures": {
-                "default": "textures/attachable/portal_gun"
+                "default": "textures/attachable/portal_gun_discharged"
             },
             "geometry": {
                 "default": "geometry.portal_gun_discharged"
