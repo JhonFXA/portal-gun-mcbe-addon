@@ -180,6 +180,44 @@ function playPortalAnimation(portal, dualPortal) {
     dualPortal?.playAnimation("animation.ram_portalgun.portal.pass");
 }
 
+function playInAnimation(portal, player) {
+    const orientation = portal.getProperty(portalSP.orientation);
+    let animation;
+    switch (orientation) {
+        case 0: {
+            animation = "animation.ram_portalgun.player.portal_in_front"
+            break;
+        }
+        case 1: {
+            animation = "animation.ram_portalgun.player.portal_in_up"
+            break;
+        }
+        case 2: {
+            animation = "animation.ram_portalgun.player.portal_in_down"
+            break;
+        }
+    }
+    player.playAnimation(animation);
+}
+function playOutAnimation(portal, player) {
+    const orientation = portal.getProperty(portalSP.orientation);
+    let animation;
+    switch (orientation) {
+        case 0: {
+            animation = "animation.ram_portalgun.player.portal_out_front"
+            break;
+        }
+        case 1: {
+            animation = "animation.ram_portalgun.player.portal_out_up"
+            break;
+        }
+        case 2: {
+            animation = "animation.ram_portalgun.player.portal_out_down"
+            break;
+        }
+    }
+    player.playAnimation(animation);
+}
 
 /**
  * Teleports a player through a portal while handling animations, cooldown, and auto-close portal logic.
@@ -188,7 +226,7 @@ function playPortalAnimation(portal, dualPortal) {
  * @param {Entity} player - The player entity that is being teleported.
  */
 function playerUsePortal(portal, dualPortal, player) {
-    const animation_length = 0.25; // duration in seconds
+    const animation_length = 0.5; // duration in seconds
     const tickDelay = animation_length * 20; // convert to game ticks (20 ticks/sec)
     const cooldown = 30 + tickDelay;
 
@@ -197,41 +235,12 @@ function playerUsePortal(portal, dualPortal, player) {
     player.setDynamicProperty(portalDP.lastPortalUsed, dualPortal.id);
     player.addTag(TELEPORTED_TAG);
 
+    playInAnimation(portal, player);
+
     // Delay actual teleport to match animation
     system.runTimeout(() => {
+        playOutAnimation(dualPortal, player);
         teleportEntityToLocation(portal, dualPortal, player);
-
-        // Handle auto-close behavior for portal gun
-        // let portalGunId = portal.getDynamicProperty(portalDP.ownerPortalGun);
-        // let itemObject = findPortalGunInInventory(player, portalGunId);
-        // let portalGunItem = itemObject?.item;
-
-        // if (portalGunItem) {
-        //     const autoClose = portalGunItem.getDynamicProperty(portalGunDP.autoClose);
-        //     if (autoClose) {
-        //         const portalListJson = portalGunItem.getDynamicProperty(portalGunDP.portalList);
-        //         let portalIds = portalListJson ? JSON.parse(portalListJson) : [];
-
-        //         // Delay to safely check portal gun state
-        //         system.runTimeout(() => {
-        //             let hasGun = findPortalGunInInventory(player, portalGunId);
-        //             if (hasGun) {
-        //                 let currentMode = portalGunItem.getDynamicProperty(portalGunDP.mode);
-
-        //                 // Remove the appropriate portal based on mode and portal list
-        //                 if ((currentMode === PORTAL_MODES.ROOT || currentMode === PORTAL_MODES.CUSTOM) && portalIds.length > 2) {
-        //                     if (portal.id === portalIds[0]) {
-        //                         removePortal(player, dualPortal, false);
-        //                     } else {
-        //                         removePortal(player, portal, false);
-        //                     }
-        //                 } else {
-        //                     removePortal(player, portal, true);
-        //                 }
-        //             }
-        //         }, 30);
-        //     }
-        // }
     }, tickDelay);
 }
 

@@ -317,7 +317,7 @@ function handleSafePlacement(targetDimension, customLocation, fixedCustomLocatio
       player.sendMessage(
         "§c[!] Error finding a safe location for the portal.§r"
       );
-      removePortal(player, newPortal, false);
+      removePortal(newPortal, false);
       targetDimension.runCommand(`tickingarea remove "${tickingAreaName}"`);
       return;
     }
@@ -378,7 +378,7 @@ function handleSafePlacement(targetDimension, customLocation, fixedCustomLocatio
  */
 function handleCustomMode(player, portalGunItem, itemObject, inventory, newPortal, portalIds, orientation, rotation, scale, portalGunId, portalId) {
   const locJson = portalGunItem.getDynamicProperty(portalGunDP.customLocation);
-  if (!locJson) return removePortal(player, newPortal, false);
+  if (!locJson) return removePortal(newPortal, false);
 
   const loc = JSON.parse(locJson);
   const fixedLoc = { ...loc };
@@ -405,7 +405,7 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
   try {
     dim.runCommand(`tickingarea add circle ${fixedLoc.x} ${fixedLoc.y} ${fixedLoc.z} 1 "${tickingAreaName}"`);
   } catch {
-    removePortal(player, newPortal, false);
+    removePortal(newPortal, false);
     return;
   }
   
@@ -413,7 +413,7 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
   system.run(async () => {
     const chunkLoaded = await waitForChunkLoad(dim, loc);
     if (!chunkLoaded) {
-      removePortal(player, newPortal, false);
+      removePortal(newPortal, false);
       dim.runCommand(`tickingarea remove "${tickingAreaName}"`);
       return;
     }
@@ -421,7 +421,7 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
     if (safePlacement) {
       const safe = handleSafePlacement(dim, loc, fixedLoc, player, newPortal, tickingAreaName);
       if (!safe) {
-        removePortal(player, newPortal, false);
+        removePortal(newPortal, false);
         dim.runCommand(`tickingarea remove "${tickingAreaName}"`);
         return;
       }
@@ -431,7 +431,7 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
     let customOri = orientation === 1 ? 2 : orientation === 2 ? (fixedLoc.y += 2, 1) : 0;
     const customPortal = spawnPortal(portalId, dim, fixedLoc, rotation, customOri, scale, portalGunId, autoClose);
     if (!customPortal) {
-      removePortal(player, newPortal, false);
+      removePortal(newPortal, false);
       dim.runCommand(`tickingarea remove "${tickingAreaName}"`);
       return;
     }
@@ -516,7 +516,7 @@ function summonPortal(player, target) {
           const oldestPortalId = portalIds.shift();
           const oldestPortal = world.getEntity(oldestPortalId);
           if (oldestPortal) {
-            removePortal(player, oldestPortal, false);
+            removePortal(oldestPortal, false);
           }
           linkPortals(portalIds[0], portalIds[1]);
         }
@@ -537,7 +537,7 @@ function summonPortal(player, target) {
           const newerPortalId = portalIds.splice(1, 1)[0];
           const newerPortal = world.getEntity(newerPortalId);
           if (newerPortal) {
-            removePortal(player, newerPortal, false);
+            removePortal(newerPortal, false);
           }
           linkPortals(portalIds[0], portalIds[1]);
         }
