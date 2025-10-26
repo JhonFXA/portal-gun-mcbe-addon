@@ -1,0 +1,137 @@
+{
+    "format_version": "1.20.20",
+    "sound_definitions": {
+        "ram_portalgun:error_sound": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/portal_gun_error",
+                    "volume": 1
+                }
+            ]
+        },
+        "ram_portalgun:portal_enter": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/portal_enter",
+                    "volume": 1
+                }
+            ]
+        },
+        "ram_portalgun:portal_close": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/close_portal",
+                    "volume": 1
+                }
+            ]
+        },
+        "ram_portalgun:portal_spawn": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/portal_spawn",
+                    "volume": 1
+                }
+            ]
+        },
+        "ram_portalgun:fire_portal": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/fire_portal_gun",
+                    "volume": 1
+                }
+            ]
+        },
+        "ram_portalgun:open_menu": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/open_menu_portal_gun",
+                    "volume": 1
+                }
+            ]
+        },
+        "ram_portalgun:button_click": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/click",
+                    "volume": 1
+                }
+            ]
+        },
+        "ram_portalgun:selection": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/selection",
+                    "volume": 1
+                }
+            ]
+        },
+        "ram_portalgun:portal_gun_plug": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/portal_gun_plug",
+                    "volume": 1
+                }
+            ]
+        },
+        "ram_portalgun:portal_gun_unplug": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/portal_gun_unplug",
+                    "volume": 1
+                }
+            ]
+        },
+        "ram_portalgun:empty_portal_gun": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/empty_portal_gun",
+                    "volume": 1
+                }
+            ]
+        },
+        "ram_portalgun:power_off_portal_gun": {
+            "category": "neutral",
+            "max_distance": null,
+            "min_distance": null,
+            "sounds": [
+                {
+                    "name": "sounds/ram_portalgun/power_off_portal_gun",
+                    "volume": 0.6
+                }
+            ]
+        }
+    }
+}
