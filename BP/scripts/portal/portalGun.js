@@ -137,12 +137,16 @@ function usePortalGun(player, portalGunItem) {
   // Validate the portal list to remove invalid portal IDs
   validatePortalList(portalGunItem, inventory, player.selectedSlotIndex);
   if (player.isSneaking) {
+    player.playAnimation("animation.ram_portalgun.player.portal_gun_interface", {blendOutTime: 0.5, stopExpression: "query.is_moving || !query.is_item_name_any('slot.weapon.mainhand', 'ram_portalgun:portal_gun', 'ram_portalgun:portal_gun_discharged')"});
     openPortalGunMenu(player);
   } else {
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
     const scale = portalGunItem.getDynamicProperty(portalGunDP.scale);
     const cost = scale
     const gunObject = portalGuns.find((gun) => gun.id === portalGunItem.typeId);
+
+    player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot", {blendOutTime: 0.5});
+
     if (charge > 0) {
       portalGunItem = gunObject.decreaseCharge(
         player,
@@ -666,6 +670,7 @@ world.afterEvents.itemUse.subscribe((event) => {
 
     // Replace base with assembled Portal Gun and play plug sound
     inventory.setItem(player.selectedSlotIndex, portalGun);
+    player.playAnimation("animation.ram_portalgun.player.portal_gun_plug", {blendOutTime: 1});
     player.dimension.playSound(
       "ram_portalgun:portal_gun_plug",
       player.location

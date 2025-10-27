@@ -277,7 +277,7 @@ function openSettingsForm(player, inventory, portalGunItem) {
     .button("Behavior Settings", "textures/ui/toggle")
     .divider()
     .button("History", "textures/ui/history")
-    .button("Dismount Portal Gun", "textures/ui/dismount")
+    .button("Dismount Portal Gun", "textures/ui/dismount_portal_gun")
     .button("Close All Portals", "textures/ui/close_all_portals")
     .button("Reset Portal Gun", "textures/ui/reset_portal_gun")
     .button("How to Use", "textures/ui/question_mark")
