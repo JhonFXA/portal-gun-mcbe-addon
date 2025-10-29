@@ -6,8 +6,8 @@
 			"animation_length": 0.5417,
 			"bones": {
 				"portal": {
-					"rotation": [-90, 0, 0],
-					"position": [0, 7, 0]
+					"rotation": [90, 0, 0],
+					"position": [0, -4, -8]
 				}
 			}
 		},
@@ -708,7 +708,6 @@
 		"animation.ram_portalgun.portal.close": {
 			"loop": "hold_on_last_frame",
 			"animation_length": 0.4583,
-			"override_previous_animation": true,
 			"bones": {
 				"portal": {
 					"scale": {

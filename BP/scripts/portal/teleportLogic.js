@@ -185,7 +185,15 @@ function playInAnimation(portal, player) {
     let animation;
     switch (orientation) {
         case 0: {
-            animation = "animation.ram_portalgun.player.portal_in_front"
+            const portalYaw = portal.getProperty(portalSP.rotation) * 90;
+            const playerYaw = player.getRotation().y;
+            let deltaYaw = (playerYaw - portalYaw + 360) % 360;
+
+            if (deltaYaw <= 45 || deltaYaw >= 315) {
+                animation = "animation.ram_portalgun.player.portal_in_back";
+            } else {
+                animation = "animation.ram_portalgun.player.portal_in_front";
+            } 
             break;
         }
         case 1: {
@@ -199,6 +207,7 @@ function playInAnimation(portal, player) {
     }
     player.playAnimation(animation);
 }
+
 function playOutAnimation(portal, player) {
     const orientation = portal.getProperty(portalSP.orientation);
     let animation;
@@ -226,7 +235,7 @@ function playOutAnimation(portal, player) {
  * @param {Entity} player - The player entity that is being teleported.
  */
 function playerUsePortal(portal, dualPortal, player) {
-    const animation_length = 0.5; // duration in seconds
+    const animation_length = 0.3; // duration in seconds
     const tickDelay = animation_length * 20; // convert to game ticks (20 ticks/sec)
     const cooldown = 30 + tickDelay;
 
@@ -294,6 +303,7 @@ function findEntitiesNearPortal(dimension, location, radius, scale) {
 
 /**
  * Teleports an entity to the linked portal's location, adjusting orientation and rotation.
+ * @param {Entity} portal - The portal that the entity used.
  * @param {Entity} dualPortal - The destination portal entity.
  * @param {Entity} entity - The entity to teleport.
  */
@@ -307,7 +317,7 @@ function teleportEntityToLocation(portal, dualPortal, entity) {
     if (orientation === 0) {
         if (scale >= 1) tpLocation.y -= 1;
         switch (rotation) {
-            case 0: ry = 0; break;
+            case 0: ry = 0;  break;
             case 1: ry = 90; break;
             case 2: ry = 180; break;
             case 3: ry = -90; break;
