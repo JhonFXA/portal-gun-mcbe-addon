@@ -837,6 +837,6 @@ world.beforeEvents.playerBreakBlock.subscribe((event) => {
   );
 
   const gamemode = event.player.getGameMode();
-  if (selectedItem && ID.portalGunsIds.includes(selectedItem.typeId) && gamemode == "Creative")
+  if (selectedItem && (ID.portalGunsIds.includes(selectedItem.typeId) || ID.hair.includes(selectedItem.typeId)) && gamemode == "Creative")
     event.cancel = true;
 });

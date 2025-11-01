@@ -27,7 +27,8 @@ export var ID = {
     chargedTubes : ["ram_portalgun:charged_tube"]
   },
   projectiles : ["ram_portalgun:fluid_projectile", "ram_portalgun:fluid_projectile_high_pressure"],
-  portals: ["ram_portalgun:green_portal"]
+  portals: ["ram_portalgun:green_portal"],
+  hair: ["ram_portalgun:rick_hair", "ram_portalgun:homesteader_rick_hair"]
 };
 
 export const PORTAL_MODES = {

@@ -30,4 +30,5 @@
 
 import './utils/ids&variables';
 import './portal/portalGun';
+import './afterEvents';
 import './portal/teleportLogic';

@@ -10,7 +10,7 @@
         "components": {
             "minecraft:icon": "rick_hair",
             "minecraft:display_name": {
-				"value": "§bRick Sanchez's §rHair"
+				"value": "§bRick Sanchez's §rHair\n§7Hit a block with it\nto change hair style"
 			},
             "minecraft:max_stack_size": { "value": 1 },
             "minecraft:wearable": {
