@@ -27,29 +27,19 @@ export function spawnPortal(portalId, dimension, location, rotation, orientation
   const variables = new MolangVariableMap();
   if(orientation == 0){
     variables.setFloat("variable.ray_orientation", 1);
-    if(rotation == 0 || rotation == 2){
-      variables.setFloat("variable.x", 0);
-      variables.setFloat("variable.z", 1);
-    }
-    else if(rotation == 1 || rotation == 3){
-      variables.setFloat("variable.x", 1);
-      variables.setFloat("variable.z", 0);
-    }
   } else {
     variables.setFloat("variable.ray_orientation", 0);
-    variables.setFloat("variable.x", 0);
-    variables.setFloat("variable.z", 0);
   }
 
-    const searchArea = {
-      location: location,
-      maxDistance: 1
-    };
-    const queryOptions = {
-      ...searchArea,
+  const searchArea = {
+    location: location,
+    maxDistance: 1
+  };
+  const queryOptions = {
+    ...searchArea,
 
-      excludeTypes: ["minecraft:player", ...ID.portals] 
-    };
+    excludeTypes: ["minecraft:player", ...ID.portals] 
+  };
 
   if(orientation == 0){
     const blockBelow = dimension.getBlock({ x: location.x, y: location.y - 1, z: location.z });
