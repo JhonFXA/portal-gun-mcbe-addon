@@ -201,7 +201,7 @@ function playInAnimation(portal, player) {
             break;
         }
         case 2: {
-            animation = "animation.ram_portalgun.player.portal_in_down"
+            animation = player.isSprinting? "animation.ram_portalgun.player.portal_in_down_dive": "animation.ram_portalgun.player.portal_in_down"
             break;
         }
     }
@@ -235,7 +235,7 @@ function playOutAnimation(portal, player) {
  * @param {Entity} player - The player entity that is being teleported.
  */
 function playerUsePortal(portal, dualPortal, player) {
-    const animation_length = 0.3; // duration in seconds
+    const animation_length = 0.4; // duration in seconds
     const tickDelay = animation_length * 20; // convert to game ticks (20 ticks/sec)
     const cooldown = 30 + tickDelay;
 
@@ -248,8 +248,8 @@ function playerUsePortal(portal, dualPortal, player) {
 
     // Delay actual teleport to match animation
     system.runTimeout(() => {
-        playOutAnimation(dualPortal, player);
         teleportEntityToLocation(portal, dualPortal, player);
+        playOutAnimation(dualPortal, player);
     }, tickDelay);
 }
 
