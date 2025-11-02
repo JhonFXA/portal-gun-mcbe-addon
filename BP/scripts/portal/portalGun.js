@@ -2,7 +2,6 @@ import {
   Direction,
   system,
   ItemStack,
-  EquipmentSlot,
   world,
 } from "@minecraft/server";
 import { openPortalGunMenu } from "../gui/menu";
@@ -121,7 +120,7 @@ function validatePortalList(portalGunItem, inventory, slotIndex) {
  * @param {Player} player - The player using the portal gun.
  * @param {ItemStack} portalGunItem - The portal gun item being used by the player.
  */
-function usePortalGun(player, portalGunItem) {
+export function usePortalGun(player, portalGunItem) {
   const inventory = player.getComponent("inventory");
   if (!inventory || !inventory.container) {
     return;
@@ -467,7 +466,7 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
  * @param {Player} player - The player using the Portal Gun.
  * @param {Object} target - The target block or entity data returned from a raycast or selection event.
  */
-function summonPortal(player, target) {
+export function summonPortal(player, target) {
   const placement = getPortalPlacement(player, target);
   if (!placement) {
     player.sendMessage("§c[!] Invalid target for portal placement.§r");
@@ -610,233 +609,3 @@ function summonPortal(player, target) {
     }
   });
 }
-
-//Used to detect when the player interacts with a portal gun.
-world.afterEvents.itemUse.subscribe((event) => {
-  const { itemStack, source: player } = event;
-
-   // Ignore the event if the item is not a Portal Gun, discharged gun, or base component
-  if (
-    !ID.portalGunsIds.includes(itemStack.typeId) &&
-    !ID.dischargedPortalGuns.includes(itemStack.typeId) &&
-    !ID.components.portalGunBases.includes(itemStack.typeId)
-  ) {
-    return;
-  }
-
-  // If the item used is a Portal Gun base
-  if (ID.components.portalGunBases.includes(itemStack.typeId)) {
-    const equippable = player.getComponent("minecraft:equippable");
-    const itemOffhand = equippable.getEquipment(EquipmentSlot.Offhand);
-
-    const gunInstance = portalGuns.find(
-      (gun) => gun.baseId === itemStack.typeId
-    );
-
-    // Determine which gun type to create based on the tube in the offhand
-    let newGunType;
-    if (itemOffhand?.typeId === gunInstance.chargedTubeId) {
-      newGunType = gunInstance.id;
-    } else if (itemOffhand?.typeId === gunInstance.emptyTubeId) {
-      newGunType = gunInstance.dischargedVersionId;
-    }
-
-    if (!newGunType) return; // if tube doesn't match, do nothing
-    
-    const inventory = player.getComponent("inventory").container;
-    const portalGun = new ItemStack(newGunType, 1);
-
-    // Copy dynamic properties from the base to the new gun
-    for (const id of itemStack.getDynamicPropertyIds()) {
-      portalGun.setDynamicProperty(id, itemStack.getDynamicProperty(id));
-    }
-
-    // Set the charge depending on the tube type
-    if (ID.components.chargedTubes.includes(itemOffhand.typeId)) {
-      const currentCharge =
-        itemOffhand.getDynamicProperty(portalGunDP.charge) ?? 100;
-      portalGun.setDynamicProperty(portalGunDP.charge, currentCharge);
-    } else if (ID.components.emptyTubes.includes(itemOffhand.typeId)) {
-      portalGun.setDynamicProperty(portalGunDP.charge, 0);
-    }
-
-    // Consume one tube from offhand
-    if (itemOffhand.amount > 1) {
-      itemOffhand.amount -= 1;
-      equippable.setEquipment(EquipmentSlot.Offhand, itemOffhand);
-    } else {
-      equippable.setEquipment(EquipmentSlot.Offhand, undefined);
-    }
-
-    // Replace base with assembled Portal Gun and play plug sound
-    inventory.setItem(player.selectedSlotIndex, portalGun);
-    player.playAnimation("animation.ram_portalgun.player.portal_gun_plug", {blendOutTime: 1});
-    player.dimension.playSound(
-      "ram_portalgun:portal_gun_plug",
-      player.location
-    );
-    return;
-  }
-
-
-  const cooldownComponent = itemStack.getComponent("cooldown");
-  const cooldown = player.getItemCooldown("portal_gun_cooldown");
-  const cooldownTicks = cooldownComponent.cooldownTicks;
-
-  if (cooldown < cooldownTicks - 1) {
-    return;
-  }
-  usePortalGun(player, itemStack);
-});
-
-/*
-  Allow players to remove portals by hitting them while sneaking (crouching) with a Portal Gun.
-*/
-world.afterEvents.entityHitEntity.subscribe((event) => {
-  if (event.damagingEntity.typeId !== "minecraft:player") return;
-  const player = event.damagingEntity;
-  if (!player.isSneaking) return;
-  const portalEntity = event.hitEntity;
-  if (!portalEntity.matches({ families: ["ram_portalgun:portal"] })) return;
-
-  const portalGunItem = player.getComponent("inventory").container.getItem(player.selectedSlotIndex);
-
-  if (!portalGunItem) return;
-  if (!ID.portalGunsIds.includes(portalGunItem.typeId) && !ID.dischargedPortalGuns.includes(portalGunItem.typeId) && !ID.components.portalGunBases.includes(portalGunItem.typeId))
-    return;
-
-
-  /*
-  If the portal has no root info, it is removed directly. 
-  If it has a linked dual portal, the root portal is determined and the child list is retrieved. 
-  For chains longer than two portals, either all child portals are removed (if root) or the current portal is removed and the root portal is relinked. 
-  For chains of only two portals, the portals are removed directly. 
-  */
-
-
-  const portalIsRoot = portalEntity.getDynamicProperty(portalDP.isRoot);
-
-  if (portalIsRoot === undefined) return removePortal(portalEntity, true);
-
-  const dualPortal = world.getEntity(portalEntity.getDynamicProperty(portalDP.DualityPortalId));
-  if(dualPortal === undefined) return removePortal(portalEntity, false);
-  const rootPortal = portalIsRoot ? portalEntity : dualPortal;
-  const childListJson = rootPortal.getDynamicProperty(portalDP.childList);
-  const childList = childListJson ? JSON.parse(childListJson) : [];
-
-  if (childList.length > 2) {
-    if(portalIsRoot) {
-      childList.forEach(portalId => {
-        const portal = world.getEntity(portalId);
-        return removePortal(portal, false);
-      });
-    } else {
-      const idx = childList.indexOf(portalEntity.id);
-      if (idx !== -1) childList.splice(idx, 1);
-      rootPortal.setDynamicProperty(portalDP.childList, JSON.stringify(childList));
-      linkPortals(childList[0], childList[childList.length - 1]);
-      return removePortal(portalEntity, false);
-
-    }
-  } else return removePortal(portalEntity, true);
-});
-
-// It is used to detect when a Portal Gun projectile lands on a block
-// and then summon a portal at the hit location.
-world.afterEvents.projectileHitBlock.subscribe((event) => {
-  if (!ID.projectiles.includes(event.projectile.typeId)) {
-    return;
-  }
-  const player = event.source;
-  summonPortal(player, event.getBlockHit());
-});
-
-
-// It allows Portal Gun projectiles to hit entities and give them poison effect.
-world.afterEvents.projectileHitEntity.subscribe((event) => {
-  if (!ID.projectiles.includes(event.projectile.typeId)) {
-    return;
-  }
-
-  const hitEntity = event.getEntityHit()?.entity;
-  if (ID.portals.includes(hitEntity?.typeId)) {
-    return;
-  }
-
-  hitEntity.addEffect("minecraft:fatal_poison", 200, {amplifier: 5, showParticles: true});
-  hitEntity.dimension.spawnParticle("ram_portalgun:fluid_poison_particle", hitEntity.location);
-  hitEntity.dimension.spawnParticle("ram_portalgun:fluid_ground_drop", hitEntity.location);
-  hitEntity.dimension.spawnParticle("ram_portalgun:portal_spawn_particle", hitEntity.location);
-  hitEntity.dimension.playSound("ram_portalgun:fluid_burn", hitEntity.location)
-
-});
-
-
-// It is used to **cycle through saved custom portal locations**
-// when the player hits a block while holding a Portal Gun and not sneaking.
-world.afterEvents.entityHitBlock.subscribe((event) => {
-  if (event.damagingEntity.typeId !== "minecraft:player") return;
-  const player = event.damagingEntity;
-  if (player.isSneaking) return;
-
-  const inventory = player.getComponent("inventory");
-  const item = inventory?.container.getItem(player.selectedSlotIndex);
-  if (!item) return;
-  if (!ID.portalGunsIds.includes(item.typeId)) return;
-
-  let savedLocationsJson = item.getDynamicProperty(portalGunDP.savedLocations);
-  let savedLocations = savedLocationsJson ? JSON.parse(savedLocationsJson) : [];
-  if (savedLocations.length === 0) return;
-
-  let mode = item.getDynamicProperty(portalGunDP.mode);
-  let currentIndex = Number(
-    item.getDynamicProperty(portalGunDP.customLocationIndex) ?? 0
-  );
-
-  if (mode !== PORTAL_MODES.CUSTOM) {
-    item.setDynamicProperty(portalGunDP.mode, PORTAL_MODES.CUSTOM);
-  } else {
-    currentIndex = (currentIndex + 1) % savedLocations.length;
-  }
-
-  item.setDynamicProperty(
-    portalGunDP.customLocation,
-    JSON.stringify(savedLocations[currentIndex])
-  );
-  item.setDynamicProperty(portalGunDP.customLocationIndex, currentIndex);
-
-  let dimension = savedLocations[currentIndex].dimensionId;
-  switch (dimension) {
-    case "minecraft:overworld":
-      dimension = "Overworld";
-      break;
-    case "minecraft:nether":
-      dimension = "Nether";
-      break;
-    case "minecraft:the_end":
-      dimension = "The End";
-      break;
-  }
-
-  inventory.container.setItem(player.selectedSlotIndex, item);
-  player.dimension.playSound("ram_portalgun:selection", player.location);
-  player.onScreenDisplay.setActionBar(
-    `Location: §a${savedLocations[currentIndex].name}§r (${currentIndex + 1}/${
-      savedLocations.length
-    })\nDimension: §a${dimension}§r`
-  );
-});
-
-
-// Triggered before a player breaks a block
-// it **prevents players from breaking blocks while holding a Portal Gun in creative mode**
-world.beforeEvents.playerBreakBlock.subscribe((event) => {
-  const inventory = event.player.getComponent("inventory");
-  const selectedItem = inventory?.container.getItem(
-    event.player.selectedSlotIndex
-  );
-
-  const gamemode = event.player.getGameMode();
-  if (selectedItem && (ID.portalGunsIds.includes(selectedItem.typeId) || ID.hair.includes(selectedItem.typeId)) && gamemode == "Creative")
-    event.cancel = true;
-});

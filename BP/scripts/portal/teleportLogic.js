@@ -1,14 +1,6 @@
 import {system, world} from "@minecraft/server";
-import { portalDP, portalSP, portalGunDP, PORTAL_MODES} from "../utils/ids&variables";
-import { calculateEuclideanDistance, findPortalGunInInventory, linkPortals, removePortal } from "../utils/my_API";
-
-system.runInterval(() => {
-    runCooldown();
-    onTick();
-}, 1);
-system.runInterval(() => {
-    tagHandling();
-}, 5);
+import { portalDP, portalSP} from "../utils/ids&variables";
+import { calculateEuclideanDistance, linkPortals, removePortal } from "../utils/my_API";
 
 const TELEPORTED_TAG = "ram_portalgun:teleported";
 const OBJECTIVE_ID = "ram_portalgun:cooldownTime";
@@ -16,7 +8,7 @@ const OBJECTIVE_ID = "ram_portalgun:cooldownTime";
 
 // Handles teleport cooldown tags for entities in all dimensions
 // Removes the TELEPORTED_TAG when the entity is ready to teleport again
-function tagHandling() {
+export function tagHandling() {
     const dimensions = ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"];
     
     dimensions.forEach(dimId => {
@@ -47,7 +39,7 @@ function tagHandling() {
 
 
 // Decrease cooldowns for all participants and remove expired entries
-function runCooldown() {
+export function runCooldown() {
     const scoreboard =
         world.scoreboard.getObjective(OBJECTIVE_ID) ??
         world.scoreboard.addObjective(OBJECTIVE_ID, OBJECTIVE_ID);
@@ -64,7 +56,7 @@ function runCooldown() {
 }
 
 // Called every tick to handle portals: teleportation, animations, fluids
-function onTick() {
+export function onTick() {
     const dimensions = ["minecraft:overworld", "minecraft:nether", "minecraft:the_end"];
 
     dimensions.forEach(dimId => {
@@ -180,6 +172,12 @@ function playPortalAnimation(portal, dualPortal) {
     dualPortal?.playAnimation("animation.ram_portalgun.portal.pass");
 }
 
+
+/**
+ * Responsible for playing player animations when entering a portal.
+ * @param {Entity} portal 
+ * @param {Player} player 
+ */
 function playInAnimation(portal, player) {
     const orientation = portal.getProperty(portalSP.orientation);
     let animation;
@@ -208,6 +206,12 @@ function playInAnimation(portal, player) {
     player.playAnimation(animation);
 }
 
+
+/**
+ * Responsible for playing player animations when leaving a portal.
+ * @param {Entity} portal 
+ * @param {Player} player 
+ */
 function playOutAnimation(portal, player) {
     const orientation = portal.getProperty(portalSP.orientation);
     let animation;
@@ -333,7 +337,8 @@ function teleportEntityToLocation(portal, dualPortal, entity) {
         world.sendMessage(`§c[Portal Gun] Failed to teleport entity: \n§e[!] ${error}§r`);
     }
 
-    const autoClose = dualPortal.getDynamicProperty(portalDP.autoClose);
+    //With autoClose enabled, the portal will close itself after a certain time.
+    const autoClose = dualPortal.getDynamicProperty(portalDP.autoClose) || portal.getDynamicProperty(portalDP.autoClose);
     if (!autoClose) return;
 
     const portalIsRoot = portal.getDynamicProperty(portalDP.isRoot);

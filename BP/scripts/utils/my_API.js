@@ -7,6 +7,13 @@ import {
   portalGuns
 } from "../utils/ids&variables";
 
+/**
+ * Calculates the Euclidean distance between two 3D locations.
+ *
+ * @param {Object} location1 - The first location.
+ * @param {Object} location2 - The second location.
+ * @returns {number} The distance between the two locations.
+ */
 export function calculateEuclideanDistance(location1, location2) {
   let deltaX = location1.x - location2.x;
   let deltaY = location1.y - location2.y;
@@ -15,14 +22,37 @@ export function calculateEuclideanDistance(location1, location2) {
   return distance;
 }
 
+
+/**
+ * Changes the mode of a Portal Gun and optionally removes all active portals linked to it.
+ *
+ * @param {Player} player - The player holding the Portal Gun.
+ * @param {EntityInventoryComponent} inventory - The player’s inventory container.
+ * @param {ItemStack} portalGunItem - The Portal Gun item being modified.
+ * @param {string} mode - The new mode to set for the Portal Gun.
+ * @param {boolean} [removePortals=true] - Whether to remove all portals linked to this Portal Gun.
+ */
 export function changePortalGunMode(player, inventory, portalGunItem, mode, removePortals = true) {
   portalGunItem.setDynamicProperty(portalGunDP.mode, mode);
   player.dimension.playSound("ram_portalgun:selection", player.location);
-  if(removePortals)
+  if (removePortals)
     removeAllPortals(player, portalGunItem);
   inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
 }
 
+/**
+ * Spawns a new portal entity in the specified dimension and location.
+ * 
+ * @param {string} portalId - The ID of the portal entity to spawn.
+ * @param {Dimension} dimension - The dimension where the portal will be created.
+ * @param {Vector3} location - The world location to spawn the portal.
+ * @param {number} rotation - The portal's rotation index (0–3).
+ * @param {number} orientation - The orientation of the portal (0 = vertical).
+ * @param {number} scale - The portal’s size.
+ * @param {string} ownerId - The ID of the player or entity that owns this portal.
+ * @param {boolean} [autoClose=false] - Whether the portal should automatically close after a delay.
+ * @returns {Entity} The newly created portal entity.
+ */
 export function spawnPortal(portalId, dimension, location, rotation, orientation, scale, ownerId, autoClose = false) {
   const variables = new MolangVariableMap();
   if(orientation == 0){
@@ -61,8 +91,6 @@ export function spawnPortal(portalId, dimension, location, rotation, orientation
   newPortal.setDynamicProperty(portalDP.ownerPortalGun, ownerId);
   newPortal.setDynamicProperty(portalDP.autoClose, autoClose);
 
-
-
   const entitiesToDamage = newPortal.dimension.getEntities(queryOptions);
   for (const entity of entitiesToDamage) entity.applyDamage(20);
 
@@ -70,6 +98,12 @@ export function spawnPortal(portalId, dimension, location, rotation, orientation
   return newPortal;
 }
 
+/**
+ * Links two portals together so that entities can travel between them.
+ *
+ * @param {string} portalAId - The unique ID of the first portal entity.
+ * @param {string} portalBId - The unique ID of the second portal entity.
+ */
 export function linkPortals(portalAId, portalBId) {
   const portalA = world.getEntity(portalAId);
   const portalB = world.getEntity(portalBId);
@@ -79,6 +113,12 @@ export function linkPortals(portalAId, portalBId) {
   }
 }
 
+/**
+ * Removes a water or lava block at a given location, if present.
+ *
+ * @param {Dimension} dimension - The dimension where the block is located.
+ * @param {Vector3} location - The coordinates of the block to check and remove.
+ */
 function removeFluidBlockAtLocation(dimension, location) {
   const block = dimension.getBlock(location);
   const isInWater =
@@ -94,9 +134,15 @@ function removeFluidBlockAtLocation(dimension, location) {
   }
 } 
 
+/**
+ * Removes a portal entity with its closing animation, optionally also removing its linked (dual) portal.
+ *
+ * @param {Entity} portalEntity - The portal entity to remove.
+ * @param {boolean} [mustRemoveDual=true] - Whether the linked (dual) portal should also be removed.
+ */
 export function removePortal(portalEntity, mustRemoveDual = true) {
   let animation_length = 0.46;
-  const tickDelay = animation_length * 20;
+  const tickDelay = animation_length * 20; 
   
   let dualPortalID = portalEntity.getDynamicProperty(portalDP.DualityPortalId);
   let dualPortal;
@@ -119,40 +165,27 @@ export function removePortal(portalEntity, mustRemoveDual = true) {
   }, tickDelay);
 }
 
+/**
+ * Removes all portals linked to a given Portal Gun item.
+ * Each portal is removed using {@link removePortal}.
+ *
+ * @param {Entity} player - The player holding the Portal Gun.
+ * @param {ItemStack} portalGunItem - The Portal Gun item whose portals should be removed.
+ * @param {number} [slotIndex=player.selectedSlotIndex] - The inventory slot index of the Portal Gun.
+ */
 export function removeAllPortals(player, portalGunItem, slotIndex = player.selectedSlotIndex) {
   const inventory = player.getComponent("inventory");
-  const portalListJson = portalGunItem.getDynamicProperty(
-    portalGunDP.portalList
-  );
+  const portalListJson = portalGunItem.getDynamicProperty(portalGunDP.portalList);
   let portalIds = portalListJson ? JSON.parse(portalListJson) : [];
-  let animation_length = 0.46;
-  const tickDelay = animation_length * 20;
 
   if (portalIds.length > 0) {
-    portalIds.forEach((portal) => {
-      const portalEntity = world.getEntity(portal);
-      const block = portalEntity.dimension.getBlock(portalEntity.location);
-      const isInWater =
-        block.typeId === "minecraft:water" ||
-        block.typeId === "minecraft:flowing_water";
-      const isInLava =
-        block.typeId === "minecraft:lava" ||
-        block.typeId === "minecraft:flowing_lava";
-      if (isInWater || isInLava) {
-        let dimension = portalEntity.dimension;
-        let location = portalEntity.location;
-        system.runTimeout(()=>{
-          dimension.runCommand(
-            `setblock ${location.x} ${location.y} ${location.z} air`
-          );
-        }, 10)
+    portalIds.forEach(portalId => {
+      const portalEntity = world.getEntity(portalId);
+      if (portalEntity) {
+        removePortal(portalEntity, false);
       }
-      
-      portalEntity.setProperty(portalSP.close, true);
-      system.runTimeout(()=>{
-        portalEntity.remove();
-      }, tickDelay);
     });
+
     portalIds = [];
     savePortalList(portalGunItem, portalIds, player, inventory, slotIndex);
   }
