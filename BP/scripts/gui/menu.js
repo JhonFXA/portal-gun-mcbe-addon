@@ -27,6 +27,7 @@ function stopPlayerAnimation(player){
  * Displays the main options such as:
  * Saved Locations, Set Coordinates, Select Mode, and Settings.
  */
+
 export function openPortalGunMenu(player) {
     const inventory = player.getComponent("inventory");
     const portalGunItem = inventory.container.getItem(player.selectedSlotIndex)
@@ -34,8 +35,8 @@ export function openPortalGunMenu(player) {
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge)??0;
 
     // Visual charge indicator (0–5 bars)
-    const totalBars = 5;
-    const filledBars = Math.ceil(charge / 20); // 0-5
+    const totalBars = 10;
+    const filledBars = Math.ceil(charge / 10); // 0-5
     let chargeBars = "";
     for (let i = 0; i < totalBars; i++) {
         chargeBars += i < filledBars ? "§a|§r" : "§0|§r";
@@ -43,12 +44,12 @@ export function openPortalGunMenu(player) {
 
     const customUi = new ActionFormData()
     .title("Portal Gun Menu")
-    // .body(`Mode: §a${currentMode}§r - Charge: ${chargeBars}`)
+    .body(`Charge: ${chargeBars}`)
     .button("Saved Locations", "textures/ui/standard_pg_ui/saved_locations_ui")
     .button("Set Coordinates", "textures/ui/standard_pg_ui/set_coordinates_ui")
     .button("Select Mode", "textures/ui/standard_pg_ui/select_mode_ui")
     .button("", "textures/ui/standard_pg_ui/settings_ui")
-    // .button("", "textures/ui/close_menu");
+    .button("", "textures/ui/standard_pg_ui/close_menu");
 
     playPlayerAnimation(player);
     player.dimension.playSound("ram_portalgun:open_menu", player.location);

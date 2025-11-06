@@ -274,12 +274,39 @@
                       "collection_index": 3,
                       "$icon_offset": [4.7, 3.2],
                       "$icon_size": [20, 20],
-                      "$font_size": 0.9,
-                      "$text_offset": [30, 10],
-                      "$font_type": "MinecraftRegular",
-                      "$shadow": true,
-                      "$text_alignment": "center",
-                      "$show_hover_text": false,
+                      "bindings": []
+                    }
+                  },
+                  {
+                    "info_label": {
+                      "type": "label",
+                      "font_type": "MinecraftTen",
+                      "font_size": "medium",
+                      "anchor_from": "top_left",
+                      "anchor_to": "top_left",
+                      "text": "#form_text",
+                      "layer": 8,
+                      "offset": [155, 85],
+                      "bindings": [
+                        {
+                          "binding_name": "#form_text"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "close-button@standard_menu_form.custom_button": {
+                      "$default_button_background_texture": "textures/ui/presets/red_ore-ui_style/red_default_button",
+                      "$hover_button_background_texture": "textures/ui/presets/red_ore-ui_style/red_hover_button",
+                      "$pressed_button_background_texture": "textures/ui/presets/red_ore-ui_style/red_pressed_button",
+                      "$button_offset": [70, -10],
+                      "$button_size": [30, 30],
+                      "layer": 6,
+                      "anchor_from": "top_right",
+                      "anchor_to": "top_right",
+                      "collection_index": 4,
+                      "$icon_offset": [4.7, 3.2],
+                      "$icon_size": [20, 20],
                       "bindings": []
                     }
                   }
