@@ -42,13 +42,13 @@ export function openPortalGunMenu(player) {
     }
 
     const customUi = new ActionFormData()
-    .title("Portal Gun Options")
-    .body(`Mode: §a${currentMode}§r - Charge: ${chargeBars}`)
-    .button("Saved Locations", "textures/ui/saved_locations_ui")
-    .button("Set Coordinates", "textures/ui/set_coordinates_ui")
-    .button("Select Mode", "textures/ui/select_mode_ui")
-    .button("Settings", "textures/ui/settings_ui")
-    .button("", "textures/ui/close_menu");
+    .title("Portal Gun Menu")
+    // .body(`Mode: §a${currentMode}§r - Charge: ${chargeBars}`)
+    .button("Saved Locations", "textures/ui/standard_pg_ui/saved_locations_ui")
+    .button("Set Coordinates", "textures/ui/standard_pg_ui/set_coordinates_ui")
+    .button("Select Mode", "textures/ui/standard_pg_ui/select_mode_ui")
+    .button("", "textures/ui/standard_pg_ui/settings_ui")
+    // .button("", "textures/ui/close_menu");
 
     playPlayerAnimation(player);
     player.dimension.playSound("ram_portalgun:open_menu", player.location);

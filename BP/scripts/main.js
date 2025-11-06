@@ -100,9 +100,11 @@ world.beforeEvents.playerBreakBlock.subscribe((event) => {
 
 /* When the player hits a block while holding a hair,changes it style*/
 world.afterEvents.entityHitBlock.subscribe((event) => {
-    const {damagingEntity: player } = event;
-    const inventory = player.getComponent("inventory").container;
-    const itemStack = inventory?.getItem(player.selectedSlotIndex);
+  const {damagingEntity: player } = event;
+  const inventory = player.getComponent("inventory").container;
+  const itemStack = inventory?.getItem(player.selectedSlotIndex);
+
+  if(!itemStack) return;
 
   if (!ID.hair.includes(itemStack.typeId)){
     return;

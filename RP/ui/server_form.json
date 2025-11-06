@@ -1,460 +1,78 @@
-/********************************************************
-+*   (c) Mojang. All rights reserved                       *
-+*   (c) Microsoft. All rights reserved.                   *
-+*********************************************************/
-
 {
-  "namespace": "server_form",
-  "$schema": "https://kalmemarq.github.io/Bugrock-JSON-UI-Schemas/ui.schema.json",
-
-  "long_form": {
-    "type": "panel",
-    "size": ["100%", "100%"],
-    "controls": [
-      {
-        "default_long_form@common_dialogs.main_panel_no_buttons": {
-          "$title_panel": "common_dialogs.standard_title_label",
-          "$title_size": ["100% - 15px", 10],
-          "$title_max_size": ["100% - 15px", 10],
-          "size": [225, 200],
-          "$text_name": "#title_text",
-          "$title_text_binding_type": "none",
-          "$child_control": "server_form.long_form_panel",
-          "layer": 2,
-          "bindings": [
-            {
-              "binding_name": "#title_text"
-            },
-            {
-              "binding_type": "view",
-              "source_property_name": "(not (#title_text = 'Portal Gun Options') and not (#title_text = 'Saved Locations') and not (#title_text = 'History') and not (#title_text = 'Delete Location'))",
-              "target_property_name": "#visible"
-            }
-          ]
-        }
-      },
-      {
-        "pg_menu_long_form": {
-          "type": "panel",
-          "size": [322.5, 185],
-          "layer": 2,
-          "controls": [
-            {
-              "indent_panel": {
-                "type": "panel",
-                "size": ["100% - 16px", "100%"],
-                "controls": [
-                  { "pg_my_form_label@server_form.pg_my_form_label": {} },
-                  { "pg_panel_main@server_form.pg_panel_main": {} },
-                  {
-                    "pg_my_form_background@server_form.pg_my_form_background": {}
-                  },
-                  { "button_panel@server_form.pg_panel_main": {} }
-                ]
-              }
-            }
-          ],
-          "bindings": [
-            {
-              "binding_name": "#title_text"
-            },
-            {
-              "binding_type": "view",
-              "source_property_name": "(#title_text = 'Portal Gun Options')",
-              "target_property_name": "#visible"
-            }
-          ]
-        }
-      },
-      {
-        "saved_locations_form@common_dialogs.main_panel_no_buttons": {
-          "$title_panel": "common_dialogs.standard_title_label",
-          "$title_size": ["100% - 14px", 10],
-          "size": [225, 200],
-          "$text_name": "#title_text",
-          "$title_text_binding_type": "none",
-          "$child_control": "server_form.saved_locations_panel",
-          "layer": 2,
-          "bindings": [
-            {
-              "binding_name": "#title_text"
-            },
-            {
-              "binding_type": "view",
-              "source_property_name": "(#title_text = 'Saved Locations') or (#title_text = 'History') or (#title_text = 'Delete Location')",
-              "target_property_name": "#visible"
-            }
-          ]
-        }
-      }
-    ]
-  },
-  "pg_my_form_label": {
-    "type": "label",
-    "font_type": "MinecraftTen",
-    "font_size": "medium",
-    "anchor_from": "bottom_right",
-    "anchor_to": "bottom_right",
-    "text": "#form_text",
-    "layer": 8,
-    "offset": [-20, -50],
-    "bindings": [
-      {
-        "binding_name": "#form_text"
-      }
-    ]
-  },
-
-  "pg_my_form_background": {
-    "type": "image",
-    "size": ["100% + 520px", "100% + 520px"],
-    "texture": "textures/ui/custom_back"
-  },
-
-  "pg_panel_main": {
-    "type": "stack_panel",
-    "orientation": "horizontal",
-    "size": ["100%", "100%"],
-
-    "anchor_from": "center",
-    "anchor_to": "center",
-
-    "collection_name": "form_buttons",
-
-    "controls": [
-      {
-        "saved_Locations_button@server_form.pg_custom_button": {
-          "$button_size": [100, 100],
-          "$padding": [163, 153],
-          "$icon_size": [90, 90],
-          "collection_index": 0
-        }
-      },
-
-      {
-        "right_stack": {
-          "type": "stack_panel",
-          "orientation": "vertical",
-          "size": ["100%", "100%"],
-          "anchor_from": "center",
-          "anchor_to": "center",
-
-          "collection_name": "form_buttons",
-          "controls": [
-            {
-              "set_coordinates_button@server_form.pg_custom_button": {
-                "$button_size": [130, 35],
-                "$padding": [96, 88],
-                "$icon_size": [20, 20],
-                "collection_index": 1
-              }
-            },
-            {
-              "bottom_right_stack": {
-                "type": "stack_panel",
-                "orientation": "horizontal",
-                "size": ["100%", "100%"],
-                "anchor_from": "center",
-                "anchor_to": "center",
-
-                "collection_name": "form_buttons",
-                "controls": [
-                  {
-                    "select_mode_button@server_form.pg_custom_button": {
-                      "$button_size": [65, 40],
-                      "$padding": [30, 0],
-                      "$icon_size": [28, 28],
-                      "collection_index": 2
-                    }
-                  },
-                  {
-                    "settings_button@server_form.pg_custom_button": {
-                      "$button_size": [65, 40],
-                      "$padding": [105, 0],
-                      "$icon_size": [20, 20],
-                      "collection_index": 3
-                    }
-                  },
-                  {
-                    "close_button@server_form.pg_custom_button": {
-                      "$button_size": [40, 40],
-                      "$padding": [180, -170],
-                      "$icon_size": [30, 30],
-                      "$show_text": false,
-                      "$offset_image": [0, 0],
-                      "$default_button_texture": "textures/ui/custom_bg_hover",
-                      "collection_index": 4
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    ]
-  },
-  "pg_custom_button": {
-    "$padding|default": [80, 80],
-    "$button_size|default": [64, 64],
-    "$icon_size|default": [32, 32],
-    "$show_text|default": true,
-    "$offset_image|default": [0, -5],
-    "$default_button_texture": "textures/ui/custom_bg",
-    "$hover_button_texture": "textures/ui/custom_bg_hover",
-    "$pressed_button_texture": "textures/ui/custom_bg_hover",
-    "type": "panel",
-    "size": "$padding",
-    "controls": [
-      {
-        "mainUi": {
-          "type": "panel",
-          "size": "$button_size",
-          "controls": [
-            {
-              "panel_name": {
-                "type": "panel",
-                "size": "$button_size",
-                "bindings": [
-                  {
-                    "binding_type": "view",
-                    "source_control_name": "image",
-                    "resolve_sibling_scope": true,
-                    "source_property_name": "(not (#texture = ''))",
-                    "target_property_name": "#visible"
-                  }
-                ],
-
-                "controls": [
-                  {
-                    "image": {
-                      "type": "image",
-                      "layer": 200,
-                      "size": "$icon_size",
-                      "offset": "$offset_image",
-                      "bindings": [
-                        {
-                          "binding_name": "#form_button_texture",
-                          "binding_name_override": "#texture",
-                          "binding_type": "collection",
-                          "binding_collection_name": "form_buttons"
-                        },
-                        {
-                          "binding_name": "#form_button_texture_file_system",
-                          "binding_name_override": "#texture_file_system",
-                          "binding_type": "collection",
-                          "binding_collection_name": "form_buttons"
-                        },
-                        {
-                          "binding_type": "view",
-                          "source_property_name": "(not ((#texture = '') or (#texture = 'loading')))",
-                          "target_property_name": "#visible"
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "text": {
-                      "type": "label",
-                      "text": "#form_button_text",
-                      "layer": 32,
-                      "color": [1, 1, 1],
-                      "offset": [0, -8],
-                      "anchor_from": "bottom_middle",
-                      "visible": "$show_text",
-                      "bindings": [
-                        {
-                          "binding_name": "#form_button_text",
-                          "binding_type": "collection",
-                          "binding_collection_name": "form_buttons"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            },
-            {
-              "form_button@common_buttons.light_text_button": {
-                "$pressed_button_name": "button.form_button_click",
-                "anchor_from": "top_left",
-                "anchor_to": "top_left",
-                "size": "$button_size",
-                "$button_text": "",
-                "$button_text_binding_type": "collection",
-                "$button_text_grid_collection_name": "form_buttons",
-                "$button_text_max_size": ["100%", 20],
-                "bindings": [
-                  {
-                    "binding_type": "collection_details",
-                    "binding_collection_name": "form_buttons"
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    ]
-  },
-  "saved_locations_panel": {
-    "type": "panel",
-    "size": ["100%", "100%"],
-    "controls": [
-      {
-        "scrolling_panel@common.scrolling_panel": {
-          "anchor_to": "top_left",
-          "anchor_from": "top_left",
-          "$show_background": false,
-          "size": ["100%", "100%"],
-          "$scrolling_content": "server_form.pg_custom_form_scrolling_content",
-          "$scroll_size": [5, "100% - 4px"],
-          "$scrolling_pane_size": ["100% - 4px", "100% - 2px"],
-          "$scrolling_pane_offset": [2, 0],
-          "$scroll_bar_right_padding_size": [0, 0]
-        }
-      }
-    ]
-  },
-  "pg_custom_form_scrolling_content": {
-    "type": "stack_panel",
-    "size": ["100% - 4px", "100%c"],
-    "orientation": "vertical",
-    "anchor_from": "top_left",
-    "anchor_to": "top_left",
-
-    "controls": [
-      {
-        "label_offset_panel": {
-          "type": "panel",
-          "size": ["100%", "100%c"],
-          "controls": [
-            {
-              "main_label": {
-                "type": "label",
-                "offset": [2, 2],
-                "color": "$main_header_text_color",
-                "size": ["100%", "default"],
-                "anchor_from": "top_left",
-                "anchor_to": "top_left",
-                "text": "#form_text"
-              }
-            }
-          ]
-        }
-      },
-      {
-        "padding": {
-          "type": "panel",
-          "size": ["100%", 4]
-        }
-      },
-      {
-        "wrapping_panel": {
-          "type": "panel",
-          "size": ["100%", "100%c"],
-          "controls": [
-            {
-              "pg_custom_form_dynamic_buttons_panel@server_form.pg_custom_form_dynamic_buttons_panel": {}
-            }
-          ]
-        }
-      }
-    ]
-  },
-  "pg_custom_form_dynamic_buttons_panel": {
-    "type": "stack_panel",
-    "size": ["100% - 4px", "100%c"],
-    "offset": [2, 0],
-    "orientation": "vertical",
-    "anchor_from": "top_middle",
-    "anchor_to": "top_middle",
-
-    "factory": {
-      "name": "buttons",
-      "control_ids": {
-        "button": "server_form.big_button",
-        "label": "@server_form.dynamic_label",
-        "header": "@server_form.dynamic_header",
-        "divider": "@settings_common.option_group_section_divider"
-      }
+    "namespace": "server_form",
+    
+    "third_party_server_screen@common.base_screen": {
+        "$screen_animations": [],
+        "$background_animations": [],
+        "force_render_below": true,
+        "low_frequency_rendering": true,
+        "render_only_when_topmost": false,
+        "close_on_player_hurt": true
     },
 
-    "collection_name": "form_buttons",
-    "bindings": [
-      {
-        "binding_name": "#form_button_contents",
-        "binding_name_override": "#collection_length"
-      }
-    ]
-  },
-  "big_button": {
-    "type": "panel",
-    "size": ["100%", 40],
-    "controls": [
-      {
-        "panel_name": {
-          "type": "panel",
-          "size": [34, "100%c"],
-          "bindings": [
+    "main_screen_content":{
+        "modifications":[
             {
-              "binding_type": "view",
-              "source_control_name": "image",
-              "resolve_sibling_scope": true,
-              "source_property_name": "(not (#texture = ''))",
-              "target_property_name": "#visible"
-            }
-          ],
-
-          "controls": [
-            {
-              "image": {
-                "type": "image",
-                "layer": 20,
-                "size": [32, 32],
-                "offset": [-76, 0],
-                "bindings": [
-                  {
-                    "binding_name": "#form_button_texture",
-                    "binding_name_override": "#texture",
-                    "binding_type": "collection",
-                    "binding_collection_name": "form_buttons"
-                  },
-                  {
-                    "binding_name": "#form_button_texture_file_system",
-                    "binding_name_override": "#texture_file_system",
-                    "binding_type": "collection",
-                    "binding_collection_name": "form_buttons"
-                  },
-                  {
-                    "binding_type": "view",
-                    "source_property_name": "(not ((#texture = '') or (#texture = 'loading')))",
-                    "target_property_name": "#visible"
-                  }
+                "array_name": "controls",
+                "operation": "insert_back",
+                "value": [
+                    {
+                        "pg_server_form_factory": {
+                            "type": "panel",
+                            "factory": {
+                                "name": "server_form_factory",
+                                "control_ids": {
+                                    "long_form": "@server_form.pg_form_panel"
+                                }
+                            }
+                        }
+                    }
                 ]
-              }
+
             }
-          ]
-        }
-      },
-      {
-        "form_button@common_buttons.light_text_button": {
-          "$pressed_button_name": "button.form_button_click",
-          "anchor_from": "top_left",
-          "anchor_to": "top_left",
-          "size": ["100%", 40],
-          "$button_text": "#form_button_text",
-          "$button_text_binding_type": "collection",
-          "$button_text_grid_collection_name": "form_buttons",
-          "$button_text_max_size": ["100%", 60],
-          "bindings": [
+        ]
+    },
+
+    "long_form": {
+        "modifications": [
             {
-              "binding_type": "collection_details",
-              "binding_collection_name": "form_buttons"
+                "array_name": "bindings",
+                "operation": "insert_back",
+                "value": [
+                    {
+                        "binding_name": "#title_text"
+                    },
+                    {
+                        "binding_type": "view",
+                        "source_property_name": "((#title_text - 'Portal Gun Menu') = #title_text)",
+                        "target_property_name": "#visible"
+                    }
+                ]
             }
-          ]
-        }
-      }
-    ]
-  }
+        ]
+    },
+
+    "pg_form_panel":{
+        "type": "panel",
+        "bindings": [
+            {
+                "binding_name": "#title_text"
+            }
+        ],
+        "controls":[
+            {
+                "standard_menu_form@standard_menu_form.menu": {
+                    "layer": 2,
+                    "bindings": [
+                        {
+                            "binding_type": "view",
+                            "source_control_name": "pg_form_panel",
+                            "source_property_name": "( not ((#title_text - 'Portal Gun Menu') = #title_text))",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
 }
