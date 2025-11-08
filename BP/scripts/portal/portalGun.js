@@ -409,6 +409,7 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
     dim.runCommand(`tickingarea add circle ${fixedLoc.x} ${fixedLoc.y} ${fixedLoc.z} 1 "${tickingAreaName}"`);
   } catch {
     removePortal(newPortal, false);
+    player.setActionBar("§c[!] Failed to create ticking area for portal.§r");
     return;
   }
   
@@ -424,9 +425,10 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
     if (safePlacement) {
       const safe = handleSafePlacement(dim, loc, fixedLoc, player, newPortal, tickingAreaName);
       if (!safe) {
-        removePortal(newPortal, false);
-        dim.runCommand(`tickingarea remove "${tickingAreaName}"`);
-        return;
+        // removePortal(newPortal, false);
+        // dim.runCommand(`tickingarea remove "${tickingAreaName}"`);
+        player.sendMessage("§c[!] Portal Gun was unable to find a safe placement location. Maybe too high or too low? Proceed with caution.§r");
+        // return;
       }
       Object.assign(fixedLoc, safe);
     }

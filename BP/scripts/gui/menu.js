@@ -45,11 +45,11 @@ export function openPortalGunMenu(player) {
     const customUi = new ActionFormData()
     .title("Portal Gun Menu")
     .body(`Charge: ${chargeBars}`)
-    .button("Saved Locations", "textures/ui/standard_pg_ui/saved_locations_ui")
-    .button("Set Coordinates", "textures/ui/standard_pg_ui/set_coordinates_ui")
-    .button("Select Mode", "textures/ui/standard_pg_ui/select_mode_ui")
-    .button("", "textures/ui/standard_pg_ui/settings_ui")
-    .button("", "textures/ui/standard_pg_ui/close_menu");
+    .button("Saved Locations", "textures/ui/pg_ui/menu/saved_locations_ui")
+    .button("Set Coordinates", "textures/ui/pg_ui/menu/set_coordinates_ui")
+    .button("Select Mode", "textures/ui/pg_ui/menu/select_mode_ui")
+    .button("", "textures/ui/pg_ui/menu/settings_ui")
+    .button("", "textures/ui/pg_ui/menu/close_menu");
 
     playPlayerAnimation(player);
     player.dimension.playSound("ram_portalgun:open_menu", player.location);
@@ -82,8 +82,8 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
     player.dimension.playSound("ram_portalgun:button_click", player.location);
     const form = new ActionFormData()
     .title("Saved Locations")
-    .button("Save Current Location", "textures/ui/save_ui")
-    .button("Delete Location", "textures/ui/delete_location_ui")
+    .button("Save Current Location", "textures/ui/pg_ui/saved_locations/save_ui")
+    .button("Delete Location", "textures/ui/pg_ui/saved_locations/delete_location_ui")
     .divider()
     
     // Retrieve saved locations from the Portal Gun's dynamic property
@@ -100,7 +100,7 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
     } else {
         form.label("No Locations Saved.")
     }
-    form.divider().button("Back to Menu", "textures/ui/back_button");
+    form.divider().button("Back to Menu", "textures/ui/pg_ui/back_button");
 
     form.show(player).then(response => {
         if (response.selection === 0) {
@@ -276,13 +276,13 @@ function openSelectModeForm(player, inventory, portalGunItem) {
     player.dimension.playSound("ram_portalgun:button_click", player.location);
     let form = new ActionFormData()
     .title("Select Mode")
-    .button("FIFO Mode", "textures/ui/fifo_mode_button")
-    .button("LIFO Mode", "textures/ui/lifo_mode_button")
-    .button("Multi-Pair Mode", "textures/ui/multipair_mode_button")
-    .button("Root Mode", "textures/ui/root_mode_button")
+    .button("FIFO Mode", "textures/ui/pg_ui/select_mode/fifo_mode_button")
+    .button("LIFO Mode", "textures/ui/pg_ui/select_mode/lifo_mode_button")
+    .button("Multi-Pair Mode", "textures/ui/pg_ui/select_mode/multipair_mode_button")
+    .button("Root Mode", "textures/ui/pg_ui/select_mode/root_mode_button")
     .divider()
     .label("Modes explained:\n\n§eFIFO§r - First In First Out:\nAfter having 2 portals active, each new portal will replace the oldest one.\n\n§eLIFO§r - Last In First Out:\nAfter having 2 portals active, each new portal will replace the newest one.\n\n§eMulti-Pair§r:\nAllows you to have multiple pairs of portals active at the same time. You can enter any portal and come out from its pair.\n\n§eRoot§r:\nShoots a portal that acts as an anchor. You can shoot multiple portals, but when you enter one, you will always come out from the root portal. Entering the root portal will take you back to the last portal you shooted.")
-    .button("Back to Menu", "textures/ui/back_button");
+    .button("Back to Menu", "textures/ui/pg_ui/back_button");
 
     form.show(player).then(response => {
         switch (response.selection) {
@@ -324,16 +324,16 @@ function openSettingsForm(player, inventory, portalGunItem) {
     player.dimension.playSound("ram_portalgun:button_click", player.location);
     let form = new ActionFormData()
     .title("Portal Gun Settings")
-    .button("Behavior Settings", "textures/ui/toggle")
+    .button("Behavior Settings", "textures/ui/pg_ui/settings/toggle")
     .divider()
-    .button("History", "textures/ui/history")
-    .button("Dismount Portal Gun", "textures/ui/dismount_portal_gun")
-    .button("Close All Portals", "textures/ui/close_all_portals")
-    .button("Reset Portal Gun", "textures/ui/reset_portal_gun")
-    .button("How to Use", "textures/ui/question_mark")
-    .button("Debug Menu", "textures/ui/debug")
+    .button("History", "textures/ui/pg_ui/settings/history")
+    .button("Dismount Portal Gun", "textures/ui/pg_ui/settings/dismount_portal_gun")
+    .button("Close All Portals", "textures/ui/pg_ui/settings/close_all_portals")
+    .button("Reset Portal Gun", "textures/ui/pg_ui/settings/reset_portal_gun")
+    .button("How to Use", "textures/ui/pg_ui/settings/question_mark")
+    .button("Terminal", "textures/ui/pg_ui/settings/terminal")
     .divider()
-    .button("Back to Menu", "textures/ui/back_button")
+    .button("Back to Menu", "textures/ui/pg_ui/back_button")
 
     form.show(player).then(response => {
         switch (response.selection) {
@@ -352,13 +352,12 @@ function openSettingsForm(player, inventory, portalGunItem) {
                 openResetForm(player, portalGunItem, inventory); 
                 break;
             case 5: openHowToUseForm(player, inventory, portalGunItem); break;
-            case 6: openDebugMenu(player); break;
+            case 6: openTerminalForm(player, inventory, portalGunItem); break;
             case 7: openPortalGunMenu(player); break;
             default: stopPlayerAnimation(player);
         }
     })
 }
-
 
 /**
  * Opens behavior settings form for the Portal Gun.
@@ -450,7 +449,7 @@ function openHistoryForm(player, inventory, portalGunItem){
     .title("History")
     .body("Here you can view your §eportal gun's teleportation history§r.\nSelect a location below to use it.\n\n§eLimit: 30 locations§r")
     .divider()
-    .button("Back to Settings", "textures/ui/back_button")
+    .button("Back to Settings", "textures/ui/pg_ui/back_button")
     .divider();
 
     if(history.length == 0){
@@ -537,7 +536,7 @@ function openHowToUseForm(player, inventory, portalGunItem){
     .body("\n:mouse_right_button: - Interact\n\n:mouse_left_button: - Attack\n\n:tip_virtual_button_sneak: - Sneak (Shift)\n\n")
     .divider()
     .label("§eShoot Portals§r     :mouse_right_button:\n\n§eFast Change Location§r     :mouse_left_button: while aiming at a block\n\n§eOpen Menu§r     :tip_virtual_button_sneak: + :mouse_right_button:\n\n§eRemove a Portal§r     :tip_virtual_button_sneak: + :mouse_left_button: while aiming at it\n\n")
-    .button("Back to Menu", "textures/ui/back_button");
+    .button("Back to Menu", "textures/ui/pg_ui/back_button");
     form.show(player).then(response => {
         if(response.selection == 0){
             openSettingsForm(player, inventory, portalGunItem);
@@ -548,16 +547,99 @@ function openHowToUseForm(player, inventory, portalGunItem){
 }
 
 /**
- * Opens the debug menu for the Portal Gun.
+ * Command registry for the terminal.
+ * Each command name maps to a handler function.
+ */
+const terminalCommands = {
+    "gunconfig": (player, inventory, portalGunItem) => {
+        const debug = getGunConfig(player, inventory, portalGunItem);
+        openTerminalForm(player, inventory, portalGunItem, debug);
+    },
+
+    "help": (player, inventory, portalGunItem) => {
+        const helpText = `Available commands:
+    - gunconfig : Show Portal Gun info
+    - help : Show this list
+    - clear : Clear the terminal output
+    - coords : Show current player coordinates
+    - exit : Exit the terminal`;
+        openTerminalForm(player, inventory, portalGunItem, helpText);
+    },
+
+    "clear": (player, inventory, portalGunItem) => {
+        openTerminalForm(player, inventory, portalGunItem, "");
+    },
+
+    "coords": (player, inventory, portalGunItem) => {
+        const { x, y, z } = player.location;
+        const dimensionId = player.dimension.id;
+        const { dimName, color } = getDimensionLabel(dimensionId);
+        const coordsText = `Current Coordinates:
+X: ${Math.floor(x.toFixed(2))}
+Y: ${Math.floor(y.toFixed(2))}
+Z: ${Math.floor(z.toFixed(2))}
+Dimension: ${color}${dimName}§r`;
+        openTerminalForm(player, inventory, portalGunItem, coordsText);
+    },
+
+    "exit": (player, inventory, portalGunItem) => {
+        openSettingsForm(player, inventory, portalGunItem);
+    }
+};
+
+/**
+ * Opens the terminal command input form.
+ * Executes matching commands from the command registry.
+ *
+ * @param {Player} player
+ * @param {EntityInventoryComponent} inventory
+ * @param {ItemStack} portalGunItem
+ * @param {string|null} response - Optional response message to display
+ */
+function openTerminalForm(player, inventory, portalGunItem, response = null) {
+  playPlayerAnimation(player);
+  player.dimension.playSound("ram_portalgun:button_click", player.location);
+
+  let form = new ModalFormData()
+    .title("Terminal")
+    .textField("Enter Command", "")
+    .divider();
+
+  if (response) {
+    form.label(`${response}§r`);
+  }
+
+  form.submitButton("Execute");
+  form.show(player).then(response => {
+    if (response.formValues === undefined) {
+      stopPlayerAnimation(player);
+      return;
+    }
+
+    const command = response.formValues[0]?.toLowerCase().trim();
+    if (!command) {
+      openSettingsForm(player, inventory, portalGunItem);
+      return;
+    }
+
+    const handler = terminalCommands[command];
+    if (handler) {
+      handler(player, inventory, portalGunItem);
+    } else {
+      openTerminalForm(player, inventory, portalGunItem, `§cError: Unknown command '${command}'.\n§eType 'help' for a list of commands.§r`);
+      player.dimension.playSound("ram_portalgun:error_sound", player.location);
+    }
+  });
+}
+
+/**
+ * Returns debug info for the Portal Gun.
  * Displays all internal properties for troubleshooting.
  *
  * @param {Player} player
+ * @returns {string} Debug information text
  */
-function openDebugMenu(player){
-    playPlayerAnimation(player);
-    player.dimension.playSound("ram_portalgun:button_click", player.location);
-    const inventory = player.getComponent("inventory");
-    const portalGunItem = inventory.container.getItem(player.selectedSlotIndex);
+function getGunConfig(player, inventory, portalGunItem){
     const portalListJson = portalGunItem.getDynamicProperty(portalGunDP.portalList);
     const portalList = portalListJson ? JSON.parse(portalListJson) : [];
     const id = portalGunItem.getDynamicProperty(portalGunDP.id);
@@ -572,30 +654,18 @@ function openDebugMenu(player){
     const savedLocationsJson = portalGunItem.getDynamicProperty(portalGunDP.savedLocations);
     const savedLocations = savedLocationsJson ? JSON.parse(savedLocationsJson) : [];
 
-    let form = new ActionFormData()
-    .title("Debug Menu")
-    .body(`
-        ======== DEBUG =========\n
-        ID: ${id}\n
-        Last User: ${lastUser}\n
-        Mode: ${mode}\n
-        Charge: ${charge}%%\n
-        Auto Close: ${autoClose}\n
-        High Pressure: ${highPressure}\n
-        Safe Placement: ${safePlacement}\n
-        Scale: ${scale}x\n
-        Quantity of Portals Active: ${quantPortalsActive}\n
-        Quantity of Saved Locations: ${savedLocations.length}\n
-        ========================\n
-        `)
-    .button("Back to Settings", "textures/ui/back_button");
-    form.show(player).then(response => {
-        if(response.selection == 0){
-            openSettingsForm(player, inventory, portalGunItem);
-        } else {
-            return stopPlayerAnimation(player);
-        }
-    })
+    return `======== GUN CONFIG ========
+Portal Gun ID: ${id}
+Last User: ${lastUser}
+Mode: ${mode}
+Charge: ${charge}%%
+Auto Close: ${autoClose}
+High Pressure: ${highPressure}
+Safe Placement: ${safePlacement}
+Portal Scale: ${scale}x
+Quantity of Portals Active: ${quantPortalsActive}
+Quantity of Saved Locations: ${savedLocations.length}
+============================`;
 }
 
 /**

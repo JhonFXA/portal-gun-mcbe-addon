@@ -179,7 +179,7 @@
           ],
           "layer": 2,
           "type": "image",
-          "texture": "textures/ui/standard_pg_ui/custom_back",
+          "texture": "textures/ui/pg_ui/menu/custom_back",
           "anchor_from": "center",
           "anchor_to": "center",
           "bindings": [],
