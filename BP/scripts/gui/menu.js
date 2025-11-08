@@ -34,12 +34,22 @@ export function openPortalGunMenu(player) {
     const currentMode = portalGunItem.getDynamicProperty(portalGunDP.mode);
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge)??0;
 
-    // Visual charge indicator (0–5 bars)
     const totalBars = 10;
-    const filledBars = Math.ceil(charge / 10); // 0-5
+    const filledBars = Math.ceil(charge / 10);
+    const remainder = charge % 10;
+    const isLowPartial = remainder > 0 && remainder < 5;
+
     let chargeBars = "";
     for (let i = 0; i < totalBars; i++) {
-        chargeBars += i < filledBars ? "§a|§r" : "§0|§r";
+        if (i < filledBars - 1) {
+            chargeBars += "§a|§r";
+        } else if (i === filledBars - 1 && isLowPartial) {
+            chargeBars += "§7|§r";
+        } else if (i < filledBars) {
+            chargeBars += "§a|§r";
+        } else {
+            chargeBars += "§0|§r";
+        }
     }
 
     const customUi = new ActionFormData()
@@ -91,6 +101,7 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
     const savedLocations = locationsJson ? JSON.parse(locationsJson) : [];
 
     if(savedLocations.length > 0){
+        form.button("Search Location").divider();
         form.label(`Locations (${savedLocations.length}):`);
         savedLocations.forEach(location => {
             const { dimensionId, name, x, y, z } = location;
@@ -107,10 +118,12 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
             openSaveCurrentLocationForm(player, inventory, portalGunItem, savedLocations);
         } else if (response.selection === 1) {
             openDeleteLocationForm(player, inventory, portalGunItem, savedLocations);
-        } else if (response.selection === savedLocations.length + 2){
+        } else if (response.selection === 2){
+            openSearchForm(player, inventory, portalGunItem, savedLocations);
+        } else if (response.selection === savedLocations.length + 3){
             openPortalGunMenu(player);
         } else if (response.selection !== undefined){
-            const selectedLocation = savedLocations[response.selection - 2];
+            const selectedLocation = savedLocations[response.selection - 3];
             portalGunItem.setDynamicProperty(portalGunDP.customLocation, JSON.stringify(selectedLocation));
             portalGunItem.setDynamicProperty(portalGunDP.mode, "CUSTOM")
             inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
@@ -123,6 +136,72 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
             stopPlayerAnimation(player);
         }
     })
+}
+
+function openSearchForm(player, inventory, portalGunItem, savedLocations, error = null){
+    playPlayerAnimation(player);
+    player.dimension.playSound("ram_portalgun:button_click", player.location);
+    const form = new ModalFormData()
+    .title("Search Location")
+    .textField("Enter Location Name", "")
+
+    if(error){
+        form.label(`§c${error}§r`);
+    }
+    form.show(player).then(response => {
+        if(response.formValues == undefined){
+            return stopPlayerAnimation(player);
+        }
+        else if (response.formValues[0]){
+            const searchTerm = response.formValues[0].toLowerCase().trim();
+            const filteredLocations = savedLocations.filter(location => location.name.toLowerCase().includes(searchTerm));
+            if(filteredLocations.length === 0){
+                openSearchForm(player, inventory, portalGunItem, savedLocations, `No locations found matching '${searchTerm}'.`);
+                player.dimension.playSound("ram_portalgun:error_sound", player.location);
+                return;
+            }
+            openFilteredLocationsForm(player, inventory, portalGunItem, filteredLocations, response.formValues[0]);
+        } else {
+            stopPlayerAnimation(player);
+        }
+    })
+}
+
+function openFilteredLocationsForm(player, inventory, portalGunItem, filteredLocations, searchTerm){
+    playPlayerAnimation(player);
+    player.dimension.playSound("ram_portalgun:button_click", player.location);
+    const lowerSearch = searchTerm.toLowerCase().trim();
+    const resultsForm = new ActionFormData()
+    .title("Search Results")
+    .body(`Locations matching '${searchTerm}':`)
+    .divider();
+    filteredLocations.forEach(location => {
+        const { dimensionId, name, x, y, z } = location;
+        const { dimName, color } = getDimensionLabel(dimensionId);
+
+        const regex = new RegExp(`(${lowerSearch})`, "gi");
+        const highlightedName = name.replace(regex, "§4$1§0");
+
+        resultsForm.button(`§0${highlightedName}§r\nX: ${x}, Y: ${y}, Z: ${z}\nDimension: ${color}${dimName}§r`);
+    });
+    resultsForm.divider().button("Back to Saved Locations", "textures/ui/pg_ui/back_button");
+    resultsForm.show(player).then(resultsResponse => {
+        if (resultsResponse.selection === filteredLocations.length) {
+            openSavedLocationsForm(player, inventory, portalGunItem);
+        } else if (resultsResponse.selection !== undefined) {
+            const selectedLocation = filteredLocations[resultsResponse.selection];
+            portalGunItem.setDynamicProperty(portalGunDP.customLocation, JSON.stringify(selectedLocation));
+            portalGunItem.setDynamicProperty(portalGunDP.mode, "CUSTOM")
+            inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+            player.onScreenDisplay.setActionBar(
+                `§aSet to location: ${selectedLocation.name} (§eX:${selectedLocation.x} Y:${selectedLocation.y} Z:${selectedLocation.z}§r)§r`
+            );
+            player.dimension.playSound("ram_portalgun:selection", player.location);
+            stopPlayerAnimation(player);
+        } else {
+            stopPlayerAnimation(player);
+        }
+    });
 }
 
 /**
