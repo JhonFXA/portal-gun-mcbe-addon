@@ -75,6 +75,6 @@ export const PORTAL_MODES = {
   portalGunDP["highPressure"] = "ram_portalgun:high_pressure";
   portalGunDP["safePlacement"] = "ram_portalgun:safe_placement";
   portalGunDP["charge"] = "ram_portalgun:charge";
-  portalGunDP["scale"] = "ram_portalgun:portal_scale"
-
+  portalGunDP["scale"] = "ram_portalgun:portal_scale";
+  portalGunDP["fastLocationChange"] = "ram_portalgun:fast_location_change";
 })(portalGunDP || (portalGunDP = {}));

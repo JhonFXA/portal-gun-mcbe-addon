@@ -17,7 +17,6 @@
 				},
 				"gun_shoot": {
 					"animations": [
-						{"first_person_hold": "c.is_first_person"},
 						{"first_person_shoot": "c.is_first_person"},
 						{"third_person_hold": "!c.is_first_person"}
 					],

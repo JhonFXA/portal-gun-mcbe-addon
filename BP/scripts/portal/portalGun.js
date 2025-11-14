@@ -81,8 +81,9 @@ function initializePortalGun(portalGunItem) {
   portalGunItem.setDynamicProperty(portalGunDP.id, portalGunId);
   portalGunItem.setDynamicProperty(portalGunDP.highPressure, false);
   portalGunItem.setDynamicProperty(portalGunDP.autoClose, false);
-  portalGunItem.setDynamicProperty(portalGunDP.safePlacement, true);
+  portalGunItem.setDynamicProperty(portalGunDP.safePlacement, false);
   portalGunItem.setDynamicProperty(portalGunDP.scale, 1);
+  portalGunItem.setDynamicProperty(portalGunDP.fastLocationChange, true);
   portalGunItem.setDynamicProperty(portalGunDP.portalList, JSON.stringify([]));
   return portalGunId;
 }
@@ -144,7 +145,7 @@ export function usePortalGun(player, portalGunItem) {
     const cost = scale
     const gunObject = portalGuns.find((gun) => gun.id === portalGunItem.typeId);
 
-    player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot", {blendOutTime: 0.5});
+    player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot", {blendOutTime: 1, stopExpression: "q.is_first_person"});
 
     if (charge > 0) {
       portalGunItem = gunObject.decreaseCharge(

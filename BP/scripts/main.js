@@ -77,10 +77,12 @@ world.beforeEvents.playerBreakBlock.subscribe((event) => {
     event.player.selectedSlotIndex
   );
 
+  if(!ID.portalGunsIds.includes(selectedItem?.typeId) && !ID.hair.includes(selectedItem?.typeId)) return;
   const gamemode = event.player.getGameMode();
-  if (selectedItem && (ID.portalGunsIds.includes(selectedItem.typeId) || ID.hair.includes(selectedItem.typeId)) && gamemode == "Creative")
+  if (selectedItem &&  gamemode == "Creative")
     event.cancel = true;
 });
+
 
 //==============================================================================================================================
 
@@ -204,12 +206,13 @@ world.afterEvents.itemUse.subscribe((event) => {
 world.afterEvents.entityHitBlock.subscribe((event) => {
   if (event.damagingEntity.typeId !== "minecraft:player") return;
   const player = event.damagingEntity;
-  if (player.isSneaking) return;
 
   const inventory = player.getComponent("inventory");
   const item = inventory?.container.getItem(player.selectedSlotIndex);
   if (!item) return;
   if (!ID.portalGunsIds.includes(item.typeId)) return;
+  const fastLocationChange = item.getDynamicProperty(portalGunDP.fastLocationChange);
+  if (!fastLocationChange) return;
 
   let savedLocationsJson = item.getDynamicProperty(portalGunDP.savedLocations);
   let savedLocations = savedLocationsJson ? JSON.parse(savedLocationsJson) : [];
@@ -223,7 +226,11 @@ world.afterEvents.entityHitBlock.subscribe((event) => {
   if (mode !== PORTAL_MODES.CUSTOM) {
     item.setDynamicProperty(portalGunDP.mode, PORTAL_MODES.CUSTOM);
   } else {
-    currentIndex = (currentIndex + 1) % savedLocations.length;
+    if(player.isSneaking) {
+      currentIndex = (currentIndex - 1 + savedLocations.length) % savedLocations.length;
+    } else {
+      currentIndex = (currentIndex + 1) % savedLocations.length;
+    }
   }
 
   item.setDynamicProperty(

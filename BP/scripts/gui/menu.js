@@ -67,7 +67,7 @@ export function openPortalGunMenu(player) {
     customUi.show(player).then(response => {
        switch (response.selection) {
             case 0: openSavedLocationsForm(player, inventory, portalGunItem); break;
-            case 1: openSetCoordinatesForm(player, inventory, portalGunItem); break;
+            case 1: openDimensionSelectForm(player, inventory, portalGunItem); break;
             case 2: openSelectModeForm(player, inventory, portalGunItem); break;
             case 3: openSettingsForm(player, inventory, portalGunItem); break;
             default: {
@@ -101,12 +101,12 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
     const savedLocations = locationsJson ? JSON.parse(locationsJson) : [];
 
     if(savedLocations.length > 0){
-        form.button("Search Location").divider();
+        form.button("Search Location", "textures/ui/pg_ui/saved_locations/search_ui").divider();
         form.label(`Locations (${savedLocations.length}):`);
         savedLocations.forEach(location => {
             const { dimensionId, name, x, y, z } = location;
             const { dimName, color } = getDimensionLabel(dimensionId);
-            form.button(`§0${name}§r\nX: ${x}, Y: ${y}, Z: ${z}\nDimension: ${color}${dimName}§r`);
+            form.button(`§0${name}§r\nX: ${x}, Y: ${y}, Z: ${z}`, `textures/ui/pg_ui/saved_locations/${dimName}`);
         });
     } else {
         form.label("No Locations Saved.")
@@ -138,6 +138,14 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
     })
 }
 
+/**
+ * Opens a search form to find saved locations by name.
+ * @param {Player} player 
+ * @param {EntityInventoryComponent} inventory 
+ * @param {ItemStack} portalGunItem 
+ * @param {Array} savedLocations 
+ * @param {string} error
+ */
 function openSearchForm(player, inventory, portalGunItem, savedLocations, error = null){
     playPlayerAnimation(player);
     player.dimension.playSound("ram_portalgun:button_click", player.location);
@@ -167,6 +175,14 @@ function openSearchForm(player, inventory, portalGunItem, savedLocations, error 
     })
 }
 
+/** *
+* Opens a form displaying filtered saved locations based on a search term.
+* @param {Player} player
+* @param {EntityInventoryComponent} inventory
+* @param {ItemStack} portalGunItem
+* @param {Array} filteredLocations
+* @param {string} searchTerm
+*/
 function openFilteredLocationsForm(player, inventory, portalGunItem, filteredLocations, searchTerm){
     playPlayerAnimation(player);
     player.dimension.playSound("ram_portalgun:button_click", player.location);
@@ -182,7 +198,7 @@ function openFilteredLocationsForm(player, inventory, portalGunItem, filteredLoc
         const regex = new RegExp(`(${lowerSearch})`, "gi");
         const highlightedName = name.replace(regex, "§4$1§0");
 
-        resultsForm.button(`§0${highlightedName}§r\nX: ${x}, Y: ${y}, Z: ${z}\nDimension: ${color}${dimName}§r`);
+        resultsForm.button(`§0${highlightedName}§r\nX: ${x}, Y: ${y}, Z: ${z}`, `textures/ui/pg_ui/saved_locations/${dimName}`);
     });
     resultsForm.divider().button("Back to Saved Locations", "textures/ui/pg_ui/back_button");
     resultsForm.show(player).then(resultsResponse => {
@@ -271,10 +287,10 @@ function openDeleteLocationForm(player, inventory, portalGunItem, savedLocations
     savedLocations.forEach((location) => {
         const { dimensionId, name, x, y, z } = location;
         const { dimName, color } = getDimensionLabel(dimensionId);
-        form.button(`§0${name}§r\nX: ${x}, Y: ${y}, Z: ${z}\nDimension: ${color}${dimName}§r`);
+        form.button(`§0${name}§r\nX: ${x}, Y: ${y}, Z: ${z}`, `textures/ui/pg_ui/saved_locations/${dimName}`);
     });
     form.divider()
-    .button("Cancel");
+    .button("Cancel", "textures/ui/pg_ui/back_button");
 
     form.show(player).then(response => {
         if(response.selection == savedLocations.length){
@@ -294,6 +310,44 @@ function openDeleteLocationForm(player, inventory, portalGunItem, savedLocations
 }
 
 /**
+ *  Opens the dimension selection form for setting coordinates.
+ * @param {Player} player
+ * @param {EntityInventoryComponent} inventory
+ * @param {ItemStack} portalGunItem
+ */
+function openDimensionSelectForm(player, inventory, portalGunItem){
+    playPlayerAnimation(player);
+    player.dimension.playSound("ram_portalgun:button_click", player.location);
+    let form = new ActionFormData()
+    .title("Select Dimension")
+    .button("Overworld", "textures/ui/pg_ui/saved_locations/Overworld")
+    .button("Nether", "textures/ui/pg_ui/saved_locations/Nether")
+    .button("The End", "textures/ui/pg_ui/saved_locations/The End")
+    .divider()
+    .button("Cancel", "textures/ui/pg_ui/back_button");
+
+    form.show(player).then(response => {
+        switch (response.selection) {
+            case 0:
+                openSetCoordinatesForm(player, inventory, portalGunItem, "minecraft:overworld");
+                break;
+            case 1:
+                openSetCoordinatesForm(player, inventory, portalGunItem, "minecraft:nether");
+                break;
+            case 2:
+                openSetCoordinatesForm(player, inventory, portalGunItem, "minecraft:the_end");
+                break;
+            case 3:
+                openPortalGunMenu(player);
+                break;
+            default:
+                stopPlayerAnimation(player);
+        }
+    });
+}
+
+
+/**
  * Opens the form to set custom coordinates for the Portal Gun.
  * Allows the player to input X, Y, Z, and select the dimension.
  *
@@ -301,16 +355,14 @@ function openDeleteLocationForm(player, inventory, portalGunItem, savedLocations
  * @param {EntityInventoryComponent} inventory
  * @param {ItemStack} portalGunItem
  */
-function openSetCoordinatesForm(player, inventory, portalGunItem) {
+function openSetCoordinatesForm(player, inventory, portalGunItem, dimensionId = "minecraft:overworld") {
     playPlayerAnimation(player);
     player.dimension.playSound("ram_portalgun:button_click", player.location);
     let form = new ModalFormData()
     .title("Set Coordinates")
-    .textField("X:", "")
-    .textField("Y:", "")
-    .textField("Z:", "")
-    .divider()
-    .dropdown("Dimension", ["Overworld", "Nether", "The End"],{ defaultValueIndex: 0 })
+    .textField("", "X")
+    .textField("", "Y")
+    .textField("", "Z")
 
     form.show(player).then(response => {
         if(response.formValues == undefined){
@@ -327,7 +379,7 @@ function openSetCoordinatesForm(player, inventory, portalGunItem) {
                 x: parseInt(response.formValues[0]),
                 y: parseInt(response.formValues[1]),
                 z: parseInt(response.formValues[2]),
-                dimensionId: response.formValues[4] == 0? "minecraft:overworld" : response.formValues[4] == 1? "minecraft:nether" : "minecraft:the_end"
+                dimensionId: dimensionId
             }
 
             portalGunItem.setDynamicProperty(portalGunDP.mode, "CUSTOM");
@@ -470,6 +522,10 @@ function openBehaviorSettingsForm(player, portalGunItem, inventory){
         defaultValue: scale == 0.5? 1 : scale == 1? 2 : scale == 1.5? 3 : scale == 2? 4 : 2,
         valueStep: 1
     })
+    .toggle("Fast Location Change", {
+        defaultValue: portalGunItem.getDynamicProperty(portalGunDP.fastLocationChange)? true: false,
+        tooltip: "If enabled, allows quick switching\nbetween saved locations\nby hitting blocks with the portal gun."
+    })
     .divider()
     .submitButton("Save Changes");
 
@@ -481,6 +537,7 @@ function openBehaviorSettingsForm(player, portalGunItem, inventory){
             portalGunItem.setDynamicProperty(portalGunDP.autoClose, response.formValues[0]);
             portalGunItem.setDynamicProperty(portalGunDP.highPressure, response.formValues[1]);
             portalGunItem.setDynamicProperty(portalGunDP.safePlacement, response.formValues[2]);
+            portalGunItem.setDynamicProperty(portalGunDP.fastLocationChange, response.formValues[4]);
             switch(response.formValues[3]){
                 case 1:
                     portalGunItem.setDynamicProperty(portalGunDP.scale, 0.5);
@@ -506,7 +563,6 @@ function openBehaviorSettingsForm(player, portalGunItem, inventory){
             player.dimension.playSound("ram_portalgun:selection", player.location);
             stopPlayerAnimation(player);
         }
-
     })
 }
 
@@ -536,7 +592,7 @@ function openHistoryForm(player, inventory, portalGunItem){
     } else history.forEach( location => {
         const { dimensionId, name, x, y, z } = location;
         const { dimName, color } = getDimensionLabel(dimensionId);
-        form.button(`§0${name}§r\nX:${x}, Y:${y}, Z:${z}\nDimension: ${color}${dimName}§r`);
+        form.button(`§0${name}§r\nX:${x}, Y:${y}, Z:${z}`, `textures/ui/pg_ui/saved_locations/${dimName}`);
     });
 
     form.show(player).then(response => {
@@ -728,6 +784,7 @@ function getGunConfig(player, inventory, portalGunItem){
     const highPressure = portalGunItem.getDynamicProperty(portalGunDP.highPressure)? true: false;
     const safePlacement = portalGunItem.getDynamicProperty(portalGunDP.safePlacement)? true: false;
     const scale = portalGunItem.getDynamicProperty(portalGunDP.scale);
+    const fastLocationChange = portalGunItem.getDynamicProperty(portalGunDP.fastLocationChange);
     const quantPortalsActive = portalList.length;
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge)??0;
     const savedLocationsJson = portalGunItem.getDynamicProperty(portalGunDP.savedLocations);
@@ -742,6 +799,7 @@ Auto Close: ${autoClose}
 High Pressure: ${highPressure}
 Safe Placement: ${safePlacement}
 Portal Scale: ${scale}x
+Fast Location Change: ${fastLocationChange}
 Quantity of Portals Active: ${quantPortalsActive}
 Quantity of Saved Locations: ${savedLocations.length}
 ============================`;

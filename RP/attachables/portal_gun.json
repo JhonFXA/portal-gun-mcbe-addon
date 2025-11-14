@@ -22,6 +22,7 @@
                 "first_person_hold": "animation.portal_gun.first_person_hold",
                 "third_person_hold": "animation.portal_gun.third_person_hold",
                 "first_person_shoot": "animation.portal_gun.first_person_shoot",
+                "first_person_menu": "animation.portal_gun.first_person_menu",
                 "core_animation": "animation.portal_gun.core_animation"
             },
             "scripts": {

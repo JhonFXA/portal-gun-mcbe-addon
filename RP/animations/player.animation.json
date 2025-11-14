@@ -18,10 +18,14 @@
 						"0.1333": [0.06746, 13.62803, 0],
 						"0.2": [0.05534, 24.37197, 0],
 						"0.2333": [0.03865, 29.39714, 0],
-						"0.2667": [0.01998, 33.69062, 0],
-						"0.3": [0.00545, 36.77575, 0],
-						"0.3333": [0, 38, 0],
-						"0.3667": [0, 99999, 0]
+						"0.2667": [0.01998, 38.69062, 0],
+						"0.3": [0.00545, 48.77575, 0],
+						"0.3333": [0, 54, 0],
+						"0.3667": [0, 60, 0]
+					},
+					"scale": {
+						"0.2333": [1, 1, 1],
+						"0.3667": [0, 0, 0]
 					}
 				},
 				"waist": {
@@ -150,9 +154,6 @@
 						"0.3333": [0, -35.90547, 0],
 						"0.3667": [0, -99999, 0]
 					}
-				},
-				"head": {
-					"rotation": ["query.target_x_rotation", "query.target_y_rotation", 0]
 				},
 				"rightArm": {
 					"rotation": {
@@ -327,32 +328,67 @@
 				}
 			}
 		},
+		"animation.ram_portalgun.player.portal_in_back": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 1.0833,
+			"bones": {
+				"root": {
+					"relative_to": {
+						"rotation": "entity"
+					},
+					"rotation": ["-math.sin(query.anim_time * 360) * 25", 0, 0],
+					"position": {
+						"0.0": {
+							"post": [0, 0, 0],
+							"lerp_mode": "catmullrom"
+						},
+						"0.4": {
+							"post": [0, 0, 23],
+							"lerp_mode": "catmullrom"
+						}
+					}
+				},
+				"rightArm": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.2667": [-107.75313, 9.53274, -3.03513]
+					}
+				},
+				"leftArm": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.2667": [-113.21088, -13.83447, 5.85463]
+					}
+				},
+				"leftLeg": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.2667": [-44.75386, -5.29571, -5.31847]
+					}
+				},
+				"rightLeg": {
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.2667": [-42.39121, 3.37562, 3.69066]
+					}
+				}
+			}
+		},
 		"animation.ram_portalgun.player.portal_out_up": {
 			"animation_length": 0.4583,
 			"override_previous_animation": true,
 			"bones": {
 				"root": {
 					"position": {
-						"0.0": [0, 30, 0],
+						"0.0": [0, 42, 0],
 						"0.2083": [0, 0, 0]
+					},
+					"scale": {
+						"0.0": [0, 0, 0],
+						"0.0833": [1, 1, 1]
 					}
 				},
 				"head": {
-					"rotation": {
-						"0.0": {
-							"post": [37.5, 0, 0],
-							"lerp_mode": "catmullrom"
-						},
-						"0.2083": {
-							"post": [30.67, 0, 0],
-							"lerp_mode": "catmullrom"
-						},
-						"0.25": [28.8329, 0, 0],
-						"0.2917": [23.35717, 0, 0],
-						"0.375": [7.31283, 0, 0],
-						"0.4167": [1.8371, 0, 0],
-						"0.4583": ["query.target_x_rotation", "query.target_y_rotation", 0]
-					},
 					"position": {
 						"0.0": {
 							"post": [0, 0, 0],
@@ -484,7 +520,6 @@
 					}
 				},
 				"head": {
-					"rotation": ["query.target_x_rotation", "query.target_y_rotation", 0],
 					"position": {
 						"0.0": [0, 0, 0],
 						"0.2": [0, 0, -2],
@@ -608,7 +643,6 @@
 		},
 		"animation.ram_portalgun.player.portal_out_front": {
 			"animation_length": 0.6,
-			"override_previous_animation": true,
 			"bones": {
 				"root": {
 					"position": {
@@ -616,44 +650,6 @@
 						"0.1667": [0, 6, 14],
 						"0.3": [0, 0, 12],
 						"0.6": [0, 0, 0]
-					}
-				},
-				"head": {
-					"rotation": {
-						"0.3333": ["21.0273 + query.target_x_rotation", "4.4876 + query.target_y_rotation", -0.57957],
-						"0.5667": ["query.target_x_rotation", "query.target_y_rotation", 0]
-					}
-				},
-				"rightArm": {
-					"rotation": {
-						"0.0": {
-							"post": [44, -6, 28],
-							"lerp_mode": "catmullrom"
-						},
-						"0.4333": {
-							"post": [-28.273, -2.37211, 19.22556],
-							"lerp_mode": "catmullrom"
-						},
-						"0.6": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						}
-					}
-				},
-				"leftArm": {
-					"rotation": {
-						"0.0": {
-							"post": [32, 20, -30],
-							"lerp_mode": "catmullrom"
-						},
-						"0.4333": {
-							"post": [-43.17464, 7.86837, -20.48714],
-							"lerp_mode": "catmullrom"
-						},
-						"0.6": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						}
 					}
 				}
 			}
@@ -795,49 +791,6 @@
 				"body": {
 					"rotation": [-7.5, 0, 0],
 					"position": [0, 0, 1.5]
-				}
-			}
-		},
-		"animation.ram_portalgun.player.portal_in_back": {
-			"loop": "hold_on_last_frame",
-			"animation_length": 0.4,
-			"bones": {
-				"root": {
-					"rotation": [0, "-query.head_y_rotation", 0],
-					"position": {
-						"0.0": {
-							"post": [0, 0, 0],
-							"lerp_mode": "catmullrom"
-						},
-						"0.4": {
-							"post": [0, 0, 23],
-							"lerp_mode": "catmullrom"
-						}
-					}
-				},
-				"rightArm": {
-					"rotation": {
-						"0.0": [0, 0, 0],
-						"0.2667": [-107.75313, 9.53274, -3.03513]
-					}
-				},
-				"leftArm": {
-					"rotation": {
-						"0.0": [0, 0, 0],
-						"0.2667": [-113.21088, -13.83447, 5.85463]
-					}
-				},
-				"leftLeg": {
-					"rotation": {
-						"0.0": [0, 0, 0],
-						"0.2667": [-44.75386, -5.29571, -5.31847]
-					}
-				},
-				"rightLeg": {
-					"rotation": {
-						"0.0": [0, 0, 0],
-						"0.2667": [-42.39121, 3.37562, 3.69066]
-					}
 				}
 			}
 		},

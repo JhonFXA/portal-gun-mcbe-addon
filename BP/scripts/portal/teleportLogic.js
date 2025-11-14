@@ -183,24 +183,40 @@ function playInAnimation(portal, player) {
     let animation;
     switch (orientation) {
         case 0: {
-            const portalYaw = portal.getProperty(portalSP.rotation) * 90;
-            const playerYaw = player.getRotation().y;
-            let deltaYaw = (playerYaw - portalYaw + 360) % 360;
+            // Determine if the player is looking toward the portal (front) or away (back)
+            const pPos = player.location;
+            const qPos = portal.location;
 
-            if (deltaYaw <= 45 || deltaYaw >= 315) {
-                animation = "animation.ram_portalgun.player.portal_in_back";
-            } else {
-                animation = "animation.ram_portalgun.player.portal_in_front";
-            } 
+            // Horizontal vector from player to portal
+            const vx = qPos.x - pPos.x;
+            const vz = qPos.z - pPos.z;
+            const len = Math.hypot(vx, vz) || 1;
+            const nx = vx / len;
+            const nz = vz / len;
+
+            // Player look horizontal vector from yaw (degrees -> radians)
+            const yawRad = (player.getRotation().y * Math.PI) / 180;
+            const lookX = -Math.sin(yawRad);
+            const lookZ = Math.cos(yawRad);
+
+            const dot = lookX * nx + lookZ * nz;
+
+            // If dot > 0 player is looking toward the portal position -> front animation
+            animation = dot > 0
+                ? "animation.ram_portalgun.player.portal_in_front"
+                : "animation.ram_portalgun.player.portal_in_back";
             break;
         }
         case 1: {
-            animation = "animation.ram_portalgun.player.portal_in_up"
+            animation = "animation.ram_portalgun.player.portal_in_up";
             break;
         }
         case 2: {
-            animation = player.isSprinting? "animation.ram_portalgun.player.portal_in_down_dive": "animation.ram_portalgun.player.portal_in_down"
+            animation = player.isSprinting ? "animation.ram_portalgun.player.portal_in_down_dive" : "animation.ram_portalgun.player.portal_in_down";
             break;
+        }
+        default: {
+            animation = "animation.ram_portalgun.player.portal_in_front";
         }
     }
     player.playAnimation(animation);
@@ -312,20 +328,42 @@ function findEntitiesNearPortal(dimension, location, radius, scale) {
  * @param {Entity} entity - The entity to teleport.
  */
 function teleportEntityToLocation(portal, dualPortal, entity) {
-    let orientation = dualPortal.getProperty(portalSP.orientation);
-    let rotation = dualPortal.getProperty(portalSP.rotation);
-    let scale = dualPortal.getProperty(portalSP.scale);
+    const orientation = dualPortal.getProperty(portalSP.orientation);
+    const rotation = dualPortal.getProperty(portalSP.rotation);
+    const scale = dualPortal.getProperty(portalSP.scale);
     let ry = entity.getRotation().y;
 
-    let tpLocation = { x: dualPortal.location.x, y: dualPortal.location.y, z: dualPortal.location.z };
+    let tpLocation = { 
+        x: dualPortal.location.x, 
+        y: dualPortal.location.y, 
+        z: dualPortal.location.z 
+    };
+
     if (orientation === 0) {
         if (scale >= 1) tpLocation.y -= 1;
+
         switch (rotation) {
             case 0: ry = 0;  break;
             case 1: ry = 90; break;
             case 2: ry = 180; break;
             case 3: ry = -90; break;
         }
+    }
+
+    const differentDimension = portal.dimension.id !== dualPortal.dimension.id;
+    if (differentDimension && orientation === 0) {
+        const offsetDistance = -1;
+        let offset = { x: 0, z: 0 };
+
+        switch (rotation) {
+            case 0: offset.z = +offsetDistance; break;
+            case 1: offset.x = -offsetDistance; break;
+            case 2: offset.z = -offsetDistance; break;
+            case 3: offset.x = offsetDistance; break;
+        }
+
+        tpLocation.x += offset.x;
+        tpLocation.z += offset.z;
     }
 
     try {
@@ -337,7 +375,6 @@ function teleportEntityToLocation(portal, dualPortal, entity) {
         world.sendMessage(`§c[Portal Gun] Failed to teleport entity: \n§e[!] ${error}§r`);
     }
 
-    //With autoClose enabled, the portal will close itself after a certain time.
     const autoClose = dualPortal.getDynamicProperty(portalDP.autoClose) || portal.getDynamicProperty(portalDP.autoClose);
     if (!autoClose) return;
 
@@ -345,7 +382,6 @@ function teleportEntityToLocation(portal, dualPortal, entity) {
     const dualPortalIsRoot = dualPortal.getDynamicProperty(portalDP.isRoot);
 
     system.runTimeout(() => {
-
         if (dualPortalIsRoot === undefined) return removePortal(dualPortal, true);
 
         const rootPortal = dualPortalIsRoot ? dualPortal : portal;
@@ -361,7 +397,6 @@ function teleportEntityToLocation(portal, dualPortal, entity) {
 
             linkPortals(childList[0], childList[childList.length - 1]);
             removePortal(portalToRemove, false);
-        } 
-        else removePortal(dualPortal, true);
+        } else removePortal(dualPortal, true);
     }, 30);
 }

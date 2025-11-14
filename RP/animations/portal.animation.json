@@ -7,7 +7,7 @@
 			"bones": {
 				"portal": {
 					"rotation": [90, 0, 0],
-					"position": [0, -4, -8]
+					"position": [0, -4, 0]
 				}
 			}
 		},
@@ -737,8 +737,8 @@
 			"override_previous_animation": true,
 			"bones": {
 				"portal": {
-					"rotation": [-90, 0, 0],
-					"position": [0, 7, 0],
+					"rotation": [90, 0, 0],
+					"position": [0, -4, 0],
 					"scale": {
 						"0.0": [1, 1, 1],
 						"0.0833": [1.1, 1.2, 1],

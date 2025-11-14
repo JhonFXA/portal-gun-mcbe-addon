@@ -1,6 +1,4 @@
 {
-    "namespace": "server_form",
-    
     "third_party_server_screen@common.base_screen": {
         "$screen_animations": [],
         "$background_animations": [],
