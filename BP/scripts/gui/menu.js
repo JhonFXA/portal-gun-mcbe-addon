@@ -668,9 +668,12 @@ function openHowToUseForm(player, inventory, portalGunItem){
     let form = new ActionFormData()
     .title("How to Use")
     .header("Controls")
-    .body("\n:mouse_right_button: - Interact\n\n:mouse_left_button: - Attack\n\n:tip_virtual_button_sneak: - Sneak (Shift)\n\n")
+    .body("\n:mouse_right_button: - Interact\n\n:mouse_left_button: - Attack\n\n:tip_virtual_button_sneak: - Sneak (Left Shift)\n\n")
     .divider()
-    .label("§eShoot Portals§r     :mouse_right_button:\n\n§eFast Change Location§r     :mouse_left_button: while aiming at a block\n\n§eOpen Menu§r     :tip_virtual_button_sneak: + :mouse_right_button:\n\n§eRemove a Portal§r     :tip_virtual_button_sneak: + :mouse_left_button: while aiming at it\n\n")
+    .label("§eShoot Portals§r     :mouse_right_button:")
+    .label("§eOpen Menu§r     :tip_virtual_button_sneak: + :mouse_right_button:")
+    .label("§eRemove a Portal§r     :tip_virtual_button_sneak: + :mouse_left_button: while aiming at it")
+    .label("§eFast Change Location§r  :mouse_left_button: while aiming\n\nat a block. :tip_virtual_button_sneak: + :mouse_left_button: to switch backwards.")
     .button("Back to Menu", "textures/ui/pg_ui/back_button");
     form.show(player).then(response => {
         if(response.selection == 0){

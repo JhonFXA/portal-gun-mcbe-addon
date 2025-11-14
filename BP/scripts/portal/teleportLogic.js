@@ -75,7 +75,7 @@ export function onTick() {
             handlePortalFluids(portal, dualPortal);
 
             const radius = getPortalRadius(portal);
-            let nearbyEntities = findEntitiesNearPortal(portal.dimension, portal.location, radius, portal.getProperty(portalSP.scale));
+            let nearbyEntities = findEntitiesNearPortal(portal.dimension, portal.location, radius);
 
             // Filter for small-scale portals
             if (portal.getProperty(portalSP.scale) < 1) {
@@ -305,10 +305,9 @@ function activateCooldown(entity, ticks = 20) {
  * @param {Dimension} dimension - The dimension to search in.
  * @param {Vector3} location - The center location to search around.
  * @param {number} radius - The search radius.
- * @param {number} scale - The scale of the portal (used to exclude players if small).
  * @return {Array<Entity>} An array of entities near the portal eligible for teleport.
  */
-function findEntitiesNearPortal(dimension, location, radius, scale) {
+function findEntitiesNearPortal(dimension, location, radius) {
     const excludeFamilies = ["ram_portalgun:portal", "ram_portalgun:projectile", "dragon"];
 
     const queryOptions = {
@@ -352,14 +351,14 @@ function teleportEntityToLocation(portal, dualPortal, entity) {
 
     const differentDimension = portal.dimension.id !== dualPortal.dimension.id;
     if (differentDimension && orientation === 0) {
-        const offsetDistance = -1;
+        const offsetDistance = 1;
         let offset = { x: 0, z: 0 };
 
         switch (rotation) {
-            case 0: offset.z = +offsetDistance; break;
-            case 1: offset.x = -offsetDistance; break;
-            case 2: offset.z = -offsetDistance; break;
-            case 3: offset.x = offsetDistance; break;
+            case 0: offset.z = -offsetDistance; break;
+            case 1: offset.x = offsetDistance; break;
+            case 2: offset.z = offsetDistance; break;
+            case 3: offset.x = -offsetDistance; break;
         }
 
         tpLocation.x += offset.x;

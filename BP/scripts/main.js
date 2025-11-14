@@ -317,7 +317,9 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
 
   const portalIsRoot = portalEntity.getDynamicProperty(portalDP.isRoot);
 
-  if (portalIsRoot === undefined) return removePortal(portalEntity, true);
+  if (portalIsRoot === undefined) {
+    return removePortal(portalEntity, true);
+  }
 
   const dualPortal = world.getEntity(portalEntity.getDynamicProperty(portalDP.DualityPortalId));
   if(dualPortal === undefined) return removePortal(portalEntity, false);
@@ -325,19 +327,24 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
   const childListJson = rootPortal.getDynamicProperty(portalDP.childList);
   const childList = childListJson ? JSON.parse(childListJson) : [];
 
+  world.sendMessage("Is root?: " + String(portalIsRoot));
   if (childList.length > 2) {
     if(portalIsRoot) {
-      childList.forEach(portalId => {
+      childList.forEach((portalId, index) => {
         const portal = world.getEntity(portalId);
-        return removePortal(portal, false);
+        removePortal(portal, false);
       });
     } else {
       const idx = childList.indexOf(portalEntity.id);
-      if (idx !== -1) childList.splice(idx, 1);
-      rootPortal.setDynamicProperty(portalDP.childList, JSON.stringify(childList));
-      linkPortals(childList[0], childList[childList.length - 1]);
-      return removePortal(portalEntity, false);
+      if (idx !== -1) {
+        childList.splice(idx, 1);
+        linkPortals(childList[0], childList[childList.length - 1]);
+        rootPortal.setDynamicProperty(portalDP.childList, JSON.stringify(childList));
+        removePortal(portalEntity, false);
+      }
 
     }
-  } else return removePortal(portalEntity, true);
+  } else {
+    return removePortal(portalEntity, true);
+  } 
 });

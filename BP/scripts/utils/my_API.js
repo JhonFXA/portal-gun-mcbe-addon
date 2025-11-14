@@ -191,6 +191,15 @@ export function removeAllPortals(player, portalGunItem, slotIndex = player.selec
   }
 }
 
+
+/** * Saves the list of portal IDs to a Portal Gun item’s dynamic properties.
+ *
+ * @param {ItemStack} portalGunItem - The Portal Gun item to update.
+ * @param {Array<string>} portalIds - An array of portal entity IDs to save.
+ * @param {Player} player - The player holding the Portal Gun.
+ * @param {EntityInventoryComponent} inventory - The player’s inventory component.
+ * @param {number} [slotIndex=player.selectedSlotIndex] - The inventory slot index of the Portal Gun.
+ */
 export function savePortalList(
   portalGunItem,
   portalIds,
@@ -205,6 +214,12 @@ export function savePortalList(
   inventory.container.setItem(slotIndex, portalGunItem);
 }
 
+/**
+ * Searches the player’s inventory for a Portal Gun item with a specific ID.
+ * @param {Player} player - The player whose inventory to search.
+ * @param {string} portalGunId - The unique ID of the Portal Gun to find.
+ * @returns {Object|undefined} An object containing the found item and its slot index, or undefined if not found.
+ */
 export function findPortalGunInInventory(player, portalGunId) {
   const inventory = player.getComponent("inventory");
   if (!inventory || !inventory.container) {
@@ -222,6 +237,12 @@ export function findPortalGunInInventory(player, portalGunId) {
   return undefined;
 }
 
+/**
+ * Searches the player’s inventory for an item with a specific item ID.
+ * @param {Player} player - The player whose inventory to search.
+ * @param {string} itemId - The item ID to find.
+ * @return {Object|undefined} An object containing the found item stack and its slot index, or undefined if not found.
+ */
 export function findItemInInventory(player, itemId) {
   const inventory = player.getComponent("inventory");
   if (!inventory || !inventory.container) {
@@ -237,6 +258,7 @@ export function findItemInInventory(player, itemId) {
   }
   return undefined;
 }
+
 
 export function getRotationToPlayer(player, entityLocation) {
   const playerLocation = player.location;

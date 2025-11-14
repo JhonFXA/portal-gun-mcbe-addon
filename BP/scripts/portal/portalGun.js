@@ -204,62 +204,49 @@ function handlePortalGunHistory(portalGunItem, location) {
 function getPortalPlacement(player, target) {
   if (!target) return;
 
-  let rotation = 0,
-    orientation = 0,
-    location;
+  let rotation = 0, orientation = 0, location = null;
 
-  if ("block" in target) {
-    const block = target.block;
-    if (!block?.isValid) {
-      player.onScreenDisplay.setActionBar("§e[!] Block is not valid!");
-      return;
-    }
-    const face = target.face;
-    const ry = (player.getRotation().y + 180) % 360;
-
-    switch (face) {
-      case Direction.Up:
-        location = block.above(1).center();
-        orientation = 2;
-        rotation = ry < 45 || ry >= 315 ? 0 : ry < 135 ? 1 : ry < 225 ? 2 : 3;
-        break;
-      case Direction.Down:
-        location = block.below(1).center();
-        orientation = 1;
-        rotation = ry < 45 || ry >= 315 ? 0 : ry < 135 ? 1 : ry < 225 ? 2 : 3;
-        break;
-      case Direction.North:
-        location = block.north(1).center();
-        orientation = 0;
-        rotation = 2;
-        break;
-      case Direction.West:
-        location = block.west(1).center();
-        orientation = 0;
-        rotation = 1;
-        break;
-      case Direction.South:
-        location = block.south(1).center();
-        orientation = 0;
-        rotation = 0;
-        break;
-      case Direction.East:
-        location = block.east(1).center();
-        orientation = 0;
-        rotation = 3;
-        break;
-    }
-    location.y -= 0.5;
-  } else if ("entity" in target) {
-    const entity = target.entity;
-    if (!entity?.isValid) {
-      player.onScreenDisplay.setActionBar("§e[!] Entity is not valid!");
-      return;
-    }
-    location = entity.location;
-    rotation = getRotationToPlayer(player, location);
-    orientation = 0;
+  const block = target.block;
+  if (!block?.isValid) {
+    player.onScreenDisplay.setActionBar("§e[!] Block is not valid!");
+    return;
   }
+  const face = target.face;
+  const ry = (player.getRotation().y + 180) % 360;
+
+  switch (face) {
+    case Direction.Up:
+      location = block.above(1).center();
+      orientation = 2;
+      rotation = ry < 45 || ry >= 315 ? 0 : ry < 135 ? 1 : ry < 225 ? 2 : 3;
+      break;
+    case Direction.Down:
+      location = block.below(1).center();
+      orientation = 1;
+      rotation = ry < 45 || ry >= 315 ? 0 : ry < 135 ? 1 : ry < 225 ? 2 : 3;
+      break;
+    case Direction.North:
+      location = block.north(1).center();
+      orientation = 0;
+      rotation = 2;
+      break;
+    case Direction.West:
+      location = block.west(1).center();
+      orientation = 0;
+      rotation = 1;
+      break;
+    case Direction.South:
+      location = block.south(1).center();
+      orientation = 0;
+      rotation = 0;
+      break;
+    case Direction.East:
+      location = block.east(1).center();
+      orientation = 0;
+      rotation = 3;
+      break;
+  }
+  location.y -= 0.5;
 
   return { location, rotation, orientation };
 }
@@ -400,8 +387,17 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
     } else {
       newPortal.setDynamicProperty(portalDP.isRoot, false);
       linkPortals(portalIds[0], newPortal.id);
-      root.setDynamicProperty(portalDP.childList, JSON.stringify([...portalIds, newPortal.id]));
-      savePortalList(portalGunItem, portalIds, player, inventory, itemObject.slotIndex);
+      const portalIdsJSON = root.getDynamicProperty(portalDP.childList);
+      portalIds = portalIdsJSON ? JSON.parse(portalIdsJSON) : [];
+      portalIds.push(newPortal.id);
+      root.setDynamicProperty(portalDP.childList, JSON.stringify(portalIds));
+      savePortalList(
+        portalGunItem,
+        portalIds,
+        player,
+        inventory,
+        itemObject.slotIndex
+      );
       return;
     }
   }
@@ -418,6 +414,7 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
   system.run(async () => {
     const chunkLoaded = await waitForChunkLoad(dim, loc);
     if (!chunkLoaded) {
+      player.setActionBar("§c[!] Failed to load chunk for portal placement.§r");
       removePortal(newPortal, false);
       dim.runCommand(`tickingarea remove "${tickingAreaName}"`);
       return;
@@ -442,14 +439,15 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
       return;
     }
 
-    portalIds = [customPortal.id, newPortal.id];
-
-    customPortal.setDynamicProperty(portalDP.locationId, locId);
+    newPortal.setDynamicProperty(portalDP.isRoot, true);
+    newPortal.setDynamicProperty(portalDP.locationId, locId);
+    portalIds.push(customPortal.id);
+    newPortal.setDynamicProperty(portalDP.childList, JSON.stringify(portalIds));
+    
     customPortal.setDynamicProperty(portalDP.tickingArea, tickingAreaName);
-    customPortal.setDynamicProperty(portalDP.isRoot, true);
-    customPortal.setDynamicProperty(portalDP.childList, JSON.stringify(portalIds));
-  
-
+    customPortal.setDynamicProperty(portalDP.isRoot, false);
+    
+    
     linkPortals(customPortal.id, newPortal.id);
     portalGunItem.setDynamicProperty(portalGunDP.portalList, JSON.stringify(portalIds));
     portalGunItem = handlePortalGunHistory(portalGunItem, loc);

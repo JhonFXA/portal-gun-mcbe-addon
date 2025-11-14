@@ -138,7 +138,6 @@
 		"animation.ram_portalgun.player.portal_in_down": {
 			"loop": "hold_on_last_frame",
 			"animation_length": 0.4,
-			"override_previous_animation": true,
 			"bones": {
 				"root": {
 					"position": {
@@ -389,6 +388,10 @@
 					}
 				},
 				"head": {
+					"relative_to": {
+						"rotation": "entity"
+					},
+					"rotation": [0, 0, 0.01],
 					"position": {
 						"0.0": {
 							"post": [0, 0, 0],
