@@ -95,13 +95,14 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
     .button("Save Current Location", "textures/ui/pg_ui/saved_locations/save_ui")
     .button("Delete Location", "textures/ui/pg_ui/saved_locations/delete_location_ui")
     .divider()
+    .button("Search Location", "textures/ui/pg_ui/saved_locations/search_ui")
+    .divider();
     
     // Retrieve saved locations from the Portal Gun's dynamic property
     const locationsJson = portalGunItem.getDynamicProperty(portalGunDP.savedLocations);
     const savedLocations = locationsJson ? JSON.parse(locationsJson) : [];
 
     if(savedLocations.length > 0){
-        form.button("Search Location", "textures/ui/pg_ui/saved_locations/search_ui").divider();
         form.label(`Locations (${savedLocations.length}):`);
         savedLocations.forEach(location => {
             const { dimensionId, name, x, y, z } = location;

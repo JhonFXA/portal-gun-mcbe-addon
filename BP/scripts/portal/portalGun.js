@@ -439,13 +439,14 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
       return;
     }
 
-    newPortal.setDynamicProperty(portalDP.isRoot, true);
-    newPortal.setDynamicProperty(portalDP.locationId, locId);
-    portalIds.push(customPortal.id);
-    newPortal.setDynamicProperty(portalDP.childList, JSON.stringify(portalIds));
+    portalIds = [customPortal.id, newPortal.id];
     
+    newPortal.setDynamicProperty(portalDP.isRoot, false);
+    
+    customPortal.setDynamicProperty(portalDP.childList, JSON.stringify(portalIds));
+    customPortal.setDynamicProperty(portalDP.locationId, locId);
     customPortal.setDynamicProperty(portalDP.tickingArea, tickingAreaName);
-    customPortal.setDynamicProperty(portalDP.isRoot, false);
+    customPortal.setDynamicProperty(portalDP.isRoot, true);
     
     
     linkPortals(customPortal.id, newPortal.id);

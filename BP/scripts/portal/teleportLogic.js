@@ -377,7 +377,6 @@ function teleportEntityToLocation(portal, dualPortal, entity) {
     const autoClose = dualPortal.getDynamicProperty(portalDP.autoClose) || portal.getDynamicProperty(portalDP.autoClose);
     if (!autoClose) return;
 
-    const portalIsRoot = portal.getDynamicProperty(portalDP.isRoot);
     const dualPortalIsRoot = dualPortal.getDynamicProperty(portalDP.isRoot);
 
     system.runTimeout(() => {
@@ -388,7 +387,7 @@ function teleportEntityToLocation(portal, dualPortal, entity) {
         const childList = childListJson ? JSON.parse(childListJson) : [];
 
         if (childList.length > 2) {
-            const portalToRemove = portalIsRoot ? dualPortal : portal;
+            const portalToRemove = dualPortalIsRoot ? portal : dualPortal;
 
             const idx = childList.indexOf(portalToRemove.id);
             if (idx !== -1) childList.splice(idx, 1);

@@ -327,7 +327,6 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
   const childListJson = rootPortal.getDynamicProperty(portalDP.childList);
   const childList = childListJson ? JSON.parse(childListJson) : [];
 
-  world.sendMessage("Is root?: " + String(portalIsRoot));
   if (childList.length > 2) {
     if(portalIsRoot) {
       childList.forEach((portalId, index) => {

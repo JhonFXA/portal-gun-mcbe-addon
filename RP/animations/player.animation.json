@@ -136,8 +136,8 @@
 			}
 		},
 		"animation.ram_portalgun.player.portal_in_down": {
-			"loop": "hold_on_last_frame",
 			"animation_length": 0.4,
+			"override_previous_animation": true,
 			"bones": {
 				"root": {
 					"position": {
@@ -156,7 +156,7 @@
 				},
 				"rightArm": {
 					"rotation": {
-						"0.0": [0, 0, 10],
+						"0.0": [0, 0, 0],
 						"0.0333": [0, 0, 16.06779],
 						"0.0667": [0, 0, 38.51173],
 						"0.1333": [0, 0, 121.48827],
@@ -175,7 +175,7 @@
 				"leftArm": {
 					"rotation": {
 						"0.0": {
-							"post": [0, 0, -7.5],
+							"post": [0, 0, 0],
 							"lerp_mode": "catmullrom"
 						},
 						"0.2": {
