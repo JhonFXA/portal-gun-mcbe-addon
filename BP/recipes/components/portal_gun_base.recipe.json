@@ -15,17 +15,20 @@
                 "item": "minecraft:iron_ingot"
             },
             {
-                "item": "minecraft:stone_button"
+                "item": "minecraft:polished_blackstone_button"
             },
             {
                 "item": "ram_portalgun:chip"
             },
             {
-                "item": "minecraft:dropper"
+                "item": "minecraft:dispenser"
+            },
+            {
+                "item": "minecraft:netherite_ingot"
             }
         ],
         "pattern": [
-            "#ii",
+            "#ni",
             "SRD",
             "i  "
         ],
@@ -36,14 +39,17 @@
             "i": {
                 "item": "minecraft:iron_ingot"
             },
+            "n": {
+                "item": "minecraft:netherite_ingot"
+            },
             "S": {
-                "item": "minecraft:stone_button"
+                "item": "minecraft:polished_blackstone_button"
             },
             "R": {
                 "item": "ram_portalgun:chip"
             },
             "D": {
-                "item": "minecraft:dropper"
+                "item": "minecraft:dispenser"
             }
         },
         "result": {

@@ -259,27 +259,14 @@ export function findItemInInventory(player, itemId) {
   return undefined;
 }
 
-
-export function getRotationToPlayer(player, entityLocation) {
-  const playerLocation = player.location;
-  const dx = playerLocation.x - entityLocation.x;
-  const dz = playerLocation.z - entityLocation.z;
-
-  const angle = Math.atan2(dz, dx) * (180 / Math.PI);
-
-  const normalizedAngle = (angle + 360) % 360;
-
-  if (normalizedAngle >= 315 || normalizedAngle < 45) {
-    return 3;
-  } else if (normalizedAngle >= 45 && normalizedAngle < 135) {
-    return 0;
-  } else if (normalizedAngle >= 135 && normalizedAngle < 225) {
-    return 1;
-  } else {
-    return 2;
-  }
-}
-
+/**
+ * Finds all air and water blocks within a cubic volume around a center point in a given dimension.
+ *
+ * @param {Dimension} dimension - The dimension to search in.
+ * @param {Vector3} center - The center point of the search volume.
+ * @param {number} [radius=10] - The radius of the cubic search volume.
+ * @returns {Array<Object>} An array of locations (x, y, z) of found air and water blocks.
+ */
 export function findNearbyAir(dimension, center, radius = 10) {
   const volume = new BlockVolume(
     {

@@ -4,7 +4,7 @@
 		"description": {
 			"identifier": "ram_portalgun:portal_fluid_particle",
 			"basic_render_parameters": {
-				"material": "particles_blend",
+				"material": "particles_add",
 				"texture": "textures/particles/spawn"
 			}
 		},

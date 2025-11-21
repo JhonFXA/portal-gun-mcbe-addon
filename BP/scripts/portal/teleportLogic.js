@@ -1,6 +1,6 @@
 import {system, world} from "@minecraft/server";
-import { portalDP, portalSP} from "../utils/ids&variables";
-import { calculateEuclideanDistance, linkPortals, removePortal } from "../utils/my_API";
+import { portalGunDP, portalDP, portalSP} from "../utils/ids&variables";
+import { calculateEuclideanDistance, findPortalGunInInventory, linkPortals, removePortal } from "../utils/my_API";
 
 const TELEPORTED_TAG = "ram_portalgun:teleported";
 const OBJECTIVE_ID = "ram_portalgun:cooldownTime";
@@ -265,6 +265,17 @@ function playerUsePortal(portal, dualPortal, player) {
     player.addTag(TELEPORTED_TAG);
 
     playInAnimation(portal, player);
+
+    const portalGunId = portal.getDynamicProperty(portalDP.ownerPortalGun); 
+    const portalGunItem = findPortalGunInInventory(player, portalGunId)?.item;
+    if (portalGunItem) {
+        const autoClose = portalGunItem.getDynamicProperty(portalGunDP.autoClose);
+        if (autoClose) {
+            portal.setDynamicProperty(portalDP.autoClose, true);
+            dualPortal.setDynamicProperty(portalDP.autoClose, true);
+        }
+    }
+        
 
     // Delay actual teleport to match animation
     system.runTimeout(() => {

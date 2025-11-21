@@ -4,7 +4,7 @@
     "description": {
       "identifier": "ram_portalgun:fluid_projectile",
       "materials": {
-        "default": "entity_emissive_alpha"
+        "default": "entity_beam_additive"
       },
       "textures": {
         "default": "textures/entity/green_portal/projectile"

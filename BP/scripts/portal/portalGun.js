@@ -12,7 +12,6 @@ import {
   removeAllPortals,
   savePortalList,
   spawnPortal,
-  getRotationToPlayer,
   findNearbyAir,
 } from "../utils/my_API";
 

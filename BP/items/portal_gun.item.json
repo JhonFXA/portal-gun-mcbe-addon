@@ -1,5 +1,5 @@
 {
-	"format_version": "1.20.50",
+	"format_version": "1.21.40",
 	"minecraft:item": {
 		"description": {
 			"identifier": "ram_portalgun:portal_gun",
@@ -8,21 +8,22 @@
 			}
 		},
 		"components": {
+			"minecraft:icon": "portal_gun",
+			"minecraft:display_name": {
+				"value": "§aPortal Gun"
+			},
 			"minecraft:tags":{
 				"tags":[
 					"ram_portalgun:portal_gun"
 				]
 			},
-			"minecraft:display_name": {
-				"value": "§aPortal Gun"
+			"minecraft:fire_resistant": {
+				"value": false
 			},
-			"minecraft:max_stack_size": 1,
+			"minecraft:max_stack_size": { "value": 1 },
 			"minecraft:cooldown": {
 				"category": "portal_gun_cooldown",
 				"duration": 1
-			},
-			"minecraft:icon": {
-				"texture": "portal_gun"
 			},
 			"minecraft:use_modifiers": {
 				"use_duration": 0.1,

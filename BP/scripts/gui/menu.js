@@ -31,7 +31,6 @@ function stopPlayerAnimation(player){
 export function openPortalGunMenu(player) {
     const inventory = player.getComponent("inventory");
     const portalGunItem = inventory.container.getItem(player.selectedSlotIndex)
-    const currentMode = portalGunItem.getDynamicProperty(portalGunDP.mode);
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge)??0;
 
     const totalBars = 10;
@@ -406,14 +405,16 @@ function openSetCoordinatesForm(player, inventory, portalGunItem, dimensionId = 
 function openSelectModeForm(player, inventory, portalGunItem) {
     playPlayerAnimation(player);
     player.dimension.playSound("ram_portalgun:button_click", player.location);
+    const currentMode = portalGunItem.getDynamicProperty(portalGunDP.mode);
     let form = new ActionFormData()
     .title("Select Mode")
+    .body(`Current Mode: §e${currentMode}§r`)
     .button("FIFO Mode", "textures/ui/pg_ui/select_mode/fifo_mode_button")
     .button("LIFO Mode", "textures/ui/pg_ui/select_mode/lifo_mode_button")
     .button("Multi-Pair Mode", "textures/ui/pg_ui/select_mode/multipair_mode_button")
     .button("Root Mode", "textures/ui/pg_ui/select_mode/root_mode_button")
     .divider()
-    .label("Modes explained:\n\n§eFIFO§r - First In First Out:\nAfter having 2 portals active, each new portal will replace the oldest one.\n\n§eLIFO§r - Last In First Out:\nAfter having 2 portals active, each new portal will replace the newest one.\n\n§eMulti-Pair§r:\nAllows you to have multiple pairs of portals active at the same time. You can enter any portal and come out from its pair.\n\n§eRoot§r:\nShoots a portal that acts as an anchor. You can shoot multiple portals, but when you enter one, you will always come out from the root portal. Entering the root portal will take you back to the last portal you shooted.")
+    .label("Modes explained:\n\n§eFIFO§r - First In First Out:\nAfter having 2 portals active, each new portal will replace the oldest one.\n\n§eLIFO§r - Last In First Out:\nAfter having 2 portals active, each new portal will replace the newest one.\n\n§eMulti-Pair§r:\nAllows you to have multiple pairs of portals active at the same time. You can enter any portal and come out from its pair.\n\n§eRoot§r:\nShoots a portal that acts as an anchor. You can shoot multiple portals, but when you enter one, you will always come out from the root portal (the first one created). Entering the root portal will take you back to the last portal you shooted.\n\n§eCUSTOM§r:\nAct exactly as Root mode, but the root portal is always in the custom location you've set. This mode is only active when you set a custom location.")
     .button("Back to Menu", "textures/ui/pg_ui/back_button");
 
     form.show(player).then(response => {
@@ -694,14 +695,19 @@ const terminalCommands = {
         const debug = getGunConfig(player, inventory, portalGunItem);
         openTerminalForm(player, inventory, portalGunItem, debug);
     },
-
+    
     "help": (player, inventory, portalGunItem) => {
         const helpText = `Available commands:
     - gunconfig : Show Portal Gun info
-    - help : Show this list
+    - help : Show a list with available commands
     - clear : Clear the terminal output
     - coords : Show current player coordinates
-    - exit : Exit the terminal`;
+    - exit : Exit the terminal
+    - reset : Reset the Portal Gun
+    - save <name>: Save current location
+    - showlocs : Show saved locations
+    - delloc <name> : Delete saved location
+    - delloc -all : Delete all saved locations`;
         openTerminalForm(player, inventory, portalGunItem, helpText);
     },
 
@@ -723,7 +729,77 @@ Dimension: ${color}${dimName}§r`;
 
     "exit": (player, inventory, portalGunItem) => {
         openSettingsForm(player, inventory, portalGunItem);
+    },
+    "reset": (player, inventory, portalGunItem) => {
+        openResetForm(player, portalGunItem, inventory);
+    },
+    "save": (player, inventory, portalGunItem, locationName) => {
+        if (!locationName) {
+            openTerminalForm(player, inventory, portalGunItem, "§cUsage: save <name>");
+            return;
+        }
+        const savedLocationsJson = portalGunItem.getDynamicProperty(portalGunDP.savedLocations);
+        const savedLocations = savedLocationsJson ? JSON.parse(savedLocationsJson) : [];
+        const newLocationData = {
+            name: locationName,
+            id: savedLocations.length,
+            dimensionId: player.dimension.id,
+            x: parseInt(player.location.x),
+            y: parseInt(player.location.y),
+            z: parseInt(player.location.z)
+        };
+        savedLocations.push(newLocationData);
+        portalGunItem.setDynamicProperty(portalGunDP.savedLocations, JSON.stringify(savedLocations));
+        inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+        player.dimension.playSound("ram_portalgun:selection", player.location);
+
+        openTerminalForm(player, inventory, portalGunItem, `§aSaved location '${locationName}'`);
+    },
+    "showlocs": (player, inventory, portalGunItem) => {
+        const savedLocationsJson = portalGunItem.getDynamicProperty(portalGunDP.savedLocations);
+        const savedLocations = savedLocationsJson ? JSON.parse(savedLocationsJson) : [];
+        if (savedLocations.length === 0) {
+            openTerminalForm(player, inventory, portalGunItem, "§eNo saved locations.§r");
+            return;
+        }
+        let locationsText = "Saved Locations:\n";
+        savedLocations.forEach((location, index) => {
+            const { dimensionId, name, x, y, z } = location;
+            const { dimName, color } = getDimensionLabel(dimensionId);
+            locationsText += `${index + 1}. ${name} - X: ${x}, Y: ${y}, Z: ${z}, Dimension: ${color}${dimName}§r\n`;
+        });
+        openTerminalForm(player, inventory, portalGunItem, locationsText);
+    },
+    "delloc": (player, inventory, portalGunItem, locationName) => {
+        if (!locationName) {
+            openTerminalForm(player, inventory, portalGunItem, "§cUsage: delloc <name> or delloc -all");
+            return;
+        }
+        const savedLocationsJson = portalGunItem.getDynamicProperty(portalGunDP.savedLocations);
+        let savedLocations = savedLocationsJson ? JSON.parse(savedLocationsJson) : [];
+        if (locationName === "-all") {
+            if (savedLocations.length === 0) {
+                openTerminalForm(player, inventory, portalGunItem, `§cNo saved locations to delete.§r`);
+                return;
+            }
+            portalGunItem.setDynamicProperty(portalGunDP.savedLocations, JSON.stringify([]));
+            inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+            player.dimension.playSound("ram_portalgun:selection", player.location);
+            openTerminalForm(player, inventory, portalGunItem, `§aDeleted all saved locations.§r`);
+            return;
+        }
+        const initialLength = savedLocations.length;
+        savedLocations = savedLocations.filter(location => location.name !== locationName);
+        if (savedLocations.length === initialLength) {
+            openTerminalForm(player, inventory, portalGunItem, `§cNo location found with name '${locationName}'.§r`);
+            return;
+        }
+        portalGunItem.setDynamicProperty(portalGunDP.savedLocations, JSON.stringify(savedLocations));
+        inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+        player.dimension.playSound("ram_portalgun:selection", player.location);
+        openTerminalForm(player, inventory, portalGunItem, `§aDeleted location '${locationName}'.§r`);
     }
+            
 };
 
 /**
@@ -742,13 +818,12 @@ function openTerminalForm(player, inventory, portalGunItem, response = null) {
   let form = new ModalFormData()
     .title("Terminal")
     .textField("Enter Command", "")
-    .divider();
+    .submitButton("Execute")
 
   if (response) {
     form.label(`${response}§r`);
   }
 
-  form.submitButton("Execute");
   form.show(player).then(response => {
     if (response.formValues === undefined) {
       stopPlayerAnimation(player);
@@ -761,9 +836,11 @@ function openTerminalForm(player, inventory, portalGunItem, response = null) {
       return;
     }
 
-    const handler = terminalCommands[command];
+    const [cmd, ...args] = command.split(" ");
+    const handler = terminalCommands[cmd];
+
     if (handler) {
-      handler(player, inventory, portalGunItem);
+        handler(player, inventory, portalGunItem, args.join(" "));
     } else {
       openTerminalForm(player, inventory, portalGunItem, `§cError: Unknown command '${command}'.\n§eType 'help' for a list of commands.§r`);
       player.dimension.playSound("ram_portalgun:error_sound", player.location);
