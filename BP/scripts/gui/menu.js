@@ -365,14 +365,26 @@ function openSetCoordinatesForm(player, inventory, portalGunItem, dimensionId = 
     .textField("", "Z")
 
     form.show(player).then(response => {
+        const x = parseInt(response.formValues[0]);
+        const y = parseInt(response.formValues[1]);
+        const z = parseInt(response.formValues[2]);
+
         if(response.formValues == undefined){
             return stopPlayerAnimation(player);
-        } else if( Number.isNaN(parseInt(response.formValues[0]))  || Number.isNaN(parseInt(response.formValues[1])) || Number.isNaN(parseInt(response.formValues[2]))){
+        }
+        else if( Number.isNaN(x)  || Number.isNaN(y) || Number.isNaN(z)){
             player.onScreenDisplay.setActionBar(
                 `§cInvalid coordinates entered.§r`
             );
             player.dimension.playSound("ram_portalgun:error_sound", player.location);
-        } else {
+        }
+        // else if(x > 30000000 || x < -30000000 || z > 30000000 || z < -30000000 || y > 200 || y < -64){
+        //     player.onScreenDisplay.setActionBar(
+        //         `§cCoordinates out of bounds.§r`
+        //     );
+        //     player.dimension.playSound("ram_portalgun:error_sound", player.location);
+        // }
+        else {
             const newLocationData = {
                 name: "Unnamed Location",
                 id: -Math.floor(Math.random() * 10000),

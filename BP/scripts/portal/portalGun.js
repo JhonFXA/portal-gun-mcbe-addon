@@ -24,6 +24,8 @@ import {
   PORTAL_MODES,
 } from "../utils/ids&variables";
 
+const MAX_PORTALS = 10;
+
 /**
  * Pauses execution for a specified number of ticks.
  * @param {number} ticks - The number of game ticks to wait (1 tick = 1/20 second).
@@ -400,6 +402,7 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
       return;
     }
   }
+  
 
   try {
     dim.runCommand(`tickingarea add circle ${fixedLoc.x} ${fixedLoc.y} ${fixedLoc.z} 1 "${tickingAreaName}"`);
@@ -413,9 +416,9 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
   system.run(async () => {
     const chunkLoaded = await waitForChunkLoad(dim, loc);
     if (!chunkLoaded) {
-      player.setActionBar("§c[!] Failed to load chunk for portal placement.§r");
       removePortal(newPortal, false);
       dim.runCommand(`tickingarea remove "${tickingAreaName}"`);
+      player.setActionBar("§c[!] Failed to load chunk for portal placement.§r");
       return;
     }
 
@@ -442,6 +445,7 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
     
     newPortal.setDynamicProperty(portalDP.isRoot, false);
     
+    world.sendMessage(`§a[+] Custom portal created at X:${fixedLoc.x.toFixed(1)} Y:${fixedLoc.y.toFixed(1)} Z:${fixedLoc.z.toFixed(1)} in ${dim.id}§r`);
     customPortal.setDynamicProperty(portalDP.childList, JSON.stringify(portalIds));
     customPortal.setDynamicProperty(portalDP.locationId, locId);
     customPortal.setDynamicProperty(portalDP.tickingArea, tickingAreaName);
@@ -555,7 +559,9 @@ export function summonPortal(player, target) {
         break;
 
       case PORTAL_MODES.MULTI_PAIR:
-        if (portalIds.length % 2 == 0) {
+        if(portalIds.length > MAX_PORTALS){
+          removeAllPortals(player, portalGunItem, itemObject.slotIndex);
+        } else if (portalIds.length % 2 == 0) {
           linkPortals(
             portalIds[portalIds.length - 2],
             portalIds[portalIds.length - 1]
@@ -571,14 +577,30 @@ export function summonPortal(player, target) {
         break;
 
       case PORTAL_MODES.ROOT:
-        if (portalIds.length > 1) {
-          const rootPortal = world.getEntity(portalIds[0]);
-          rootPortal.setDynamicProperty(portalDP.childList, JSON.stringify(portalIds));
+        if (portalCount > MAX_PORTALS) {
+          removeAllPortals(player, portalGunItem, itemObject.slotIndex);
+          break;
+        }
+
+        if (portalCount > 1) {
+          const rootId = portalIds[0];
+          const lastId = portalIds[portalCount - 1];
+          const rootPortal = world.getEntity(rootId);
+
+          rootPortal?.setDynamicProperty(
+            portalDP.childList,
+            JSON.stringify(portalIds)
+          );
+
           newPortal.setDynamicProperty(portalDP.isRoot, false);
-          linkPortals(portalIds[0], portalIds[portalIds.length - 1]);
-        } else {
+          linkPortals(rootId, lastId);
+        } 
+        else {
           newPortal.setDynamicProperty(portalDP.isRoot, true);
-          newPortal.setDynamicProperty(portalDP.childList, JSON.stringify(portalIds));
+          newPortal.setDynamicProperty(
+            portalDP.childList,
+            JSON.stringify(portalIds)
+          );
         }
         savePortalList(
           portalGunItem,
@@ -590,6 +612,10 @@ export function summonPortal(player, target) {
         break;
 
       case PORTAL_MODES.CUSTOM:
+        if(portalIds.length > MAX_PORTALS){
+          removeAllPortals(player, portalGunItem, itemObject.slotIndex);
+          portalIds = [newPortal.id];
+        }
         handleCustomMode(
           player,
           portalGunItem,
