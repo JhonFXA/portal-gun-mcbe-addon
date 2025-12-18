@@ -1,5 +1,5 @@
 {
-	"format_version": "1.20.50",
+	"format_version": "1.21.100",
 	"minecraft:item": {
 		"description": {
 			"identifier": "ram_portalgun:portal_gun_base",
@@ -17,8 +17,9 @@
 				"value": "Portal Gun Base"
 			},
 			"minecraft:max_stack_size": 1,
-			"minecraft:icon": {
-				"texture": "portal_gun_base"
+			"minecraft:icon": "portal_gun_base",
+			"minecraft:fire_resistant": {
+				"value": true
 			}
 		}
 	}
