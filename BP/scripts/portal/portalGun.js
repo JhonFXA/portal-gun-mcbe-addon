@@ -2,7 +2,7 @@ import {
   Direction,
   system,
   ItemStack,
-  world,
+  world
 } from "@minecraft/server";
 import { openPortalGunMenu } from "../gui/menu";
 import {
@@ -273,6 +273,7 @@ function handleSafePlacement(targetDimension, customLocation, fixedCustomLocatio
     player.sendMessage("§c[!] The target location is not loaded.§r");
     return;
   }
+
     // === Helper: warn player if lava exists directly below ===
   function warnIfLavaBelow(dimension, position, player) {
     const below = dimension.getBlock({ x: position.x, y: position.y - 1, z: position.z });
@@ -293,6 +294,7 @@ function handleSafePlacement(targetDimension, customLocation, fixedCustomLocatio
 
       // Found solid ground?
       if (groundBlock && !groundBlock.isAir) {
+        player.onScreenDisplay.setActionBar(`§a[Safe Placement] Found solid ground at Y=${safeY - 1}.§r`);
         warnIfLavaBelow(targetDimension, { x: fixedCustomLocation.x, y: safeY, z: fixedCustomLocation.z }, player);
         fixedCustomLocation.y = safeY;
         return fixedCustomLocation;
@@ -333,12 +335,14 @@ function handleSafePlacement(targetDimension, customLocation, fixedCustomLocatio
       fixedCustomLocation.y = best.y;
       fixedCustomLocation.z = best.z + 0.5;
 
+      player.onScreenDisplay.setActionBar(`§a[Safe Placement] Found nearby air at X:${best.x}, Y:${best.y}, Z:${best.z}.§r`);
       warnIfLavaBelow(targetDimension, best, player);
       return fixedCustomLocation;
     } else {
       // Fallback: vertical scan upwards until air is found
+      player.onScreenDisplay.setActionBar(`§e[Safe Placement] No nearby air found. Scanning upwards...§r`);
       const maxHeight = targetDimension.heightRange.max;
-        const maxScan = Math.min(maxHeight, fixedCustomLocation.y + 40); // limit scan to +40 blocks for performance
+      const maxScan = Math.min(maxHeight, fixedCustomLocation.y + 40); // limit scan to +40 blocks for performance
       while (fixedCustomLocation.y < maxScan) {
         const block = targetDimension.getBlock(fixedCustomLocation);
         if (block && (block.isAir || block.typeId === "minecraft:water")) {

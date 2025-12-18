@@ -120,6 +120,11 @@ export function linkPortals(portalAId, portalBId) {
  * @param {Vector3} location - The coordinates of the block to check and remove.
  */
 function removeFluidBlockAtLocation(dimension, location) {
+  location = {
+    x: Math.floor(location.x),
+    y: Math.floor(location.y),
+    z: Math.floor(location.z),
+  };
   const block = dimension.getBlock(location);
   const isInWater =
     block.typeId === "minecraft:water" ||

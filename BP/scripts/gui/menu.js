@@ -378,12 +378,12 @@ function openSetCoordinatesForm(player, inventory, portalGunItem, dimensionId = 
             );
             player.dimension.playSound("ram_portalgun:error_sound", player.location);
         }
-        // else if(x > 30000000 || x < -30000000 || z > 30000000 || z < -30000000 || y > 200 || y < -64){
-        //     player.onScreenDisplay.setActionBar(
-        //         `§cCoordinates out of bounds.§r`
-        //     );
-        //     player.dimension.playSound("ram_portalgun:error_sound", player.location);
-        // }
+        else if(x > 3000000 || x < -3000000 || z > 3000000 || z < -3000000 || y > 320 || y < -64){
+            player.onScreenDisplay.setActionBar(
+                `§cCoordinates out of bounds.§r`
+            );
+            player.dimension.playSound("ram_portalgun:error_sound", player.location);
+        }
         else {
             const newLocationData = {
                 name: "Unnamed Location",
