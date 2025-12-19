@@ -11,7 +11,7 @@ export const portalGuns = [
     dischargedVersionId: "ram_portalgun:portal_gun_discharged",
     baseId: "ram_portalgun:portal_gun_base",
     emptyTubeId: "ram_portalgun:empty_tube",
-    chargedTubeId: "ram_portalgun:charged_tube",
+    chargedTubeId: "ram_portalgun:portal_fluid",
     projectileId: "ram_portalgun:fluid_projectile",
     highPressureProjectileId: "ram_portalgun:fluid_projectile_high_pressure",
     portalId: "ram_portalgun:green_portal"
@@ -24,7 +24,7 @@ export var ID = {
   components: {
     portalGunBases : ["ram_portalgun:portal_gun_base"],
     emptyTubes : ["ram_portalgun:empty_tube"],
-    chargedTubes : ["ram_portalgun:charged_tube"]
+    chargedTubes : ["ram_portalgun:portal_fluid"]
   },
   projectiles : ["ram_portalgun:fluid_projectile", "ram_portalgun:fluid_projectile_high_pressure"],
   portals: ["ram_portalgun:green_portal"],

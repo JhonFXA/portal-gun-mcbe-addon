@@ -1,0 +1,14 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_brewing_mix": {
+    "description": {
+      "identifier": "ram_portalgun:portal_fluid_recipe"
+    },
+
+    "tags": [ "brewing_stand" ],
+
+    "input": "ram_portalgun:empty_tube",
+    "reagent": "ram_portalgun:quantum_shard",
+    "output": "ram_portalgun:portal_fluid"
+  }
+}

@@ -10,7 +10,7 @@
         "components": {
             "minecraft:icon": "quantum_shard",
             "minecraft:display_name": {
-                "value": "§aQuantum Shard"
+                "value": "Quantum Shard"
             },
             "minecraft:tags": {
                 "tags": [

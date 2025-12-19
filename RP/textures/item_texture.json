@@ -12,8 +12,8 @@
 		"empty_tube": {
 			"textures": "textures/items/empty_tube"
 		},
-		"charged_tube": {
-			"textures": "textures/items/charged_tube"
+		"portal_fluid": {
+			"textures": "textures/items/portal_fluid"
 		},
 		"chip": {
 			"textures": "textures/items/chip"

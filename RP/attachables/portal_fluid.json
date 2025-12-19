@@ -2,7 +2,7 @@
     "format_version": "1.10.0",
     "minecraft:attachable": {
         "description": {
-            "identifier": "ram_portalgun:charged_tube",
+            "identifier": "ram_portalgun:portal_fluid",
             "render_controllers": [
                 "controller.render.charged_tube"
             ],
@@ -12,10 +12,10 @@
                 "fluid": "entity_emissive_alpha"
             },
             "textures": {
-                "default": "textures/attachable/charged_tube"
+                "default": "textures/attachable/portal_fluid"
             },
             "geometry": {
-                "default": "geometry.charged_tube"
+                "default": "geometry.portal_fluid"
             },
             "animations": {
                 "first_person_hold": "animation.charged_tube.first_person_hold",
