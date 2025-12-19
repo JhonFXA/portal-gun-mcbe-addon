@@ -10,7 +10,7 @@
 		"components": {
 			"minecraft:icon": "portal_gun",
 			"minecraft:display_name": {
-				"value": "§aPortal Gun"
+				"value": "item.ram_portalgun:portal_gun.name"
 			},
 			"minecraft:tags":{
 				"tags":[

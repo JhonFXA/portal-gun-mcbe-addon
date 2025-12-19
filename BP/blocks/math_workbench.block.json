@@ -13,6 +13,7 @@
 			}
 		},
 		"components": {
+			"minecraft:display_name": "tile.ram_portalgun:math_workbench.name",
 			"minecraft:collision_box": true,
 			"minecraft:selection_box": true,
 			"minecraft:destructible_by_mining": {

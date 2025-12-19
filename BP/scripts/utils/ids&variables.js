@@ -8,8 +8,8 @@ export var portalGunDP;
 export const portalGuns = [
   new PortalGun({
     id: "ram_portalgun:portal_gun",
-    dischargedVersionId: "ram_portalgun:portal_gun_discharged",
     baseId: "ram_portalgun:portal_gun_base",
+    dischargedVersionId: "ram_portalgun:portal_gun_discharged",
     emptyTubeId: "ram_portalgun:empty_tube",
     chargedTubeId: "ram_portalgun:portal_fluid",
     projectileId: "ram_portalgun:fluid_projectile",

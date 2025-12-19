@@ -10,7 +10,7 @@
         "components": {
             "minecraft:icon": "rick_hair",
             "minecraft:display_name": {
-				"value": "§bRick Sanchez's §rHair\n§7Hit a block with it\nto change hair style"
+				"value": "item.ram_portalgun:rick_hair.name"
 			},
             "minecraft:max_stack_size": { "value": 1 },
             "minecraft:wearable": {

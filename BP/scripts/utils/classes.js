@@ -8,8 +8,8 @@ import {
 export class PortalGun {
   constructor({
     id,
-    dischargedVersionId,
     baseId,
+    dischargedVersionId,
     emptyTubeId,
     chargedTubeId,
     projectileId,
@@ -17,8 +17,8 @@ export class PortalGun {
     portalId
   }) {
     this.id = id;
-    this.dischargedVersionId = dischargedVersionId;
     this.baseId = baseId;
+    this.dischargedVersionId = dischargedVersionId;
     this.emptyTubeId = emptyTubeId;
     this.chargedTubeId = chargedTubeId;
     this.projectileId = projectileId;

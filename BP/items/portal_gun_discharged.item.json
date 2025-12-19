@@ -14,7 +14,7 @@
 				]
 			},
 			"minecraft:display_name": {
-				"value": "Portal Gun (Discharged)"
+				"value": "item.ram_portalgun:portal_gun_discharged.name"
 			},
 			"minecraft:max_stack_size": 1,
 			"minecraft:cooldown": {

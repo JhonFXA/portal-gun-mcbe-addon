@@ -10,7 +10,7 @@
         "components": {
             "minecraft:icon": "quantum_shard",
             "minecraft:display_name": {
-                "value": "Quantum Shard"
+                "value": "item.ram_portalgun:quantum_shard.name"
             },
             "minecraft:tags": {
                 "tags": [

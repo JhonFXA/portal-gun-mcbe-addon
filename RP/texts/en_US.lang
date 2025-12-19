@@ -1,4 +1,24 @@
-item.rickandmorty:portal_gun=Portal Gun
+## PORTAL GUNS
+item.ram_portalgun:portal_gun.name=§aPortal Gun\n§uPortal Gun
+item.ram_portalgun:portal_gun_discharged.name=Portal Gun (Discharged)\n§uPortal Gun
+item.ram_portalgun:portal_gun_base.name=Portal Gun Base\n§uPortal Gun
 
+## PORTAL FLUID
+item.ram_portalgun:portal_fluid.name=§aPortal Fluid\n§uPortal Gun
+item.ram_portalgun:bootleg_portal_fluid.name=Bootleg Portal Fluid\n§uPortal Gun
+
+## COMPONENTS
+item.ram_portalgun:empty_tube.name=Empty Tube\n§uPortal Gun
+item.ram_portalgun:quantum_shard.name=Quantum Shard\n§uPortal Gun
+item.ram_portalgun:chip.name=Chip\n§uPortal Gun
+
+## GROUPS
 ram_portalgun:portal_gun_group=Portal Guns
 ram_portalgun:head_accessories_group=Head Accessories
+
+## BLOCKS
+tile.ram_portalgun:math_workbench.name=Math Workbench\n§uPortal Gun
+
+## ARMOR
+item.ram_portalgun:homesteader_rick_hair.name=§bHomesteader Rick's§r Hair\n§7Hit a block with it\nto change hair style\n§uPortal Gun
+item.ram_portalgun:rick_hair.name=§bRick Sanchez's §rHair\n§7Hit a block with it\nto change hair style\n§uPortal Gun

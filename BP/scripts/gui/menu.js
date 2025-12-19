@@ -1,7 +1,7 @@
 import { ItemStack } from "@minecraft/server";
 import {ActionFormData, ModalFormData, MessageFormData} from "@minecraft/server-ui";
 import {changePortalGunMode, removeAllPortals} from '../utils/my_API';
-import { portalGunDP, ID } from "../utils/ids&variables";
+import { portalGunDP, ID, portalGuns } from "../utils/ids&variables";
 
 
 /**
@@ -921,9 +921,16 @@ function getDimensionLabel(dimensionId) {
  * @param {EntityInventoryComponent} inventory
  */
 function dismountPortalGun(player, portalGunItem, inventory) {
+    const gunObject = portalGuns.find(gun => gun.id === portalGunItem.typeId);
+
+    const chargedTubeId = gunObject.chargedTubeId;
+    const emptyTubeId = gunObject.emptyTubeId;
+    const gunBaseId = gunObject.baseId;
+
     stopPlayerAnimation(player);
+
     const portalGunProperties = portalGunItem.getDynamicPropertyIds();
-    const portalGunBase = new ItemStack("ram_portalgun:portal_gun_base", 1);
+    const portalGunBase = new ItemStack(gunBaseId, 1);
 
     portalGunProperties.forEach(id => {
         const value = portalGunItem.getDynamicProperty(id);
@@ -932,14 +939,15 @@ function dismountPortalGun(player, portalGunItem, inventory) {
 
     inventory.container.setItem(player.selectedSlotIndex, portalGunBase);
 
+
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
     if (charge > 0) {
-        const chargedTube = new ItemStack("ram_portalgun:charged_tube", 1);
+        const chargedTube = new ItemStack(chargedTubeId, 1);
         chargedTube.setDynamicProperty(portalGunDP.charge, charge);
         chargedTube.setLore([`§eCharge: ${charge}%§r`]);
         inventory.container.addItem(chargedTube);
     } else {
-        inventory.container.addItem(new ItemStack("ram_portalgun:empty_tube", 1));
+        inventory.container.addItem(new ItemStack(emptyTubeId, 1));
     }
 
     player.dimension.playSound("ram_portalgun:portal_gun_unplug", player.location);
