@@ -1,0 +1,23 @@
+{
+    "format_version": "1.21.100",
+    "minecraft:item": {
+        "description": {
+            "identifier": "ram_portalgun:quantum_shard",
+            "menu_category": {
+                "category": "items"
+            }
+        },
+        "components": {
+            "minecraft:icon": "quantum_shard",
+            "minecraft:display_name": {
+                "value": "§aQuantum Shard"
+            },
+            "minecraft:tags": {
+                "tags": [
+                    "ram_portalgun:quantum_shard"
+                ]
+            },
+            "minecraft:max_stack_size": { "value": 64 }
+        }
+    }
+}

@@ -18,6 +18,9 @@
 		"chip": {
 			"textures": "textures/items/chip"
 		},
+		"quantum_shard": {
+			"textures": "textures/items/quantum_shard"
+		},
     	"rick_hair": {
       		"textures": "textures/items/rick_hair"
     	},
