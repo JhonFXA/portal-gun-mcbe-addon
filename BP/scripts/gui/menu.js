@@ -5,7 +5,6 @@ import { portalGunDP, ID, portalGuns } from "../utils/ids&variables";
 
 
 /**
- * 
  * @param {Player} player 
  * 
  * Causes the player to perform a button-click animation on the portal gun.
@@ -14,6 +13,11 @@ function playPlayerAnimation(player){
     player.playAnimation("animation.ram_portalgun.player.portal_gun_interface", {blendOutTime: 0.5, stopExpression: "query.is_moving || !query.is_item_name_any('slot.weapon.mainhand', 'ram_portalgun:portal_gun', 'ram_portalgun:portal_gun_discharged')"});
 }
 
+/**
+ * @param {Player} player 
+ * 
+ * Forces player to stop any animation he is playing.
+ */
 function stopPlayerAnimation(player){
     // player.runCommand("camera @s clear");
     player.playAnimation("animation.ram_portalgun.player.reset");
@@ -426,7 +430,7 @@ function openSelectModeForm(player, inventory, portalGunItem) {
     .button("Multi-Pair Mode", "textures/ui/pg_ui/select_mode/multipair_mode_button")
     .button("Root Mode", "textures/ui/pg_ui/select_mode/root_mode_button")
     .divider()
-    .label("Modes explained:\n\n§eFIFO§r - First In First Out:\nAfter having 2 portals active, each new portal will replace the oldest one.\n\n§eLIFO§r - Last In First Out:\nAfter having 2 portals active, each new portal will replace the newest one.\n\n§eMulti-Pair§r:\nAllows you to have multiple pairs of portals active at the same time. You can enter any portal and come out from its pair.\n\n§eRoot§r:\nShoots a portal that acts as an anchor. You can shoot multiple portals, but when you enter one, you will always come out from the root portal (the first one created). Entering the root portal will take you back to the last portal you shooted.\n\n§eCUSTOM§r:\nAct exactly as Root mode, but the root portal is always in the custom location you've set. This mode is only active when you set a custom location.")
+    .label("Modes explained:\n\n§eFIFO§r - First In First Out:\nAfter having 2 portals active, each new portal will replace the oldest one.\n\n§eLIFO§r - Last In First Out:\nAfter having 2 portals active, each new portal will replace the newest one.\n\n§eMulti-Pair§r:\nAllows you to have multiple pairs of portals active at the same time (maximum of 10). You can enter any portal and come out from its pair.\n\n§eRoot§r:\nShoots a portal that acts as an anchor. You can shoot multiple portals (maximum of 10), but when you enter one, you will always come out from the root portal (the first one created). Entering the root portal will take you back to the last portal you shooted.\n\n§eCUSTOM§r:\nAct exactly as Root mode, but the root portal is always in the custom location you've set. This mode is only active when you set a custom location.")
     .button("Back to Menu", "textures/ui/pg_ui/back_button");
 
     form.show(player).then(response => {
@@ -655,8 +659,10 @@ function openResetForm(player, portalGunItem, inventory){
             stopPlayerAnimation(player);
             removeAllPortals(player, portalGunItem);
             const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
+            const bootleg = portalGunItem.getDynamicProperty(portalGunDP.bootleggedFluid);
             portalGunItem.clearDynamicProperties();
             portalGunItem.setDynamicProperty(portalGunDP.charge, charge);
+            portalGunItem.setDynamicProperty(portalGunDP.bootleggedFluid, bootleg);
             inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
             player.dimension.playSound("ram_portalgun:selection", player.location);
             player.onScreenDisplay.setActionBar(
@@ -876,6 +882,7 @@ function getGunConfig(player, inventory, portalGunItem){
     const autoClose = portalGunItem.getDynamicProperty(portalGunDP.autoClose)? true: false;
     const highPressure = portalGunItem.getDynamicProperty(portalGunDP.highPressure)? true: false;
     const safePlacement = portalGunItem.getDynamicProperty(portalGunDP.safePlacement)? true: false;
+    const bootlegFluid = portalGunItem.getDynamicProperty(portalGunDP.bootleggedFluid)? true: false;
     const scale = portalGunItem.getDynamicProperty(portalGunDP.scale);
     const fastLocationChange = portalGunItem.getDynamicProperty(portalGunDP.fastLocationChange);
     const quantPortalsActive = portalList.length;
@@ -891,6 +898,7 @@ Charge: ${charge}%%
 Auto Close: ${autoClose}
 High Pressure: ${highPressure}
 Safe Placement: ${safePlacement}
+Bootleg Fluid: ${bootlegFluid}
 Portal Scale: ${scale}x
 Fast Location Change: ${fastLocationChange}
 Quantity of Portals Active: ${quantPortalsActive}
@@ -921,10 +929,19 @@ function getDimensionLabel(dimensionId) {
  * @param {EntityInventoryComponent} inventory
  */
 function dismountPortalGun(player, portalGunItem, inventory) {
-    const gunObject = portalGuns.find(gun => gun.id === portalGunItem.typeId);
+    const gunObject = portalGuns.find(gun =>
+        gun.id === portalGunItem.typeId ||
+        gun.dischargedVersionId === portalGunItem.typeId
+    );
+
+    if (!gunObject) {
+        player.sendMessage("§c[Portal Gun Error]§r Unknown or unsupported Portal Gun.");
+        return;
+    }
 
     const chargedTubeId = gunObject.chargedTubeId;
     const emptyTubeId = gunObject.emptyTubeId;
+    const bootlegTubeId = gunObject.bootlegTubeId;
     const gunBaseId = gunObject.baseId;
 
     stopPlayerAnimation(player);
@@ -941,8 +958,10 @@ function dismountPortalGun(player, portalGunItem, inventory) {
 
 
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
+    const isBootlegged = portalGunItem.getDynamicProperty(portalGunDP.bootleggedFluid);
+
     if (charge > 0) {
-        const chargedTube = new ItemStack(chargedTubeId, 1);
+        const chargedTube = new ItemStack(isBootlegged ? bootlegTubeId : chargedTubeId, 1);
         chargedTube.setDynamicProperty(portalGunDP.charge, charge);
         chargedTube.setLore([`§eCharge: ${charge}%§r`]);
         inventory.container.addItem(chargedTube);

@@ -12,8 +12,11 @@ export const portalGuns = [
     dischargedVersionId: "ram_portalgun:portal_gun_discharged",
     emptyTubeId: "ram_portalgun:empty_tube",
     chargedTubeId: "ram_portalgun:portal_fluid",
+    bootlegTubeId: "ram_portalgun:bootleg_portal_fluid",
     projectileId: "ram_portalgun:fluid_projectile",
+    bootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile",
     highPressureProjectileId: "ram_portalgun:fluid_projectile_high_pressure",
+    highPressureBootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile_high_pressure",
     portalId: "ram_portalgun:green_portal"
   })
 ];
@@ -24,9 +27,11 @@ export var ID = {
   components: {
     portalGunBases : ["ram_portalgun:portal_gun_base"],
     emptyTubes : ["ram_portalgun:empty_tube"],
-    chargedTubes : ["ram_portalgun:portal_fluid"]
+    chargedTubes : ["ram_portalgun:portal_fluid"],
+    bootlegTubes : ["ram_portalgun:bootleg_portal_fluid"]
   },
   projectiles : ["ram_portalgun:fluid_projectile", "ram_portalgun:fluid_projectile_high_pressure"],
+  bootlegProjectiles: ["ram_portalgun:bootleg_fluid_projectile", "ram_portalgun:bootleg_fluid_projectile_high_pressure"],
   portals: ["ram_portalgun:green_portal"],
   hair: ["ram_portalgun:rick_hair", "ram_portalgun:homesteader_rick_hair"]
 };
@@ -54,6 +59,7 @@ export const PORTAL_MODES = {
   portalDP["ownerPortalGun"] = "ram_portalgun:owner_portal_gun";
   portalDP["tickingArea"] = "ram_portalgun:ticking_area_name";
   portalDP["autoClose"] = "ram_portalgun:auto_close";
+  portalDP["bootleggedFluid"] = "ram_portalgun:bootlegged_fluid";
   portalDP["isRoot"] = "ram_portalgun:is_root";
   portalDP["childList"] = "ram_portalgun:child_list";
 })(portalDP || (portalDP = {}));
@@ -77,4 +83,6 @@ export const PORTAL_MODES = {
   portalGunDP["charge"] = "ram_portalgun:charge";
   portalGunDP["scale"] = "ram_portalgun:portal_scale";
   portalGunDP["fastLocationChange"] = "ram_portalgun:fast_location_change";
+  portalGunDP["infiniteCharge"] = "ram_portalgun:infinite_charge";
+  portalGunDP["bootleggedFluid"] = "ram_portalgun:bootlegged_fluid";
 })(portalGunDP || (portalGunDP = {}));

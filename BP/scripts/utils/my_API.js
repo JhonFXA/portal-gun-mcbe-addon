@@ -51,9 +51,10 @@ export function changePortalGunMode(player, inventory, portalGunItem, mode, remo
  * @param {number} scale - The portal’s size.
  * @param {string} ownerId - The ID of the player or entity that owns this portal.
  * @param {boolean} [autoClose=false] - Whether the portal should automatically close after a delay.
+ * @param {boolean} [bootleggedFluid=false] - Whether the portal gun is using bootleg portal fluid.
  * @returns {Entity} The newly created portal entity.
  */
-export function spawnPortal(portalId, dimension, location, rotation, orientation, scale, ownerId, autoClose = false) {
+export function spawnPortal(portalId, dimension, location, rotation, orientation, scale, ownerId, autoClose = false, bootleggedFluid = false) {
   const variables = new MolangVariableMap();
   if(orientation == 0){
     variables.setFloat("variable.ray_orientation", 1);
@@ -90,6 +91,7 @@ export function spawnPortal(portalId, dimension, location, rotation, orientation
   newPortal.setProperty(portalSP.scale, scale);
   newPortal.setDynamicProperty(portalDP.ownerPortalGun, ownerId);
   newPortal.setDynamicProperty(portalDP.autoClose, autoClose);
+  newPortal.setDynamicProperty(portalDP.bootleggedFluid, bootleggedFluid);
 
   const entitiesToDamage = newPortal.dimension.getEntities(queryOptions);
   for (const entity of entitiesToDamage) entity.applyDamage(20);
@@ -298,4 +300,27 @@ export function findNearbyAir(dimension, center, radius = 10) {
 
 
   return locations;
+}
+
+/**
+ * Causes the entity to receive some effects.
+ *
+ * @param {Dimension} entity - Entity that will receive the effects
+ */
+export function dealPortalFluidDamage(entity){
+  entity.addEffect(
+      "minecraft:fatal_poison",
+      300,
+      { amplifier: 5, showParticles: true }
+  );
+  entity.addEffect(
+      "minecraft:slowness",
+      300,
+      { amplifier: 5, showParticles: true }
+  );
+
+  entity.dimension.spawnParticle("ram_portalgun:fluid_poison_particle", entity.location);
+  entity.dimension.spawnParticle("ram_portalgun:fluid_ground_drop", entity.location);
+  entity.dimension.spawnParticle("ram_portalgun:portal_spawn_particle", entity.location);
+  entity.dimension.playSound("ram_portalgun:fluid_burn", entity.location);
 }

@@ -30,11 +30,11 @@
 
 import {ItemStack, EquipmentSlot, world, system} from "@minecraft/server";
 
-import './portal/teleportLogic';
+// import './portal/teleportLogic';
 
 import {summonPortal, usePortalGun} from "./portal/portalGun";
 
-import {linkPortals, removePortal} from "./utils/my_API";
+import {linkPortals, removePortal, dealPortalFluidDamage} from "./utils/my_API";
 
 import {
   ID,
@@ -45,6 +45,8 @@ import {
 } from "./utils/ids&variables";
 
 import { runCooldown, onTick, tagHandling} from "./portal/teleportLogic";
+
+import { openMathGUI } from "./gui/math_gui";
 
 system.runInterval(() => {
     runCooldown();
@@ -81,6 +83,23 @@ world.beforeEvents.playerBreakBlock.subscribe((event) => {
   const gamemode = event.player.getGameMode();
   if (selectedItem &&  gamemode == "Creative")
     event.cancel = true;
+});
+
+
+world.beforeEvents.playerInteractWithBlock.subscribe((event) => {
+    if (event.isFirstEvent !== true) return;
+
+    const {block, itemStack, player} = event;
+
+    if(block.typeId != "ram_portalgun:math_workbench") return;
+  
+    if(!itemStack || !ID.components.bootlegTubes.includes(itemStack?.typeId)){
+      player.sendMessage("§eInteract with the workbench using a Bootleg Portal Fluid.");
+      return;
+    }
+    system.run(() => {
+        openMathGUI(player);
+    });
 });
 
 
@@ -122,7 +141,6 @@ world.afterEvents.entityHitBlock.subscribe((event) => {
 
 });
 
-
 //Used to detect when the player interacts with a portal gun.
 world.afterEvents.itemUse.subscribe((event) => {
   const { itemStack, source: player } = event;
@@ -151,6 +169,10 @@ world.afterEvents.itemUse.subscribe((event) => {
       newGunType = gunInstance.id;
     } else if (itemOffhand?.typeId === gunInstance.emptyTubeId) {
       newGunType = gunInstance.dischargedVersionId;
+    } else if( ID.components.bootlegTubes.includes(itemOffhand?.typeId)){
+      newGunType = gunInstance.id;
+      player.onScreenDisplay.setActionBar("§cWeird fluid detected...");
+      player.dimension.playSound("ram_portalgun:error_sound", player.location);
     }
 
     if (!newGunType) return; // if tube doesn't match, do nothing
@@ -168,8 +190,17 @@ world.afterEvents.itemUse.subscribe((event) => {
       const currentCharge =
         itemOffhand.getDynamicProperty(portalGunDP.charge) ?? 100;
       portalGun.setDynamicProperty(portalGunDP.charge, currentCharge);
-    } else if (ID.components.emptyTubes.includes(itemOffhand.typeId)) {
+      portalGun.setDynamicProperty(portalGunDP.bootleggedFluid, false);
+    } 
+    else if (ID.components.emptyTubes.includes(itemOffhand.typeId)) {
       portalGun.setDynamicProperty(portalGunDP.charge, 0);
+      portalGun.setDynamicProperty(portalGunDP.bootleggedFluid, false);
+    }
+    else if( ID.components.bootlegTubes.includes(itemOffhand.typeId)){
+      const currentCharge =
+        itemOffhand.getDynamicProperty(portalGunDP.charge) ?? 100;
+      portalGun.setDynamicProperty(portalGunDP.charge, currentCharge);
+      portalGun.setDynamicProperty(portalGunDP.bootleggedFluid, true);
     }
 
     // Consume one tube from offhand
@@ -263,7 +294,7 @@ world.afterEvents.entityHitBlock.subscribe((event) => {
 
 // It allows Portal Gun projectiles to hit entities and give them poison effect.
 world.afterEvents.projectileHitEntity.subscribe((event) => {
-  if (!ID.projectiles.includes(event.projectile.typeId)) {
+  if (!ID.projectiles.includes(event.projectile.typeId) && !ID.bootlegProjectiles.includes(event.projectile.typeId)) {
     return;
   }
 
@@ -272,22 +303,22 @@ world.afterEvents.projectileHitEntity.subscribe((event) => {
     return;
   }
 
-  hitEntity.addEffect("minecraft:fatal_poison", 200, {amplifier: 5, showParticles: true});
-  hitEntity.dimension.spawnParticle("ram_portalgun:fluid_poison_particle", hitEntity.location);
-  hitEntity.dimension.spawnParticle("ram_portalgun:fluid_ground_drop", hitEntity.location);
-  hitEntity.dimension.spawnParticle("ram_portalgun:portal_spawn_particle", hitEntity.location);
-  hitEntity.dimension.playSound("ram_portalgun:fluid_burn", hitEntity.location)
+  dealPortalFluidDamage(hitEntity);
 
 });
 
 // It is used to detect when a Portal Gun projectile lands on a block
 // and then summon a portal at the hit location.
 world.afterEvents.projectileHitBlock.subscribe((event) => {
-  if (!ID.projectiles.includes(event.projectile.typeId)) {
+  const projectile = event.projectile;
+
+  if (!ID.projectiles.includes(projectile.typeId) && !ID.bootlegProjectiles.includes(projectile.typeId)) {
     return;
   }
+
+  const bootleggedFluid = ID.bootlegProjectiles.includes(projectile.typeId);
   const player = event.source;
-  summonPortal(player, event.getBlockHit());
+  summonPortal(player, event.getBlockHit(), bootleggedFluid);
 });
 
 /*

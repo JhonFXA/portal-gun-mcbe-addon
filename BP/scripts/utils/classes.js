@@ -1,5 +1,5 @@
 import {
-  ItemStack,
+  ItemStack, world
 } from "@minecraft/server";
 import {
   portalGunDP,
@@ -12,8 +12,11 @@ export class PortalGun {
     dischargedVersionId,
     emptyTubeId,
     chargedTubeId,
+    bootlegTubeId,
     projectileId,
+    bootlegProjectileId,
     highPressureProjectileId,
+    highPressureBootlegProjectileId,
     portalId
   }) {
     this.id = id;
@@ -21,8 +24,11 @@ export class PortalGun {
     this.dischargedVersionId = dischargedVersionId;
     this.emptyTubeId = emptyTubeId;
     this.chargedTubeId = chargedTubeId;
+    this.bootlegTubeId = bootlegTubeId;
     this.projectileId = projectileId;
+    this.bootlegProjectileId = bootlegProjectileId;
     this.highPressureProjectileId = highPressureProjectileId;
+    this.highPressureBootlegProjectileId = highPressureBootlegProjectileId;
     this.portalId = portalId;
   }
 
@@ -37,10 +43,10 @@ export class PortalGun {
       };
 
       const highPressure = portalGunItem.getDynamicProperty(portalGunDP.highPressure) === true;
+      const bootleggedFluid = portalGunItem.getDynamicProperty(portalGunDP.bootleggedFluid) === true;
 
-      const projectileType = highPressure ? this.highPressureProjectileId : this.projectileId;
+      const projectileType = highPressure? (bootleggedFluid? this.highPressureBootlegProjectileId: this.highPressureProjectileId): (bootleggedFluid? this.bootlegProjectileId: this.projectileId);
   
-
       const projectile = player.dimension.spawnEntity(projectileType, spawnPosition);
       const projectileComponent = projectile.getComponent("minecraft:projectile");
 

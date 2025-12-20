@@ -146,7 +146,7 @@ export function usePortalGun(player, portalGunItem) {
     const cost = scale
     const gunObject = portalGuns.find((gun) => gun.id === portalGunItem.typeId);
 
-    player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot", {blendOutTime: 1, stopExpression: "q.is_first_person"});
+    player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot");
 
     if (charge > 0) {
       portalGunItem = gunObject.decreaseCharge(
@@ -475,7 +475,7 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
  * @param {Player} player - The player using the Portal Gun.
  * @param {Object} target - The target block or entity data returned from a raycast or selection event.
  */
-export function summonPortal(player, target) {
+export function summonPortal(player, target, bootleggedFluid = false) {
   const placement = getPortalPlacement(player, target);
   if (!placement) {
     player.sendMessage("§c[!] Invalid target for portal placement.§r");
@@ -511,7 +511,7 @@ export function summonPortal(player, target) {
     );
     let portalIds = portalListJson ? JSON.parse(portalListJson) : [];
 
-    let newPortal = spawnPortal(gunInstance.portalId, player.dimension, location, rotation, orientation, scale, portalGunId, autoClose);
+    let newPortal = spawnPortal(gunInstance.portalId, player.dimension, location, rotation, orientation, scale, portalGunId, autoClose, bootleggedFluid);
     if (!newPortal) {
       player.sendMessage("§c[!] Failed to spawn portal.§r");
       return;

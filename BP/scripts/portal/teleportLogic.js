@@ -1,6 +1,6 @@
 import {system, world} from "@minecraft/server";
 import { portalGunDP, portalDP, portalSP} from "../utils/ids&variables";
-import { calculateEuclideanDistance, findPortalGunInInventory, linkPortals, removePortal } from "../utils/my_API";
+import { calculateEuclideanDistance, findPortalGunInInventory, linkPortals, removePortal, dealPortalFluidDamage} from "../utils/my_API";
 
 const TELEPORTED_TAG = "ram_portalgun:teleported";
 const OBJECTIVE_ID = "ram_portalgun:cooldownTime";
@@ -65,17 +65,23 @@ export function onTick() {
 
         portals.forEach(portal => {
             const dualityPortalId = portal.getDynamicProperty(portalDP.DualityPortalId);
-            if (!dualityPortalId) return;
+            const dualPortal = dualityPortalId
+                ? world.getEntity(dualityPortalId)
+                : null;
 
-            const dualPortal = world.getEntity(dualityPortalId);
             const isLinked = !!dualPortal;
             portal.setProperty(portalSP.isLinked, isLinked);
-            if (!isLinked) return;
 
-            handlePortalFluids(portal, dualPortal);
+            if (isLinked) {
+                handlePortalFluids(portal, dualPortal);
+            }
 
             const radius = getPortalRadius(portal);
-            let nearbyEntities = findEntitiesNearPortal(portal.dimension, portal.location, radius);
+            let nearbyEntities = findEntitiesNearPortal(
+                portal.dimension,
+                portal.location,
+                radius
+            );
 
             // Filter for small-scale portals
             if (portal.getProperty(portalSP.scale) < 1) {
@@ -87,15 +93,39 @@ export function onTick() {
                 return !isRiding;
             });
 
-            // Teleport entities
+            const bootleggedPortal =
+                portal.getDynamicProperty(portalDP.bootleggedFluid) === true;
+
             nearbyEntities.forEach(entity => {
+                if (bootleggedPortal) {
+                    if (entity.typeId === "minecraft:item") return;
+
+                    dealPortalFluidDamage(entity);
+
+                    const { y: yaw } = entity.getRotation();
+                    const yawRad = yaw * Math.PI / 180;
+
+                    const x = Math.sin(yawRad) * 2;
+                    const z = -Math.cos(yawRad) * 2;
+
+                    entity.applyKnockback({ x, z }, 0.3);
+                    activateCooldown(entity);
+                    entity.addTag(TELEPORTED_TAG);
+                    return;
+                }
+
+                if (!isLinked) return;
+
                 playPortalAnimation(portal, dualPortal);
 
                 if (entity.typeId !== "minecraft:player") {
                     activateCooldown(entity);
-                    entity.setDynamicProperty(portalDP.lastPortalUsed, dualPortal.id);
+                    entity.setDynamicProperty(
+                        portalDP.lastPortalUsed,
+                        dualPortal.id
+                    );
                     entity.addTag(TELEPORTED_TAG);
-                    teleportEntityToLocation(portal, dualPortal, entity)
+                    teleportEntityToLocation(portal, dualPortal, entity);
                 } else {
                     playerUsePortal(portal, dualPortal, entity);
                 }

@@ -129,7 +129,7 @@
             "sounds": [
                 {
                     "name": "sounds/ram_portalgun/power_off_portal_gun",
-                    "volume": 0.6
+                    "volume": 1
                 }
             ]
         },
@@ -140,7 +140,7 @@
             "sounds": [
                 {
                     "name": "sounds/ram_portalgun/fluid_burn",
-                    "volume": 0.6
+                    "volume": 1
                 }
             ]
         }
