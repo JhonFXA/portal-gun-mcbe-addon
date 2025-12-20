@@ -449,7 +449,6 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
     
     newPortal.setDynamicProperty(portalDP.isRoot, false);
     
-    world.sendMessage(`§a[+] Custom portal created at X:${fixedLoc.x.toFixed(1)} Y:${fixedLoc.y.toFixed(1)} Z:${fixedLoc.z.toFixed(1)} in ${dim.id}§r`);
     customPortal.setDynamicProperty(portalDP.childList, JSON.stringify(portalIds));
     customPortal.setDynamicProperty(portalDP.locationId, locId);
     customPortal.setDynamicProperty(portalDP.tickingArea, tickingAreaName);
