@@ -342,7 +342,7 @@ function handleSafePlacement(targetDimension, customLocation, fixedCustomLocatio
       // Fallback: vertical scan upwards until air is found
       player.onScreenDisplay.setActionBar(`§e[Safe Placement] No nearby air found. Scanning upwards...§r`);
       const maxHeight = targetDimension.heightRange.max;
-      const maxScan = Math.min(maxHeight, fixedCustomLocation.y + 40); // limit scan to +40 blocks for performance
+      const maxScan = Math.min(maxHeight, fixedCustomLocation.y + 80); // limit scan to +40 blocks for performance
       while (fixedCustomLocation.y < maxScan) {
         const block = targetDimension.getBlock(fixedCustomLocation);
         if (block && (block.isAir || block.typeId === "minecraft:water")) {

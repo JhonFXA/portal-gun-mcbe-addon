@@ -1,6 +1,6 @@
 import { ItemStack } from "@minecraft/server";
 import {ActionFormData, ModalFormData, MessageFormData} from "@minecraft/server-ui";
-import {changePortalGunMode, removeAllPortals} from '../utils/my_API';
+import {changePortalGunMode, findItemInInventory, findPortalGunInInventory, removeAllPortals} from '../utils/my_API';
 import { portalGunDP, ID, portalGuns } from "../utils/ids&variables";
 
 
@@ -32,9 +32,16 @@ function stopPlayerAnimation(player){
  * Saved Locations, Set Coordinates, Select Mode, and Settings.
  */
 
-export function openPortalGunMenu(player) {
+export function openPortalGunMenu(player, portalGunId = null) {
     const inventory = player.getComponent("inventory");
-    const portalGunItem = inventory.container.getItem(player.selectedSlotIndex)
+    let itemObject;
+    let portalGunItem;
+    if(portalGunId){
+        itemObject = findPortalGunInInventory(player, portalGunId);
+        portalGunItem = itemObject.item;
+    } else {
+        portalGunItem = inventory.container.getItem(player.selectedSlotIndex)
+    }
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge)??0;
 
     const totalBars = 10;
@@ -125,12 +132,17 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
         } else if (response.selection === 2){
             openSearchForm(player, inventory, portalGunItem, savedLocations);
         } else if (response.selection === savedLocations.length + 3){
-            openPortalGunMenu(player);
+            const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+            openPortalGunMenu(player, portalGunId);
         } else if (response.selection !== undefined){
             const selectedLocation = savedLocations[response.selection - 3];
             portalGunItem.setDynamicProperty(portalGunDP.customLocation, JSON.stringify(selectedLocation));
             portalGunItem.setDynamicProperty(portalGunDP.mode, "CUSTOM")
-            inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+
+            const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+            const itemObject = findPortalGunInInventory(player, portalGunId);
+            inventory.container.setItem(itemObject.slotIndex, portalGunItem);
+
             player.onScreenDisplay.setActionBar(
                 `§aSet to location: ${selectedLocation.name} (§eX:${selectedLocation.x} Y:${selectedLocation.y} Z:${selectedLocation.z}§r)§r`
             );
@@ -212,7 +224,11 @@ function openFilteredLocationsForm(player, inventory, portalGunItem, filteredLoc
             const selectedLocation = filteredLocations[resultsResponse.selection];
             portalGunItem.setDynamicProperty(portalGunDP.customLocation, JSON.stringify(selectedLocation));
             portalGunItem.setDynamicProperty(portalGunDP.mode, "CUSTOM")
-            inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+
+            const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+            const itemObject = findPortalGunInInventory(player, portalGunId);
+            inventory.container.setItem(itemObject.slotIndex, portalGunItem);
+
             player.onScreenDisplay.setActionBar(
                 `§aSet to location: ${selectedLocation.name} (§eX:${selectedLocation.x} Y:${selectedLocation.y} Z:${selectedLocation.z}§r)§r`
             );
@@ -255,7 +271,11 @@ function openSaveCurrentLocationForm(player, inventory, portalGunItem, savedLoca
 
             savedLocations.push(newLocationData);
             portalGunItem.setDynamicProperty(portalGunDP.savedLocations, JSON.stringify(savedLocations));
-            inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+
+            const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+            const itemObject = findPortalGunInInventory(player, portalGunId);
+            inventory.container.setItem(itemObject.slotIndex, portalGunItem);
+            
             player.dimension.playSound("ram_portalgun:selection", player.location);
             openSavedLocationsForm(player, inventory, portalGunItem);
         } else {
@@ -303,7 +323,11 @@ function openDeleteLocationForm(player, inventory, portalGunItem, savedLocations
         else if (response.selection !== undefined){
             savedLocations.splice(response.selection, 1);
             portalGunItem.setDynamicProperty(portalGunDP.savedLocations, JSON.stringify(savedLocations));
-            inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+
+            const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+            const itemObject = findPortalGunInInventory(player, portalGunId);
+            inventory.container.setItem(itemObject.slotIndex, portalGunItem);
+
             player.dimension.playSound("ram_portalgun:selection", player.location);
             openSavedLocationsForm(player, inventory, portalGunItem);
         } else {
@@ -342,7 +366,8 @@ function openDimensionSelectForm(player, inventory, portalGunItem){
                 openSetCoordinatesForm(player, inventory, portalGunItem, "minecraft:the_end");
                 break;
             case 3:
-                openPortalGunMenu(player);
+                const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+                openPortalGunMenu(player, portalGunId);
                 break;
             default:
                 stopPlayerAnimation(player);
@@ -400,7 +425,11 @@ function openSetCoordinatesForm(player, inventory, portalGunItem, dimensionId = 
 
             portalGunItem.setDynamicProperty(portalGunDP.mode, "CUSTOM");
             portalGunItem.setDynamicProperty(portalGunDP.customLocation, JSON.stringify(newLocationData));
-            inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+
+            const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+            const itemObject = findPortalGunInInventory(player, portalGunId);
+            inventory.container.setItem(itemObject.slotIndex, portalGunItem);
+
             player.dimension.playSound("ram_portalgun:selection", player.location);
             player.onScreenDisplay.setActionBar(
                 `§aSet to location: ${newLocationData.name} (§eX:${newLocationData.x} Y:${newLocationData.y} Z:${newLocationData.z}§r)§r`
@@ -451,7 +480,8 @@ function openSelectModeForm(player, inventory, portalGunItem) {
                     player.onScreenDisplay.setActionBar(`§aSet Mode to Root.§r`);
                     stopPlayerAnimation(player);
                     break;
-            case 4: openPortalGunMenu(player); 
+            case 4: const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+                    openPortalGunMenu(player, portalGunId);
                     break;
             default: stopPlayerAnimation(player);
         }
@@ -502,7 +532,10 @@ function openSettingsForm(player, inventory, portalGunItem) {
                 break;
             case 5: openHowToUseForm(player, inventory, portalGunItem); break;
             case 6: openTerminalForm(player, inventory, portalGunItem); break;
-            case 7: openPortalGunMenu(player); break;
+            case 7: 
+                const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+                openPortalGunMenu(player, portalGunId);
+                break;
             default: stopPlayerAnimation(player);
         }
     })
@@ -574,7 +607,10 @@ function openBehaviorSettingsForm(player, portalGunItem, inventory){
                     break;
             }
 
-            inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+            const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+            const itemObject = findPortalGunInInventory(player, portalGunId);
+            inventory.container.setItem(itemObject.slotIndex, portalGunItem);
+
             player.onScreenDisplay.setActionBar(
                 `§aSettings updated.§r`
             );
@@ -619,9 +655,14 @@ function openHistoryForm(player, inventory, portalGunItem){
         }
         else if (response.selection !== undefined && response.selection > 0){
             const selectedLocation = history[response.selection - 1];
+            
             portalGunItem.setDynamicProperty(portalGunDP.customLocation, JSON.stringify(selectedLocation));
             portalGunItem.setDynamicProperty(portalGunDP.mode, "CUSTOM")
-            inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+
+            const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+            const itemObject = findPortalGunInInventory(player, portalGunId);
+            inventory.container.setItem(itemObject.slotIndex, portalGunItem);
+
             player.onScreenDisplay.setActionBar(
                 `§aSet to location: ${selectedLocation.name} (§eX:${selectedLocation.x} Y:${selectedLocation.y} Z:${selectedLocation.z}§r)§r`
             );
@@ -658,12 +699,16 @@ function openResetForm(player, portalGunItem, inventory){
         if(response.selection == 0){
             stopPlayerAnimation(player);
             removeAllPortals(player, portalGunItem);
+            const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
             const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
             const bootleg = portalGunItem.getDynamicProperty(portalGunDP.bootleggedFluid);
             portalGunItem.clearDynamicProperties();
             portalGunItem.setDynamicProperty(portalGunDP.charge, charge);
             portalGunItem.setDynamicProperty(portalGunDP.bootleggedFluid, bootleg);
-            inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+
+            const itemObject = findPortalGunInInventory(player, portalGunId);
+            inventory.container.setItem(itemObject.slotIndex, portalGunItem);
+
             player.dimension.playSound("ram_portalgun:selection", player.location);
             player.onScreenDisplay.setActionBar(
                 `§aPortal gun has been reset.§r`
@@ -768,7 +813,11 @@ Dimension: ${color}${dimName}§r`;
         };
         savedLocations.push(newLocationData);
         portalGunItem.setDynamicProperty(portalGunDP.savedLocations, JSON.stringify(savedLocations));
-        inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+
+        const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+        const itemObject = findPortalGunInInventory(player, portalGunId);
+        inventory.container.setItem(itemObject.slotIndex, portalGunItem);
+
         player.dimension.playSound("ram_portalgun:selection", player.location);
 
         openTerminalForm(player, inventory, portalGunItem, `§aSaved location '${locationName}'`);
@@ -801,7 +850,11 @@ Dimension: ${color}${dimName}§r`;
                 return;
             }
             portalGunItem.setDynamicProperty(portalGunDP.savedLocations, JSON.stringify([]));
-            inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+
+            const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+            const itemObject = findPortalGunInInventory(player, portalGunId);
+            inventory.container.setItem(itemObject.slotIndex, portalGunItem);
+
             player.dimension.playSound("ram_portalgun:selection", player.location);
             openTerminalForm(player, inventory, portalGunItem, `§aDeleted all saved locations.§r`);
             return;
@@ -813,7 +866,11 @@ Dimension: ${color}${dimName}§r`;
             return;
         }
         portalGunItem.setDynamicProperty(portalGunDP.savedLocations, JSON.stringify(savedLocations));
-        inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
+
+        const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+        const itemObject = findPortalGunInInventory(player, portalGunId);
+        inventory.container.setItem(itemObject.slotIndex, portalGunItem);        
+
         player.dimension.playSound("ram_portalgun:selection", player.location);
         openTerminalForm(player, inventory, portalGunItem, `§aDeleted location '${locationName}'.§r`);
     }
@@ -954,7 +1011,9 @@ function dismountPortalGun(player, portalGunItem, inventory) {
         portalGunBase.setDynamicProperty(id, value);
     });
 
-    inventory.container.setItem(player.selectedSlotIndex, portalGunBase);
+    const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
+    const itemObject = findPortalGunInInventory(player, portalGunId);
+    inventory.container.setItem(itemObject.slotIndex, portalGunItem);
 
 
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
