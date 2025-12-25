@@ -1,0 +1,559 @@
+{
+  "namespace": "oux7vynamespace",
+  "custom_button": {
+    "$default_button_background_texture|default": "textures/ui/glass_pane",
+    "$hover_button_background_texture|default": "textures/ui/glass_pane_hover",
+    "$pressed_button_background_texture|default": "textures/ui/button_black_hover",
+    "$button_size|default": [
+      64,
+      64
+    ],
+    "$button_offset|default": [
+      0,
+      0
+    ],
+    "$icon_size|default": [
+      45,
+      45
+    ],
+    "$icon_offset|default": [
+      0,
+      -5
+    ],
+    "$text_offset|default": [
+      0,
+      -8
+    ],
+    "$font_size|default": 1,
+    "$font_type|default": "MinecraftRegular",
+    "$shadow|default": false,
+    "$text_alignment|default": "left",
+    "$show_hover_text|default": true,
+    "type": "panel",
+    "size": "$button_size",
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "controls": [
+      {
+        "panel_name": {
+          "type": "panel",
+          "size": "$button_size",
+          "offset": "$button_offset",
+          "anchor_from": "top_left",
+          "anchor_to": "top_left",
+          "bindings": [
+            {
+              "binding_type": "view",
+              "source_control_name": "image",
+              "resolve_sibling_scope": true,
+              "source_property_name": "(not (#texture = ''))",
+              "target_property_name": "#visible"
+            }
+          ],
+          "controls": [
+            {
+              "image": {
+                "anchor_from": "top_left",
+                "anchor_to": "top_left",
+                "type": "image",
+                "layer": 200,
+                "size": "$icon_size",
+                "offset": "$icon_offset",
+                "bindings": [
+                  {
+                    "binding_name": "#form_button_texture",
+                    "binding_name_override": "#texture",
+                    "binding_type": "collection",
+                    "binding_collection_name": "form_buttons"
+                  },
+                  {
+                    "binding_name": "#form_button_texture_file_system",
+                    "binding_name_override": "#texture_file_system",
+                    "binding_type": "collection",
+                    "binding_collection_name": "form_buttons"
+                  },
+                  {
+                    "binding_type": "view",
+                    "source_property_name": "(not ((#texture = '') or (#texture = 'loading')))",
+                    "target_property_name": "#visible"
+                  }
+                ]
+              }
+            },
+            {
+              "text": {
+                "anchor_from": "top_left",
+                "anchor_to": "top_left",
+                "type": "label",
+                "text": "#form_button_text",
+                "font_type": "$font_type",
+                "font_scale_factor": "$font_size",
+                "layer": 5,
+                "text_alignment": "$text_alignment",
+                "shadow": "$shadow",
+                "offset": "$text_offset",
+                "bindings": [
+                  {
+                    "binding_name": "#form_button_text",
+                    "binding_type": "collection",
+                    "binding_collection_name": "form_buttons"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "form_button@common_buttons.light_content_button": {
+          "$default_button_texture": "$default_button_background_texture",
+          "$hover_button_texture": "$hover_button_background_texture",
+          "$pressed_button_texture": "$pressed_button_background_texture",
+          "$default_state_border_visible": false,
+          "$hover_state_border_visible": false,
+          "$pressed_state_border_visible": false,
+          "$pressed_button_name": "button.form_button_click",
+          "offset": "$button_offset",
+          "anchor_from": "top_left",
+          "anchor_to": "top_left",
+          "size": "$button_size",
+          "$button_text": "#null",
+          "$button_text_binding_type": "collection",
+          "$button_text_grid_collection_name": "form_buttons",
+          "$button_text_max_size": [
+            "100%",
+            20
+          ],
+          "variables": [
+            {
+              "requires": "($show_hover_text)",
+              "$button_content": "default_namespace.hover_text_panel"
+            }
+          ],
+          "bindings": [
+            {
+              "binding_type": "collection_details",
+              "binding_collection_name": "form_buttons"
+            }
+          ]
+        }
+      }
+    ],
+    "bindings": [
+      {
+        "binding_name": "#form_button_text",
+        "binding_type": "collection",
+        "binding_collection_name": "form_buttons"
+      },
+      {
+        "binding_type": "view",
+        "source_property_name": "(not (#form_button_text = '') )",
+        "target_property_name": "#visible"
+      }
+    ]
+  },
+  "oux7vynamespace": {
+    "offset": [
+      -270.53999999999996,
+      -152.415
+    ],
+    "size": [
+      541.0799999999999,
+      304.83
+    ],
+    "layer": 0,
+    "type": "panel",
+    "anchor_from": "top_left",
+    "anchor_to": "top_left",
+    "bindings": [],
+    "controls": [
+      {
+        "n0hdi7tj-image": {
+          "offset": [
+            -1.4379552,
+            -15.880895999999998
+          ],
+          "size": [
+            544.68,
+            326.52
+          ],
+          "layer": 2,
+          "type": "image",
+          "texture": "textures/temptextures/math_workbench_ui",
+          "anchor_from": "top_left",
+          "anchor_to": "top_left",
+          "bindings": [],
+          "controls": [
+            {
+              "oog0ts3w-label": {
+                "offset": [
+                  30.773880000000002,
+                  32.289775999999996
+                ],
+                "layer": 5,
+                "type": "label",
+                "anchor_from": "top_left",
+                "anchor_to": "top_left",
+                "text": "Science. Try not to die.",
+                "font_scale_factor": 1.152,
+                "text_alignment": "center",
+                "font_type": "MinecraftTen",
+                "shadow": true,
+                "bindings": []
+              }
+            },
+            {
+              "6xvaafkl-label": {
+                "offset": [
+                  159.03719999999998,
+                  297.00775999999996
+                ],
+                "layer": 5,
+                "type": "label",
+                "anchor_from": "top_left",
+                "anchor_to": "top_left",
+                "text": "Okay, okay, carry the one… don’t explode… yet.",
+                "font_scale_factor": 0.9216000000000002,
+                "text_alignment": "center",
+                "font_type": "MinecraftRegular",
+                "shadow": true,
+                "bindings": []
+              }
+            },
+            {
+              "zkge002x-label": {
+                "offset": [
+                  32.215896,
+                  65.89784
+                ],
+                "layer": 5,
+                "type": "label",
+                "anchor_from": "top_left",
+                "anchor_to": "top_left",
+                "text": "Portal fluid is an extremely \nunstable and hazardous \nsubstance. Incorrect \ncalculations may result in \nsevere bodily harm, \ndimensional corruption, or \ncomplete molecular \ndisintegration.",
+                "font_scale_factor": 0.9216000000000002,
+                "text_alignment": "left",
+                "font_type": "MinecraftRegular",
+                "shadow": true,
+                "bindings": []
+              }
+            },
+            {
+              "ky37nb53-panel": {
+                "offset": [
+                  375.9444,
+                  94.5612
+                ],
+                "size": [
+                  159.26318481445313,
+                  188.42319580078123
+                ],
+                "layer": 4,
+                "type": "panel",
+                "anchor_from": "top_left",
+                "anchor_to": "top_left",
+                "bindings": [],
+                "controls": [
+                  {
+                    "cu7mmb0r-image": {
+                      "offset": [
+                        0.14318496,
+                        0.14319576
+                      ],
+                      "size": [
+                        159.12,
+                        188.28
+                      ],
+                      "layer": 6,
+                      "type": "image",
+                      "texture": "textures/assets/turquoise_default_background",
+                      "anchor_from": "top_left",
+                      "anchor_to": "top_left",
+                      "bindings": [],
+                      "controls": [
+                        {
+                          "3ed9zooi-label": {
+                            "offset": [
+                              20.48112,
+                              20.613879999999998
+                            ],
+                            "layer": 9,
+                            "type": "label",
+                            "anchor_from": "top_left",
+                            "anchor_to": "top_left",
+                            "text": "Solve for x: \n5 − (2x − 3) = x + 4",
+                            "font_scale_factor": 1.152,
+                            "text_alignment": "left",
+                            "font_type": "MinecraftRegular",
+                            "shadow": false,
+                            "bindings": []
+                          }
+                        },
+                        {
+                          "lshce2b2-panel": {
+                            "offset": [
+                              0,
+                              69.47604
+                            ],
+                            "size": [
+                              159.1159130859375,
+                              118.79386962890625
+                            ],
+                            "layer": 8,
+                            "type": "panel",
+                            "anchor_from": "top_left",
+                            "anchor_to": "top_left",
+                            "bindings": [],
+                            "controls": [
+                              {
+                                "wgjukg5o-button@oux7vynamespace.custom_button": {
+                                  "$default_button_background_texture": "textures/assets/turquoise_default_button",
+                                  "$hover_button_background_texture": "textures/assets/turquoise_hover_button",
+                                  "$pressed_button_background_texture": "textures/assets/indent_hover",
+                                  "$button_offset": [
+                                    0,
+                                    0
+                                  ],
+                                  "$button_size": [
+                                    79.2,
+                                    60.48
+                                  ],
+                                  "layer": 10,
+                                  "anchor_from": "top_left",
+                                  "anchor_to": "top_left",
+                                  "collection_index": 0,
+                                  "$icon_offset": [
+                                    2,
+                                    2
+                                  ],
+                                  "$icon_size": [
+                                    45,
+                                    45
+                                  ],
+                                  "$font_size": 1.7280000000000002,
+                                  "$text_offset": [
+                                    31.940784,
+                                    19.855448
+                                  ],
+                                  "$font_type": "MinecraftTen",
+                                  "$shadow": false,
+                                  "$text_alignment": "center",
+                                  "$show_hover_text": false,
+                                  "bindings": []
+                                }
+                              },
+                              {
+                                "dzltyz3l-button@oux7vynamespace.custom_button": {
+                                  "$default_button_background_texture": "textures/assets/turquoise_default_button",
+                                  "$hover_button_background_texture": "textures/assets/turquoise_hover_button",
+                                  "$pressed_button_background_texture": "textures/assets/indent_hover",
+                                  "$button_offset": [
+                                    79.91604,
+                                    0
+                                  ],
+                                  "$button_size": [
+                                    79.2,
+                                    60.48
+                                  ],
+                                  "layer": 10,
+                                  "anchor_from": "top_left",
+                                  "anchor_to": "top_left",
+                                  "collection_index": 0,
+                                  "$icon_offset": [
+                                    2,
+                                    2
+                                  ],
+                                  "$icon_size": [
+                                    45,
+                                    45
+                                  ],
+                                  "$font_size": 1.7280000000000002,
+                                  "$text_offset": [
+                                    33.754104,
+                                    19.855448
+                                  ],
+                                  "$font_type": "MinecraftTen",
+                                  "$shadow": false,
+                                  "$text_alignment": "center",
+                                  "$show_hover_text": false,
+                                  "bindings": []
+                                }
+                              },
+                              {
+                                "mrpep77c-button@oux7vynamespace.custom_button": {
+                                  "$default_button_background_texture": "textures/assets/turquoise_default_button",
+                                  "$hover_button_background_texture": "textures/assets/turquoise_hover_button",
+                                  "$pressed_button_background_texture": "textures/assets/indent_hover",
+                                  "$button_offset": [
+                                    0,
+                                    58.31388
+                                  ],
+                                  "$button_size": [
+                                    79.2,
+                                    60.48
+                                  ],
+                                  "layer": 10,
+                                  "anchor_from": "top_left",
+                                  "anchor_to": "top_left",
+                                  "collection_index": 0,
+                                  "$icon_offset": [
+                                    2,
+                                    2
+                                  ],
+                                  "$icon_size": [
+                                    45,
+                                    45
+                                  ],
+                                  "$font_size": 1.7280000000000002,
+                                  "$text_offset": [
+                                    34.962948,
+                                    19.855448
+                                  ],
+                                  "$font_type": "MinecraftTen",
+                                  "$shadow": false,
+                                  "$text_alignment": "center",
+                                  "$show_hover_text": false,
+                                  "bindings": []
+                                }
+                              },
+                              {
+                                "l3s7bqgp-button@oux7vynamespace.custom_button": {
+                                  "$default_button_background_texture": "textures/assets/turquoise_default_button",
+                                  "$hover_button_background_texture": "textures/assets/turquoise_hover_button",
+                                  "$pressed_button_background_texture": "textures/assets/indent_hover",
+                                  "$button_offset": [
+                                    79.91604,
+                                    58.31388
+                                  ],
+                                  "$button_size": [
+                                    79.2,
+                                    60.48
+                                  ],
+                                  "layer": 10,
+                                  "anchor_from": "top_left",
+                                  "anchor_to": "top_left",
+                                  "collection_index": 0,
+                                  "$icon_offset": [
+                                    2,
+                                    2
+                                  ],
+                                  "$icon_size": [
+                                    45,
+                                    45
+                                  ],
+                                  "$font_size": 1.7280000000000002,
+                                  "$text_offset": [
+                                    33.754104,
+                                    19.855448
+                                  ],
+                                  "$font_type": "MinecraftTen",
+                                  "$shadow": false,
+                                  "$text_alignment": "center",
+                                  "$show_hover_text": false,
+                                  "bindings": []
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "config": {
+    "magicNumbers": {
+      "scrolling_panel_offsets": {
+        "scrolling_pane_right_offset": 2
+      },
+      "textEditor": {
+        "indentation": 4
+      },
+      "explorer": {
+        "folderIndentation": 10,
+        "nonFolderIndentation": 35,
+        "overallOffset": 15
+      },
+      "resizeHandleSize": 15,
+      "fontScalar": 1.6,
+      "fontOffsetX": 6,
+      "fontOffsetY": 6,
+      "UI_SCALAR": 0.36,
+      "buttonImageOffsetX": 2,
+      "buttonImageOffsetY": 2
+    }
+  }
+}
+/* Generated by JSON-UI Maker, do not edit or it cannot be imported back into the website.
+Made by smegma0393 (seb) on discord https://github.com/SebTheSigma/JSON-UI-Maker */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        {
+                            "title-label": {
+                                "type": "label",
+                                "layer": 2,
+                                "offset": [0, 0],
+                                "text": "Science. Try not to die.",
+                                "anchor_from": "top_left",
+                                "anchor_to": "top_left",
+                                "text_alignment": "center",
+                                "font_type": "MinecraftTen",
+                                "font_scale_factor": 1.5,
+                                "shadow": true,
+                                "bindings": []
+                            }
+                        },
+                        {
+                            "info-label": {
+                                "type": "label",
+                                "layer": 3,
+                                "offset": [0, 0],
+                                "text": "Portal fluid is an extremely \nunstable and hazardous \nsubstance. Incorrect \ncalculations may result in \nsevere bodily harm, \ndimensional corruption, or \ncomplete molecular \ndisintegration. BE CAREFUL!",
+                                "shadow": true,
+                                "anchor_from": "top_left",
+                                "anchor_to": "top_left",
+                                "color": [1,1,0],
+                                "bindings": [],
+                                "font_type": "MinecraftRegular",
+                                "font_scale_factor": 1
+                            }
+                        },
+                        {
+                            "speech-label": {
+                                "type": "label",
+                                "layer": 3,
+                                "offset": [0, 20],
+                                "anchor_from": "top_left",
+                                "anchor_to": "top_left",                                
+                                "text": "Okay, okay, carry the one... don't explode.",
+                                "shadow": true,
+                                "bindings": [],
+                                "font_type": "MinecraftRegular",
+                                "font_scale_factor": 1
+                            }
+                        },

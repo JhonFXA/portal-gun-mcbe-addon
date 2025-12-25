@@ -1013,7 +1013,7 @@ function dismountPortalGun(player, portalGunItem, inventory) {
 
     const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
     const itemObject = findPortalGunInInventory(player, portalGunId);
-    inventory.container.setItem(itemObject.slotIndex, portalGunItem);
+    inventory.container.setItem(itemObject.slotIndex, portalGunBase);
 
 
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);

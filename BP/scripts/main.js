@@ -46,7 +46,7 @@ import {
 
 import { runCooldown, onTick, tagHandling} from "./portal/teleportLogic";
 
-import { openMathGUI } from "./gui/math_gui";
+import { openSynthesisGUI } from "./gui/synthesis_gui";
 
 system.runInterval(() => {
     runCooldown();
@@ -91,14 +91,14 @@ world.beforeEvents.playerInteractWithBlock.subscribe((event) => {
 
     const {block, itemStack, player} = event;
 
-    if(block.typeId != "ram_portalgun:math_workbench") return;
+    if(block.typeId != "ram_portalgun:synthesis_bench") return;
   
     if(!itemStack || !ID.components.bootlegTubes.includes(itemStack?.typeId)){
       player.sendMessage("§eInteract with the workbench using a Bootleg Portal Fluid.");
       return;
     }
     system.run(() => {
-        openMathGUI(player);
+        openSynthesisGUI(player);
     });
 });
 

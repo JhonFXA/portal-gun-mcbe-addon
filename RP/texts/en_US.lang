@@ -17,7 +17,7 @@ ram_portalgun:portal_gun_group=Portal Guns
 ram_portalgun:head_accessories_group=Head Accessories
 
 ## BLOCKS
-tile.ram_portalgun:math_workbench.name=Math Workbench\n§uPortal Gun
+tile.ram_portalgun:synthesis_bench.name=Synthesis Bench\n§uPortal Gun
 
 ## ARMOR
 item.ram_portalgun:homesteader_rick_hair.name=§bHomesteader Rick's§r Hair\n§7Hit a block with it\nto change hair style\n§uPortal Gun

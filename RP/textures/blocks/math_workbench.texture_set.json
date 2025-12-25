@@ -1,7 +1,0 @@
-{
-	"format_version": "1.16.100",
-	"minecraft:texture_set": {
-		"color": "math_workbench",
-		"metalness_emissive_roughness": "math_workbench_mer"
-	}
-}
