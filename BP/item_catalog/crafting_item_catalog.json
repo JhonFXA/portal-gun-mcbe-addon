@@ -22,7 +22,7 @@
               "icon": "ram_portalgun:rick_hair",
               "name": "ram_portalgun:head_accessories_group"
             },
-            "items": ["ram_portalgun:rick_hair", "ram_portalgun:homesteader_rick_hair"]
+            "items": ["ram_portalgun:rick_hair", "ram_portalgun:homesteader_rick_hair", "ram_portalgun:memory_rick_hair"]
           }
         ]
       }

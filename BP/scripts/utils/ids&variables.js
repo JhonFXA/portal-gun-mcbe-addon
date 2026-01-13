@@ -33,7 +33,7 @@ export var ID = {
   projectiles : ["ram_portalgun:fluid_projectile", "ram_portalgun:fluid_projectile_high_pressure"],
   bootlegProjectiles: ["ram_portalgun:bootleg_fluid_projectile", "ram_portalgun:bootleg_fluid_projectile_high_pressure"],
   portals: ["ram_portalgun:green_portal"],
-  hair: ["ram_portalgun:rick_hair", "ram_portalgun:homesteader_rick_hair"]
+  hair: ["ram_portalgun:rick_hair", "ram_portalgun:homesteader_rick_hair", "ram_portalgun:memory_rick_hair"]
 };
 
 export const PORTAL_MODES = {

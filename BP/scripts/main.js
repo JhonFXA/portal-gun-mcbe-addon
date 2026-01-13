@@ -134,10 +134,14 @@ world.afterEvents.entityHitBlock.subscribe((event) => {
   if (itemStack.typeId == "ram_portalgun:rick_hair") {
     const newHair = new ItemStack("ram_portalgun:homesteader_rick_hair", 1);
     inventory.setItem(player.selectedSlotIndex, newHair);
-  } else {
+  } else if (itemStack.typeId == "ram_portalgun:homesteader_rick_hair") {
+    const newHair = new ItemStack("ram_portalgun:memory_rick_hair", 1);
+    inventory.setItem(player.selectedSlotIndex, newHair);
+  } else if (itemStack.typeId == "ram_portalgun:memory_rick_hair") {
     const newHair = new ItemStack("ram_portalgun:rick_hair", 1);
     inventory.setItem(player.selectedSlotIndex, newHair);
   }
+
 
 });
 

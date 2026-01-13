@@ -28,7 +28,8 @@
 			}
 		},
 		"animation.portal_gun.first_person_shoot": {
-			"animation_length": 2,
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.7917,
 			"override_previous_animation": true,
 			"bones": {
 				"root": {
@@ -45,25 +46,13 @@
 							"post": [146.47, -19.02, -10.88],
 							"lerp_mode": "catmullrom"
 						},
-						"2.0": {
+						"0.7917": {
 							"post": [146.47, -19.02, -10.88],
 							"lerp_mode": "catmullrom"
 						}
 					},
 					"position": {
 						"0.0": {
-							"post": [-10.74987, 29.42334, -3.04473],
-							"lerp_mode": "catmullrom"
-						},
-						"0.125": {
-							"post": [-11.52336, 31.43042, -2.43988],
-							"lerp_mode": "catmullrom"
-						},
-						"0.5": {
-							"post": [-10.74987, 29.42334, -3.04473],
-							"lerp_mode": "catmullrom"
-						},
-						"2.0": {
 							"post": [-10.74987, 29.42334, -3.04473],
 							"lerp_mode": "catmullrom"
 						}

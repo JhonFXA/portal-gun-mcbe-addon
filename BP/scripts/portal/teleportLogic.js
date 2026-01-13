@@ -198,8 +198,12 @@ function filterSmallEntities(entities) {
  * @param {Entity} dualPortal - The linked portal entity.
  */
 function playPortalAnimation(portal, dualPortal) {
+    const animation_length = 0.4; // duration in seconds
+    const tickDelay = animation_length * 20; // convert to game ticks (20 ticks/sec)
     portal.playAnimation("animation.ram_portalgun.portal.pass");
-    dualPortal?.playAnimation("animation.ram_portalgun.portal.pass");
+    system.runTimeout(() => {
+        dualPortal?.playAnimation("animation.ram_portalgun.portal.pass");
+    }, tickDelay);
 }
 
 

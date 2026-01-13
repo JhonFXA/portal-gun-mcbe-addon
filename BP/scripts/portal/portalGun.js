@@ -4,7 +4,7 @@ import {
   ItemStack,
   world
 } from "@minecraft/server";
-import { openPortalGunMenu } from "../gui/menu";
+import { openPortalGunMenu } from "../gui/pg_menu";
 import {
   findPortalGunInInventory,
   linkPortals,

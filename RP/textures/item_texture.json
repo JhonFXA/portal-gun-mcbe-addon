@@ -26,6 +26,9 @@
     	},
 		"homesteader_rick_hair": {
 			"textures": "textures/items/homesteader_rick_hair"
+		},
+		"memory_rick_hair": {
+			"textures": "textures/items/memory_rick_hair"
 		}
 	}
 }
