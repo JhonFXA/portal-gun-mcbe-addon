@@ -11,9 +11,7 @@
 					],
 					"transitions": [
 						{"gun_shoot": "q.cooldown_time_remaining" }
-					],
-                    "blend_via_shortest_path": true,
-					"blend_transition": 0.1
+					]
 				},
 				"gun_shoot": {
 					"animations": [
@@ -22,9 +20,7 @@
 					],
 					"transitions": [
 						{"default": "!q.cooldown_time_remaining" }
-					],
-                    "blend_via_shortest_path": true,
-					"blend_transition": 0.1
+					]
 				}
 			}
 		}

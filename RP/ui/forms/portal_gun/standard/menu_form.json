@@ -315,7 +315,7 @@
                       "$default_button_background_texture": "textures/ui/presets/turquoise_ore-ui_style/turquoise_default_button",
                       "$hover_button_background_texture": "textures/ui/presets/turquoise_ore-ui_style/turquoise_hover_button",
                       "$pressed_button_background_texture": "textures/ui/presets/red_ore-ui_style/red_pressed_button",
-                      "$button_offset": [70, -50],
+                      "$button_offset": [70, -40],
                       "$button_size": [30, 30],
                       "layer": 6,
                       "anchor_from": "top_right",

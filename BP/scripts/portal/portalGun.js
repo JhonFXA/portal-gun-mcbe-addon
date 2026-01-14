@@ -146,7 +146,7 @@ export function usePortalGun(player, portalGunItem) {
     const cost = scale
     const gunObject = portalGuns.find((gun) => gun.id === portalGunItem.typeId);
 
-    player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot");
+    // player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot");
 
     if (charge > 0) {
       portalGunItem = gunObject.decreaseCharge(
