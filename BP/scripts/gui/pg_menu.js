@@ -69,7 +69,8 @@ export function openPortalGunMenu(player, portalGunId = null) {
     .button("Set Coordinates", "textures/ui/pg_ui/menu/set_coordinates_ui")
     .button("Select Mode", "textures/ui/pg_ui/menu/select_mode_ui")
     .button("", "textures/ui/pg_ui/menu/settings_ui")
-    .button("", "textures/ui/pg_ui/menu/close_menu");
+    .button("", "textures/ui/pg_ui/menu/close_menu")
+    .button("", "textures/ui/pg_ui/menu/unplug_tube");
 
     playPlayerAnimation(player);
     player.dimension.playSound("ram_portalgun:open_menu", player.location);
@@ -80,8 +81,11 @@ export function openPortalGunMenu(player, portalGunId = null) {
             case 1: openDimensionSelectForm(player, inventory, portalGunItem); break;
             case 2: openSelectModeForm(player, inventory, portalGunItem); break;
             case 3: openSettingsForm(player, inventory, portalGunItem); break;
+            case 5:
+                stopPlayerAnimation(player);
+                dismountPortalGun(player, portalGunItem, inventory);
+                break;
             default: {
-                player.dimension.playSound("ram_portalgun:button_click", player.location);
                 stopPlayerAnimation(player);
             }
         }
@@ -507,7 +511,6 @@ function openSettingsForm(player, inventory, portalGunItem) {
     .button("Back to Menu", "textures/ui/pg_ui/back_button")
     .divider()
     .button("History", "textures/ui/pg_ui/settings/history")
-    .button("Dismount Portal Gun", "textures/ui/pg_ui/settings/dismount_portal_gun")
     .button("Close All Portals", "textures/ui/pg_ui/settings/close_all_portals")
     .button("Reset Portal Gun", "textures/ui/pg_ui/settings/reset_portal_gun")
     .button("How to Use", "textures/ui/pg_ui/settings/question_mark")
@@ -521,20 +524,16 @@ function openSettingsForm(player, inventory, portalGunItem) {
                 openPortalGunMenu(player, portalGunId);
                 break;
             case 2: openHistoryForm(player, inventory, portalGunItem); break;
-            case 3: 
-                stopPlayerAnimation(player);
-                dismountPortalGun(player, portalGunItem, inventory);
-                break;
-            case 4:
+            case 3:
                 stopPlayerAnimation(player);
                 removeAllPortals(player, portalGunItem); 
                 player.dimension.playSound("ram_portalgun:selection", player.location); 
                 break;
-            case 5: 
+            case 4: 
                 openResetForm(player, portalGunItem, inventory); 
                 break;
-            case 6: openHowToUseForm(player, inventory, portalGunItem); break;
-            case 7: openTerminalForm(player, inventory, portalGunItem); break;
+            case 5: openHowToUseForm(player, inventory, portalGunItem); break;
+            case 6: openTerminalForm(player, inventory, portalGunItem); break;
             default: stopPlayerAnimation(player);
         }
     })
