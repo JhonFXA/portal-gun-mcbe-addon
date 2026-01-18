@@ -9,6 +9,9 @@
 		"portal_gun_base":{
 			"textures": "textures/items/portal_gun_base"
 		},
+		"prototype_portal_gun": {
+			"textures": "textures/items/prototype_portal_gun"
+		},
 		"empty_tube": {
 			"textures": "textures/items/empty_tube"
 		},

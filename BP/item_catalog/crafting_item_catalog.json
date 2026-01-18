@@ -10,7 +10,7 @@
               "icon": "ram_portalgun:portal_gun",
               "name": "ram_portalgun:portal_gun_group"
             },
-            "items": ["ram_portalgun:portal_gun"]
+            "items": ["ram_portalgun:portal_gun", "ram_portalgun:prototype_portal_gun"]
           }
         ]
       },

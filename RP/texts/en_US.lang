@@ -3,6 +3,10 @@ item.ram_portalgun:portal_gun.name=§aPortal Gun\n§uPortal Gun
 item.ram_portalgun:portal_gun_discharged.name=Portal Gun §e(Discharged)\n§uPortal Gun
 item.ram_portalgun:portal_gun_base.name=Portal Gun Base\n§uPortal Gun
 
+item.ram_portalgun:prototype_portal_gun.name=§aPrototype Portal Gun\n§uPortal Gun
+item.ram_portalgun:prototype_portal_gun_discharged.name=Prototype Portal Gun §e(Discharged)\n§uPortal Gun
+item.ram_portalgun:prototype_portal_gun_base.name=Prototype Portal Gun Base\n§uPortal Gun
+
 ## PORTAL FLUID
 item.ram_portalgun:portal_fluid.name=§aPortal Fluid\n§uPortal Gun
 item.ram_portalgun:bootleg_portal_fluid.name=Bootleg §aPortal Fluid\n§uPortal Gun
