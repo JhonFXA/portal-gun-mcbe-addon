@@ -12,6 +12,12 @@
 		"prototype_portal_gun": {
 			"textures": "textures/items/prototype_portal_gun"
 		},
+		"prototype_portal_gun_discharged": {
+			"textures": "textures/items/prototype_portal_gun_discharged"
+		},
+		"prototype_portal_gun_base":{
+			"textures": "textures/items/prototype_portal_gun_base"
+		},
 		"empty_tube": {
 			"textures": "textures/items/empty_tube"
 		},

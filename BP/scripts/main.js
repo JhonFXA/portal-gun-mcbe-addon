@@ -352,10 +352,9 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
 
   const portalIsRoot = portalEntity.getDynamicProperty(portalDP.isRoot);
 
-  if (portalIsRoot === undefined) {
+  if (portalIsRoot === undefined || portalEntity.getDynamicProperty(portalDP.DualityPortalId) === undefined) {
     return removePortal(portalEntity, true);
   }
-
   const dualPortal = world.getEntity(portalEntity.getDynamicProperty(portalDP.DualityPortalId));
   if(dualPortal === undefined) return removePortal(portalEntity, false);
   const rootPortal = portalIsRoot ? portalEntity : dualPortal;

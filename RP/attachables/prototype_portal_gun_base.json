@@ -2,7 +2,7 @@
     "format_version": "1.10.0",
     "minecraft:attachable": {
         "description": {
-            "identifier": "ram_portalgun:portal_gun_base",
+            "identifier": "ram_portalgun:prototype_portal_gun_base",
             "render_controllers": [
                 "controller.render.default"
             ],
@@ -10,14 +10,14 @@
                 "default": "entity_alphablend"
             },
             "textures": {
-                "default": "textures/attachable/portal_gun_base"
+                "default": "textures/attachable/prototype_portal_gun_base"
             },
             "geometry": {
-                "default": "geometry.portal_gun_base"
+                "default": "geometry.prototype_portal_gun_base"
             },
             "animations": {
-                "first_person_hold": "animation.portal_gun.first_person_hold",
-                "third_person_hold": "animation.portal_gun.third_person_hold"
+                "first_person_hold": "animation.prototype_portal_gun.first_person_hold",
+                "third_person_hold": "animation.prototype_portal_gun.third_person_hold"
             },
             "scripts": {
                 "animate": [

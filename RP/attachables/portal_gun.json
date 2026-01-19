@@ -9,8 +9,7 @@
             "materials": {
                 "default": "entity_emissive_alpha",
                 "tube": "entity_alphablend",
-                "tube_outline": "entity_emissive_alpha_one_sided",
-                "glow": "entity_beam_additive"
+                "tube_outline": "entity_emissive_alpha_one_sided"
             },
             "textures": {
                 "default": "textures/attachable/portal_gun"

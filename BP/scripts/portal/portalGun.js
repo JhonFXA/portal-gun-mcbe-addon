@@ -580,14 +580,14 @@ export function summonPortal(player, target, bootleggedFluid = false) {
         break;
 
       case PORTAL_MODES.ROOT:
-        if (portalCount > MAX_PORTALS) {
+        if (portalIds.length > MAX_PORTALS) {
           removeAllPortals(player, portalGunItem, itemObject.slotIndex);
-          break;
+          portalIds = [newPortal.id];
         }
 
-        if (portalCount > 1) {
+        if (portalIds.length > 1) {
           const rootId = portalIds[0];
-          const lastId = portalIds[portalCount - 1];
+          const lastId = portalIds[portalIds.length - 1];
           const rootPortal = world.getEntity(rootId);
 
           rootPortal?.setDynamicProperty(
