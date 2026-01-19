@@ -9,7 +9,7 @@
         ],
         "unlock": [
             {
-                "item": "minecraft:green_stained_glass"
+                "item": "minecraft:hard_green_stained_glass"
             },
             {
                 "item": "minecraft:iron_ingot"
@@ -17,12 +17,11 @@
         ],
         "pattern": [
             "#",
-            "#",
             "i"
         ],
         "key": {
             "#": {
-                "item": "minecraft:green_stained_glass"
+                "item": "minecraft:hard_green_stained_glass"
             },
             "i": {
                 "item": "minecraft:iron_ingot"

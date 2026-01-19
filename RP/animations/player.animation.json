@@ -136,6 +136,7 @@
 			}
 		},
 		"animation.ram_portalgun.player.portal_in_down": {
+			"loop": "hold_on_last_frame",
 			"animation_length": 0.4,
 			"override_previous_animation": true,
 			"bones": {
@@ -229,6 +230,7 @@
 			}
 		},
 		"animation.ram_portalgun.player.portal_in_down_dive": {
+			"loop": "hold_on_last_frame",
 			"animation_length": 0.4583,
 			"override_previous_animation": true,
 			"bones": {
