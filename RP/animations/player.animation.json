@@ -660,10 +660,14 @@
 			}
 		},
 		"animation.ram_portalgun.player.portal_gun_shoot": {
-			"animation_length": 0.3667,
+			"animation_length": 0.7917,
+			"override_previous_animation": true,
 			"bones": {
 				"rightArm": {
-					"rotation": ["-77.5-(query.target_x_rotation * -1)", 0, 0],
+					"rotation": {
+						"0.0": [0, 0, 0],
+						"0.125": ["-80-(query.target_x_rotation * -1)", "-(query.target_y_rotation * -1)", 0]
+					},
 					"position": [0, 0, 0]
 				}
 			}

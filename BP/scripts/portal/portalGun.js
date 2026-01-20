@@ -138,7 +138,6 @@ export function usePortalGun(player, portalGunItem) {
   // Validate the portal list to remove invalid portal IDs
   validatePortalList(portalGunItem, inventory, player.selectedSlotIndex);
   if (player.isSneaking) {
-    // player.runCommand("camera @s set minecraft:free ease 0.5 in_out_sine pos ~1 ~1.6 ~-1 rot 10 ~");
     openPortalGunMenu(player);
   } else {
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
@@ -146,7 +145,7 @@ export function usePortalGun(player, portalGunItem) {
     const cost = scale
     const gunObject = portalGuns.find((gun) => gun.id === portalGunItem.typeId);
 
-    // player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot", {stopExpression: "query.is_first_person"});
+    player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot", {stopExpression: "v.is_first_person"});
 
     if (charge > 0) {
       portalGunItem = gunObject.decreaseCharge(
