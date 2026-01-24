@@ -772,6 +772,7 @@
 		"animation.ram_portalgun.player.portal_gun_interface": {
 			"loop": "hold_on_last_frame",
 			"animation_length": 0.8,
+			"override_previous_animation": true,
 			"bones": {
 				"head": {
 					"relative_to": {

@@ -157,12 +157,12 @@ world.afterEvents.itemUse.subscribe((event) => {
   ) {
     return;
   }
-
+  
   // If the item used is a Portal Gun base
   if (ID.components.portalGunBases.includes(itemStack.typeId)) {
     const equippable = player.getComponent("minecraft:equippable");
     const itemOffhand = equippable.getEquipment(EquipmentSlot.Offhand);
-
+    
     const gunInstance = portalGuns.find(
       (gun) => gun.baseId === itemStack.typeId
     );
@@ -178,17 +178,17 @@ world.afterEvents.itemUse.subscribe((event) => {
       player.onScreenDisplay.setActionBar("§cWeird fluid detected...");
       player.dimension.playSound("ram_portalgun:error_sound", player.location);
     }
-
+    
     if (!newGunType) return; // if tube doesn't match, do nothing
     
     const inventory = player.getComponent("inventory").container;
     const portalGun = new ItemStack(newGunType, 1);
-
+    
     // Copy dynamic properties from the base to the new gun
     for (const id of itemStack.getDynamicPropertyIds()) {
       portalGun.setDynamicProperty(id, itemStack.getDynamicProperty(id));
     }
-
+    
     // Set the charge depending on the tube type
     if (ID.components.chargedTubes.includes(itemOffhand.typeId)) {
       const currentCharge = itemOffhand.getDynamicProperty(portalGunDP.charge) ?? 100;
@@ -204,7 +204,7 @@ world.afterEvents.itemUse.subscribe((event) => {
       portalGun.setDynamicProperty(portalGunDP.charge, currentCharge);
       portalGun.setDynamicProperty(portalGunDP.bootleggedFluid, true);
     }
-
+    
     // Consume one tube from offhand
     if (itemOffhand.amount > 1) {
       itemOffhand.amount -= 1;
@@ -212,7 +212,7 @@ world.afterEvents.itemUse.subscribe((event) => {
     } else {
       equippable.setEquipment(EquipmentSlot.Offhand, undefined);
     }
-
+    
     // Replace base with assembled Portal Gun and play plug sound
     inventory.setItem(player.selectedSlotIndex, portalGun);
     player.playAnimation("animation.ram_portalgun.player.portal_gun_plug", {blendOutTime: 1});
@@ -224,12 +224,12 @@ world.afterEvents.itemUse.subscribe((event) => {
   }
   
   const portalGunTypeId = itemStack.typeId;
-  
+
   const cooldownName = portalGunTypeId.replace("ram_portalgun:", "") + "_cooldown";
   const cooldownComponent = itemStack.getComponent("cooldown");
   const cooldown = player.getItemCooldown(cooldownName);
   const cooldownTicks = cooldownComponent.cooldownTicks;
-
+  
   if (cooldown < cooldownTicks - 1) {
     return;
   }
@@ -331,7 +331,6 @@ world.afterEvents.projectileHitBlock.subscribe((event) => {
 world.afterEvents.entityHitEntity.subscribe((event) => {
   if (event.damagingEntity.typeId !== "minecraft:player") return;
   const player = event.damagingEntity;
-  if (!player.isSneaking) return;
   const portalEntity = event.hitEntity;
   if (!portalEntity.matches({ families: ["ram_portalgun:portal"] })) return;
 

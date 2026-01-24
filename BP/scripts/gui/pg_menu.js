@@ -10,7 +10,7 @@ import { portalGunDP, ID, portalGuns } from "../utils/ids&variables";
  * Causes the player to perform a button-click animation on the portal gun.
  */
 function playPlayerAnimation(player){
-    player.playAnimation("animation.ram_portalgun.player.portal_gun_interface", {blendOutTime: 0.5, stopExpression: "query.is_moving || !query.is_item_name_any('slot.weapon.mainhand', 'ram_portalgun:portal_gun', 'ram_portalgun:portal_gun_discharged')"});
+    player.playAnimation("animation.ram_portalgun.player.portal_gun_interface", {blendOutTime: 0.5, stopExpression: "query.is_moving || !query.is_item_name_any('slot.weapon.mainhand', 'ram_portalgun:prototype_portal_gun')"});
 }
 
 /**

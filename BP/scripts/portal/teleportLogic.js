@@ -186,7 +186,8 @@ function filterSmallEntities(entities) {
             typeFamily.hasTypeFamily("minecart") ||
             typeFamily.hasTypeFamily("lightweight") ||
             typeFamily.hasTypeFamily("fish") ||
-            typeFamily.hasTypeFamily("tnt");
+            typeFamily.hasTypeFamily("tnt") || 
+            typeFamily.hasTypeFamily("player");
 
         return isBaby || allowedFamily;
     });

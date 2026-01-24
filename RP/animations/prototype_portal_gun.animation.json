@@ -4,7 +4,6 @@
 		"animation.prototype_portal_gun.first_person_hold": {
 			"loop": true,
 			"animation_length": 2,
-			"override_previous_animation": true,
 			"bones": {
 				"root": {
 					"rotation": [119.60507, -48.34745, -251.31095],
