@@ -191,8 +191,7 @@ world.afterEvents.itemUse.subscribe((event) => {
 
     // Set the charge depending on the tube type
     if (ID.components.chargedTubes.includes(itemOffhand.typeId)) {
-      const currentCharge =
-        itemOffhand.getDynamicProperty(portalGunDP.charge) ?? 100;
+      const currentCharge = itemOffhand.getDynamicProperty(portalGunDP.charge) ?? 100;
       portalGun.setDynamicProperty(portalGunDP.charge, currentCharge);
       portalGun.setDynamicProperty(portalGunDP.bootleggedFluid, false);
     } 
@@ -201,8 +200,7 @@ world.afterEvents.itemUse.subscribe((event) => {
       portalGun.setDynamicProperty(portalGunDP.bootleggedFluid, false);
     }
     else if( ID.components.bootlegTubes.includes(itemOffhand.typeId)){
-      const currentCharge =
-        itemOffhand.getDynamicProperty(portalGunDP.charge) ?? 100;
+      const currentCharge = itemOffhand.getDynamicProperty(portalGunDP.charge) ?? 100;
       portalGun.setDynamicProperty(portalGunDP.charge, currentCharge);
       portalGun.setDynamicProperty(portalGunDP.bootleggedFluid, true);
     }
@@ -224,10 +222,12 @@ world.afterEvents.itemUse.subscribe((event) => {
     );
     return;
   }
-
-
+  
+  const portalGunTypeId = itemStack.typeId;
+  
+  const cooldownName = portalGunTypeId.replace("ram_portalgun:", "") + "_cooldown";
   const cooldownComponent = itemStack.getComponent("cooldown");
-  const cooldown = player.getItemCooldown("portal_gun_cooldown");
+  const cooldown = player.getItemCooldown(cooldownName);
   const cooldownTicks = cooldownComponent.cooldownTicks;
 
   if (cooldown < cooldownTicks - 1) {

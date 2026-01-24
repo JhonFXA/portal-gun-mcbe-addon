@@ -6,6 +6,7 @@ export var playerDP;
 export var portalGunDP;
 
 export const portalGuns = [
+  //STANDARD PORTAL GUN
   new PortalGun({
     id: "ram_portalgun:portal_gun",
     baseId: "ram_portalgun:portal_gun_base",
@@ -18,14 +19,29 @@ export const portalGuns = [
     highPressureProjectileId: "ram_portalgun:fluid_projectile_high_pressure",
     highPressureBootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile_high_pressure",
     portalId: "ram_portalgun:green_portal"
+  }),
+
+  //PROTOTYPE PORTAL GUN
+  new PortalGun({
+    id: "ram_portalgun:prototype_portal_gun",
+    baseId: "ram_portalgun:prototype_portal_gun_base",
+    dischargedVersionId: "ram_portalgun:prototype_portal_gun_discharged",
+    emptyTubeId: "ram_portalgun:empty_tube",
+    chargedTubeId: "ram_portalgun:portal_fluid",
+    bootlegTubeId: "ram_portalgun:bootleg_portal_fluid",
+    projectileId: "ram_portalgun:fluid_projectile",
+    bootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile",
+    highPressureProjectileId: "ram_portalgun:fluid_projectile_high_pressure",
+    highPressureBootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile_high_pressure",
+    portalId: "ram_portalgun:green_portal"
   })
 ];
 
 export var ID = {
-  portalGunsIds : ["ram_portalgun:portal_gun"],
-  dischargedPortalGuns : ["ram_portalgun:portal_gun_discharged"],
+  portalGunsIds : ["ram_portalgun:portal_gun", "ram_portalgun:prototype_portal_gun"],
+  dischargedPortalGuns : ["ram_portalgun:portal_gun_discharged", "ram_portalgun:prototype_portal_gun_discharged"],
   components: {
-    portalGunBases : ["ram_portalgun:portal_gun_base"],
+    portalGunBases : ["ram_portalgun:portal_gun_base", "ram_portalgun:prototype_portal_gun_base"],
     emptyTubes : ["ram_portalgun:empty_tube"],
     chargedTubes : ["ram_portalgun:portal_fluid"],
     bootlegTubes : ["ram_portalgun:bootleg_portal_fluid"]
