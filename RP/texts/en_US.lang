@@ -6,10 +6,14 @@ item.ram_portalgun:portal_gun_base.name=Portal Gun Base\n§uPortal Gun
 item.ram_portalgun:prototype_portal_gun.name=§aPrototype Portal Gun\n§uPortal Gun
 item.ram_portalgun:prototype_portal_gun_discharged.name=Prototype Portal Gun §e(Discharged)\n§uPortal Gun
 item.ram_portalgun:prototype_portal_gun_base.name=Prototype Portal Gun Base\n§uPortal Gun
+item.ram_portalgun:interspatial_prototype_portal_gun.name=Interspatial §9Prototype Portal Gun\n§uPortal Gun
+
 
 ## PORTAL FLUID
-item.ram_portalgun:portal_fluid.name=§aPortal Fluid\n§uPortal Gun
+item.ram_portalgun:portal_fluid.name=Interdimensional §aPortal Fluid\n§uPortal Gun
 item.ram_portalgun:bootleg_portal_fluid.name=Bootleg §aPortal Fluid\n§uPortal Gun
+item.ram_portalgun:interspatial_portal_fluid.name=Interspatial §9Portal Fluid\n§uPortal Gun
+item.ram_portalgun:extradimensional_portal_fluid.name=Extradimensional §gPortal Fluid\n§uPortal Gun
 
 ## COMPONENTS
 item.ram_portalgun:empty_tube.name=Empty Tube\n§uPortal Gun
@@ -17,8 +21,9 @@ item.ram_portalgun:quantum_shard.name=Quantum Shard\n§uPortal Gun
 item.ram_portalgun:chip.name=Chip\n§uPortal Gun
 
 ## GROUPS
-ram_portalgun:portal_gun_group=Portal Guns
-ram_portalgun:head_accessories_group=Head Accessories
+ram_portalgun:portal_gun_group=Portal Guns\n§uPortal Gun
+ram_portalgun:head_accessories_group=Head Accessories\n§uPortal Gun
+ram_portalgun:portal_fluid_group=Portal Fluids\n§uPortal Gun
 
 ## BLOCKS
 tile.ram_portalgun:synthesis_bench.name=Synthesis Bench\n§uPortal Gun

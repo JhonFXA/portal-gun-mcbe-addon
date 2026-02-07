@@ -1,0 +1,35 @@
+{
+    "format_version": "1.10.0",
+    "minecraft:attachable": {
+        "description": {
+            "identifier": "ram_portalgun:interspatial_prototype_portal_gun",
+            "render_controllers": [
+                "controller.render.portal_gun"
+            ],
+            "materials": {
+                "default": "entity_emissive_alpha",
+                "tube": "entity_alphablend",
+                "tube_outline": "entity_emissive_alpha_one_sided"
+            },
+            "textures": {
+                "default": "textures/attachable/interspatial_prototype_portal_gun"
+            },
+            "geometry": {
+                "default": "geometry.prototype_portal_gun"
+            },
+            "animations": {
+                "gun_controller": "controller.animation.ram_portalgun.portal_gun",
+                "first_person_hold": "animation.prototype_portal_gun.first_person_hold",
+                "third_person_hold": "animation.prototype_portal_gun.third_person_hold",
+                "first_person_shoot": "animation.prototype_portal_gun.first_person_shoot",
+                "core_animation": "animation.portal_gun.core_animation"
+            },
+            "scripts": {
+                "animate": [
+                    "gun_controller",
+                    "core_animation"
+                ]
+            }
+        }
+    }
+}

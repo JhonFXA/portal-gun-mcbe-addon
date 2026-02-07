@@ -68,10 +68,14 @@ export function openPortalGunMenu(player, portalGunId = null, typeId) {
         title = "Portal Gun Menu";
         rickFigure = "saved_locations_ui";
         gunFigure = "portal_gun";
-    } else if (typeId == "ram_portalgun:prototype_portal_gun" || typeId == "ram_portalgun:prototype_portal_gun_discharged"){
+    } else if (typeId == "ram_portalgun:prototype_portal_gun" || typeId == "ram_portalgun:prototype_portal_gun_discharged" || typeId == "ram_portalgun:interspatial_prototype_portal_gun"){
         title = "Prototype";
         rickFigure = "prototype_sv_ui";
         gunFigure = "prototype_portal_gun";
+    } else {
+        title = "Portal Gun Menu";
+        rickFigure = "saved_locations_ui";
+        gunFigure = "portal_gun";
     }
 
     const customUi = new ActionFormData()

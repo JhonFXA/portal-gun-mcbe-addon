@@ -21,7 +21,22 @@ export const portalGuns = [
     portalId: "ram_portalgun:green_portal"
   }),
 
-  //PROTOTYPE PORTAL GUN
+  //INTERSPATIAL PROTOTYPE PORTAL GUN
+    new PortalGun({
+    id: "ram_portalgun:interspatial_prototype_portal_gun",
+    baseId: "ram_portalgun:prototype_portal_gun_base",
+    dischargedVersionId: "ram_portalgun:prototype_portal_gun_discharged",
+    emptyTubeId: "ram_portalgun:empty_tube",
+    chargedTubeId: "ram_portalgun:interspatial_portal_fluid",
+    bootlegTubeId: "ram_portalgun:bootleg_portal_fluid",
+    projectileId: "ram_portalgun:fluid_projectile",
+    bootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile",
+    highPressureProjectileId: "ram_portalgun:fluid_projectile_high_pressure",
+    highPressureBootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile_high_pressure",
+    portalId: "ram_portalgun:interspatial_portal"
+  }),
+
+  //INTERDIMENSIONAL PROTOTYPE PORTAL GUN
   new PortalGun({
     id: "ram_portalgun:prototype_portal_gun",
     baseId: "ram_portalgun:prototype_portal_gun_base",
@@ -35,20 +50,21 @@ export const portalGuns = [
     highPressureBootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile_high_pressure",
     portalId: "ram_portalgun:green_portal"
   })
+  
 ];
 
 export var ID = {
-  portalGunsIds : ["ram_portalgun:portal_gun", "ram_portalgun:prototype_portal_gun"],
+  portalGunsIds : ["ram_portalgun:portal_gun", "ram_portalgun:prototype_portal_gun", "ram_portalgun:interspatial_prototype_portal_gun"],
   dischargedPortalGuns : ["ram_portalgun:portal_gun_discharged", "ram_portalgun:prototype_portal_gun_discharged"],
   components: {
     portalGunBases : ["ram_portalgun:portal_gun_base", "ram_portalgun:prototype_portal_gun_base"],
     emptyTubes : ["ram_portalgun:empty_tube"],
-    chargedTubes : ["ram_portalgun:portal_fluid"],
+    chargedTubes : ["ram_portalgun:portal_fluid", "ram_portalgun:extradimensional_portal_fluid", "ram_portalgun:interspatial_portal_fluid"],
     bootlegTubes : ["ram_portalgun:bootleg_portal_fluid"]
   },
   projectiles : ["ram_portalgun:fluid_projectile", "ram_portalgun:fluid_projectile_high_pressure"],
   bootlegProjectiles: ["ram_portalgun:bootleg_fluid_projectile", "ram_portalgun:bootleg_fluid_projectile_high_pressure"],
-  portals: ["ram_portalgun:green_portal"],
+  portals: ["ram_portalgun:green_portal", "ram_portalgun:interspatial_portal"],
   hair: ["ram_portalgun:rick_hair", "ram_portalgun:homesteader_rick_hair", "ram_portalgun:memory_rick_hair"]
 };
 

@@ -162,9 +162,13 @@ world.afterEvents.itemUse.subscribe((event) => {
   if (ID.components.portalGunBases.includes(itemStack.typeId)) {
     const equippable = player.getComponent("minecraft:equippable");
     const itemOffhand = equippable.getEquipment(EquipmentSlot.Offhand);
+    if(itemOffhand === undefined) {
+      player.onScreenDisplay.setActionBar("§eHold a tube in your offhand to assemble the Portal Gun.");
+      return;
+    }
     
     const gunInstance = portalGuns.find(
-      (gun) => gun.baseId === itemStack.typeId
+      (gun) => gun.baseId === itemStack.typeId && (gun.emptyTubeId === itemOffhand?.typeId || gun.chargedTubeId === itemOffhand?.typeId || gun.bootlegTubeId === itemOffhand?.typeId)
     );
 
     // Determine which gun type to create based on the tube in the offhand

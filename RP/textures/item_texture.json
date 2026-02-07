@@ -18,11 +18,20 @@
 		"prototype_portal_gun_base":{
 			"textures": "textures/items/prototype_portal_gun_base"
 		},
+		"interspatial_prototype_portal_gun": {
+			"textures": "textures/items/interspatial_prototype_portal_gun"
+		},
 		"empty_tube": {
 			"textures": "textures/items/empty_tube"
 		},
 		"portal_fluid": {
 			"textures": "textures/items/portal_fluid"
+		},
+		"interspatial_portal_fluid": {
+			"textures": "textures/items/interspatial_portal_fluid"
+		},
+		"extradimensional_portal_fluid": {
+			"textures": "textures/items/extradimensional_portal_fluid"
 		},
 		"chip": {
 			"textures": "textures/items/chip"
