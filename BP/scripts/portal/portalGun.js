@@ -138,7 +138,7 @@ export function usePortalGun(player, portalGunItem) {
   // Validate the portal list to remove invalid portal IDs
   validatePortalList(portalGunItem, inventory, player.selectedSlotIndex);
   if (player.isSneaking) {
-    openPortalGunMenu(player);
+    openPortalGunMenu(player, null, portalGunItem.typeId);
   } else {
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
     const scale = portalGunItem.getDynamicProperty(portalGunDP.scale);

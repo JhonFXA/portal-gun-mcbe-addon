@@ -1,4 +1,4 @@
-import { ItemStack } from "@minecraft/server";
+import { ItemStack, world } from "@minecraft/server";
 import {ActionFormData, ModalFormData, MessageFormData} from "@minecraft/server-ui";
 import {changePortalGunMode, findItemInInventory, findPortalGunInInventory, removeAllPortals} from '../utils/my_API';
 import { portalGunDP, ID, portalGuns } from "../utils/ids&variables";
@@ -10,7 +10,7 @@ import { portalGunDP, ID, portalGuns } from "../utils/ids&variables";
  * Causes the player to perform a button-click animation on the portal gun.
  */
 function playPlayerAnimation(player){
-    player.playAnimation("animation.ram_portalgun.player.portal_gun_interface", {blendOutTime: 0.5, stopExpression: "query.is_moving || !query.is_item_name_any('slot.weapon.mainhand', 'ram_portalgun:prototype_portal_gun')"});
+    player.playAnimation("animation.ram_portalgun.player.portal_gun_interface", {blendOutTime: 0.5, stopExpression: "query.is_moving || !query.is_item_name_any('slot.weapon.mainhand', 'ram_portalgun:portal_gun', 'ram_portalgun:portal_gun_discharged','ram_portalgun:prototype_portal_gun', 'ram_portalgun:prototype_portal_gun_discharged')"});
 }
 
 /**
@@ -32,7 +32,7 @@ function stopPlayerAnimation(player){
  * Saved Locations, Set Coordinates, Select Mode, and Settings.
  */
 
-export function openPortalGunMenu(player, portalGunId = null) {
+export function openPortalGunMenu(player, portalGunId = null, typeId) {
     const inventory = player.getComponent("inventory");
     let itemObject;
     let portalGunItem;
@@ -54,7 +54,7 @@ export function openPortalGunMenu(player, portalGunId = null) {
         if (i < filledBars - 1) {
             chargeBars += "§a|§r";
         } else if (i === filledBars - 1 && isLowPartial) {
-            chargeBars += "§7|§r";
+            chargeBars += "§e|§r";
         } else if (i < filledBars) {
             chargeBars += "§a|§r";
         } else {
@@ -62,12 +62,24 @@ export function openPortalGunMenu(player, portalGunId = null) {
         }
     }
 
+    let title, rickFigure, gunFigure;
+
+    if(typeId == "ram_portalgun:portal_gun" || typeId == "ram_portalgun:portal_gun_discharged"){
+        title = "Portal Gun Menu";
+        rickFigure = "saved_locations_ui";
+        gunFigure = "portal_gun";
+    } else if (typeId == "ram_portalgun:prototype_portal_gun" || typeId == "ram_portalgun:prototype_portal_gun_discharged"){
+        title = "Prototype";
+        rickFigure = "prototype_sv_ui";
+        gunFigure = "prototype_portal_gun";
+    }
+
     const customUi = new ActionFormData()
-    .title("Portal Gun Menu")
+    .title(`${title}`)
     .body(`Charge: ${chargeBars}`)
-    .button("Saved Locations", "textures/ui/pg_ui/menu/saved_locations_ui")
+    .button("Saved Locations", `textures/ui/pg_ui/menu/${rickFigure}`)
     .button("Set Coordinates", "textures/ui/pg_ui/menu/set_coordinates_ui")
-    .button("Select Mode", "textures/ui/pg_ui/menu/select_mode_ui")
+    .button("Select Mode", `textures/items/${gunFigure}`)
     .button("", "textures/ui/pg_ui/menu/settings_ui")
     .button("", "textures/ui/pg_ui/menu/close_menu")
     .button("", "textures/ui/pg_ui/menu/unplug_tube");
@@ -137,7 +149,7 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
             openSearchForm(player, inventory, portalGunItem, savedLocations);
         } else if (response.selection === 3){
             const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
-            openPortalGunMenu(player, portalGunId);
+            openPortalGunMenu(player, portalGunId, portalGunItem.typeId);
         } else if (response.selection !== undefined){
             const selectedLocation = savedLocations[response.selection - 4];
             portalGunItem.setDynamicProperty(portalGunDP.customLocation, JSON.stringify(selectedLocation));
@@ -485,7 +497,7 @@ function openSelectModeForm(player, inventory, portalGunItem) {
                     stopPlayerAnimation(player);
                     break;
             case 4: const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
-                    openPortalGunMenu(player, portalGunId);
+                    openPortalGunMenu(player, portalGunId, portalGunItem.typeId);
                     break;
             default: stopPlayerAnimation(player);
         }
@@ -521,7 +533,7 @@ function openSettingsForm(player, inventory, portalGunItem) {
             case 0: openBehaviorSettingsForm(player, portalGunItem, inventory); break;
             case 1: 
                 const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
-                openPortalGunMenu(player, portalGunId);
+                openPortalGunMenu(player, portalGunId, portalGunItem.typeId);
                 break;
             case 2: openHistoryForm(player, inventory, portalGunItem); break;
             case 3:

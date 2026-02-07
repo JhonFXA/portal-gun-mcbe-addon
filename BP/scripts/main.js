@@ -233,6 +233,7 @@ world.afterEvents.itemUse.subscribe((event) => {
   if (cooldown < cooldownTicks - 1) {
     return;
   }
+
   usePortalGun(player, itemStack);
 });
 
@@ -326,7 +327,7 @@ world.afterEvents.projectileHitBlock.subscribe((event) => {
 });
 
 /*
-  Allow players to remove portals by hitting them while sneaking (crouching) with a Portal Gun.
+  Allow players to remove portals by hitting them with a Portal Gun.
 */
 world.afterEvents.entityHitEntity.subscribe((event) => {
   if (event.damagingEntity.typeId !== "minecraft:player") return;

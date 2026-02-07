@@ -41,7 +41,7 @@
                     },
                     {
                         "binding_type": "view",
-                        "source_property_name": "((#title_text - 'Portal Gun Menu' - 'Synthesis Bench') = #title_text)",
+                        "source_property_name": "((#title_text - 'Portal Gun Menu' - 'Prototype' - 'Synthesis Bench') = #title_text)",
                         "target_property_name": "#visible"
                     }
                 ]
@@ -64,6 +64,19 @@
                             "binding_type": "view",
                             "source_control_name": "pg_form_panel",
                             "source_property_name": "( not ((#title_text - 'Portal Gun Menu') = #title_text))",
+                            "target_property_name": "#visible"
+                        }
+                    ]
+                }
+            },
+            {
+                "prototype_menu_form@prototype_menu_form.menu": {
+                    "layer": 2,
+                    "bindings": [
+                        {
+                            "binding_type": "view",
+                            "source_control_name": "pg_form_panel",
+                            "source_property_name": "( not ((#title_text - 'Prototype') = #title_text))",
                             "target_property_name": "#visible"
                         }
                     ]
