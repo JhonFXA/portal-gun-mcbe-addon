@@ -10,7 +10,7 @@
 			},
 			"particle_effects": {
 				"0.0": {
-					"effect": "portal_fluid"
+					"effect": "fluid_drop"
 				}
 			}
 		},

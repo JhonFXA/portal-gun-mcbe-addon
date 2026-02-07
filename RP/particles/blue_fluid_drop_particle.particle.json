@@ -2,10 +2,10 @@
 	"format_version": "1.10.0",
 	"particle_effect": {
 		"description": {
-			"identifier": "ram_portalgun:portal_spawn_particle",
+			"identifier": "ram_portalgun:blue_fluid_drop_particle",
 			"basic_render_parameters": {
-				"material": "particles_blend",
-				"texture": "textures/particles/spawn"
+				"material": "particles_add",
+				"texture": "textures/particles/fluid_drop_particle"
 			}
 		},
 		"components": {
@@ -46,7 +46,7 @@
 				"collision_radius": 0.2
 			},
 			"minecraft:particle_appearance_tinting": {
-				"color": [1, 1, 1, 1]
+				"color": [0, 0.61176, 1, 1]
 			}
 		}
 	}

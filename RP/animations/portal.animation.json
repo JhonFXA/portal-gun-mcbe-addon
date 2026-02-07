@@ -655,7 +655,7 @@
 			},
 			"particle_effects": {
 				"0.0": {
-					"effect": "spawn"
+					"effect": "fluid_drop"
 				}
 			},
 			"sound_effects": {
@@ -701,7 +701,7 @@
 			},
 			"particle_effects": {
 				"0.0": {
-					"effect": "spawn"
+					"effect": "fluid_drop"
 				}
 			}
 		},

@@ -14,10 +14,10 @@
 					"animations": ["default"],
 					"particle_effects": [
 						{
-							"effect": "spawn"
+							"effect": "fluid_drop"
 						},
 						{
-							"effect": "bit"
+							"effect": "dot"
 						}
 					],
 					"transitions": [

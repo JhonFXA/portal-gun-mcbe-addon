@@ -29,9 +29,9 @@ export const portalGuns = [
     emptyTubeId: "ram_portalgun:empty_tube",
     chargedTubeId: "ram_portalgun:interspatial_portal_fluid",
     bootlegTubeId: "ram_portalgun:bootleg_portal_fluid",
-    projectileId: "ram_portalgun:fluid_projectile",
+    projectileId: "ram_portalgun:blue_fluid_projectile",
     bootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile",
-    highPressureProjectileId: "ram_portalgun:fluid_projectile_high_pressure",
+    highPressureProjectileId: "ram_portalgun:blue_fluid_projectile_high_pressure",
     highPressureBootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile_high_pressure",
     portalId: "ram_portalgun:interspatial_portal"
   }),
@@ -62,7 +62,7 @@ export var ID = {
     chargedTubes : ["ram_portalgun:portal_fluid", "ram_portalgun:extradimensional_portal_fluid", "ram_portalgun:interspatial_portal_fluid"],
     bootlegTubes : ["ram_portalgun:bootleg_portal_fluid"]
   },
-  projectiles : ["ram_portalgun:fluid_projectile", "ram_portalgun:fluid_projectile_high_pressure"],
+  projectiles : ["ram_portalgun:fluid_projectile", "ram_portalgun:fluid_projectile_high_pressure", "ram_portalgun:blue_fluid_projectile", "ram_portalgun:blue_fluid_projectile_high_pressure"],
   bootlegProjectiles: ["ram_portalgun:bootleg_fluid_projectile", "ram_portalgun:bootleg_fluid_projectile_high_pressure"],
   portals: ["ram_portalgun:green_portal", "ram_portalgun:interspatial_portal"],
   hair: ["ram_portalgun:rick_hair", "ram_portalgun:homesteader_rick_hair", "ram_portalgun:memory_rick_hair"]

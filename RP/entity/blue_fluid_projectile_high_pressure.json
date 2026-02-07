@@ -2,12 +2,12 @@
   "format_version": "1.10.0",
   "minecraft:client_entity": {
     "description": {
-      "identifier": "ram_portalgun:bootleg_fluid_projectile_high_pressure",
+      "identifier": "ram_portalgun:blue_fluid_projectile_high_pressure",
       "materials": {
         "default": "entity_beam_additive"
       },
       "textures": {
-        "default": "textures/entity/green_portal/projectile"
+        "default": "textures/entity/interspatial_portal/projectile"
       },
       "geometry": {
         "default": "geometry.portal_projectile_high_pressure"
@@ -23,7 +23,7 @@
         ]
       },
       "particle_effects": {
-        "fluid_drop": "ram_portalgun:green_fluid_dropfall_particle",
+        "fluid_drop": "ram_portalgun:blue_fluid_dropfall_particle",
         "portal_shot": "ram_portalgun:gun_shot_particle"
       },
       "render_controllers": [

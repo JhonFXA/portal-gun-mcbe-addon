@@ -19,8 +19,8 @@
                 "controller.render.glow"
             ],
             "particle_effects": {
-                "spawn": "ram_portalgun:portal_spawn_particle",
-                "bit": "ram_portalgun:portal_use_particle"
+                "fluid_drop": "ram_portalgun:blue_fluid_drop_particle",
+                "dot": "ram_portalgun:blue_portal_dot_particle"
             },
             "sound_effects": {
                 "open_portal": "ram_portalgun:portal_spawn",

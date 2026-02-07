@@ -751,7 +751,7 @@ function openHowToUseForm(player, inventory, portalGunItem){
     .divider()
     .label("§eShoot Portals§r     :mouse_right_button:")
     .label("§eOpen Menu§r     :tip_virtual_button_sneak: + :mouse_right_button:")
-    .label("§eRemove a Portal§r     :tip_virtual_button_sneak: + :mouse_left_button: while aiming at it")
+    .label("§eRemove a Portal§r  :mouse_left_button: while aiming at it")
     .label("§eFast Change Location§r  :mouse_left_button: while aiming\n\nat a block. :tip_virtual_button_sneak: + :mouse_left_button: to switch backwards.")
     .button("Back to Menu", "textures/ui/pg_ui/back_button");
     form.show(player).then(response => {

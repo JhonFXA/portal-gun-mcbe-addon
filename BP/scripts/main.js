@@ -162,7 +162,7 @@ world.afterEvents.itemUse.subscribe((event) => {
   if (ID.components.portalGunBases.includes(itemStack.typeId)) {
     const equippable = player.getComponent("minecraft:equippable");
     const itemOffhand = equippable.getEquipment(EquipmentSlot.Offhand);
-    if(itemOffhand === undefined) {
+    if(itemOffhand === undefined || (!ID.components.chargedTubes.includes(itemOffhand.typeId) && !ID.components.emptyTubes.includes(itemOffhand.typeId) && !ID.components.bootlegTubes.includes(itemOffhand.typeId))) {
       player.onScreenDisplay.setActionBar("§eHold a tube in your offhand to assemble the Portal Gun.");
       return;
     }
@@ -170,6 +170,11 @@ world.afterEvents.itemUse.subscribe((event) => {
     const gunInstance = portalGuns.find(
       (gun) => gun.baseId === itemStack.typeId && (gun.emptyTubeId === itemOffhand?.typeId || gun.chargedTubeId === itemOffhand?.typeId || gun.bootlegTubeId === itemOffhand?.typeId)
     );
+
+    if(gunInstance === undefined) {
+      player.onScreenDisplay.setActionBar("§cThis fluid is incompatible with this Portal Gun...");
+      return;
+    }
 
     // Determine which gun type to create based on the tube in the offhand
     let newGunType;

@@ -321,6 +321,5 @@ export function dealPortalFluidDamage(entity){
 
   entity.dimension.spawnParticle("ram_portalgun:fluid_poison_particle", entity.location);
   entity.dimension.spawnParticle("ram_portalgun:fluid_ground_drop", entity.location);
-  entity.dimension.spawnParticle("ram_portalgun:portal_spawn_particle", entity.location);
   entity.dimension.playSound("ram_portalgun:fluid_burn", entity.location);
 }
