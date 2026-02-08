@@ -20,7 +20,8 @@
             ],
             "particle_effects": {
                 "fluid_drop": "ram_portalgun:blue_fluid_drop_particle",
-                "dot": "ram_portalgun:blue_portal_dot_particle"
+                "dot": "ram_portalgun:blue_portal_dot_particle",
+                "ray": "ram_portalgun:blue_portal_ray_particle"
             },
             "sound_effects": {
                 "open_portal": "ram_portalgun:portal_spawn",

@@ -24,7 +24,7 @@
       },
       "particle_effects": {
         "fluid_drop": "ram_portalgun:blue_fluid_dropfall_particle",
-        "portal_shot": "ram_portalgun:gun_shot_particle"
+        "portal_shot": "ram_portalgun:blue_glowcircle_particle"
       },
       "render_controllers": [
         "controller.render.default"

@@ -1,4 +1,4 @@
-import { ItemStack, world } from "@minecraft/server";
+import { ItemStack, world, EquipmentSlot } from "@minecraft/server";
 import {ActionFormData, ModalFormData, MessageFormData} from "@minecraft/server-ui";
 import {changePortalGunMode, findItemInInventory, findPortalGunInInventory, removeAllPortals} from '../utils/my_API';
 import { portalGunDP, ID, portalGuns } from "../utils/ids&variables";
@@ -1033,13 +1033,24 @@ function dismountPortalGun(player, portalGunItem, inventory) {
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
     const isBootlegged = portalGunItem.getDynamicProperty(portalGunDP.bootleggedFluid);
 
+    const equippable = player.getComponent("minecraft:equippable");
+    const itemOffhand = equippable.getEquipment(EquipmentSlot.Offhand);
+
     if (charge > 0) {
         const chargedTube = new ItemStack(isBootlegged ? bootlegTubeId : chargedTubeId, 1);
         chargedTube.setDynamicProperty(portalGunDP.charge, charge);
         chargedTube.setLore([`§eCharge: ${charge}%§r`]);
-        inventory.container.addItem(chargedTube);
+        if(!itemOffhand){
+            equippable.setEquipment(EquipmentSlot.Offhand, chargedTube);
+        } else {
+            inventory.container.addItem(chargedTube);
+        }
     } else {
-        inventory.container.addItem(new ItemStack(emptyTubeId, 1));
+        if(!itemOffhand){
+            equippable.setEquipment(EquipmentSlot.Offhand, new ItemStack(emptyTubeId, 1));
+        } else {
+            inventory.container.addItem(new ItemStack(emptyTubeId, 1));
+        }
     }
 
     player.dimension.playSound("ram_portalgun:portal_gun_unplug", player.location);

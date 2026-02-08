@@ -157,7 +157,7 @@ export function removePortal(portalEntity, mustRemoveDual = true) {
   portalEntity.setProperty(portalSP.close, true);
 
   system.runTimeout(()=>{
-    portalEntity.remove();
+    portalEntity?.remove();
     if (mustRemoveDual){
       if(dualPortal) dualPortal.remove();
     }
