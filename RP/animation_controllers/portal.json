@@ -14,9 +14,6 @@
 					"animations": ["default"],
 					"particle_effects": [
 						{
-							"effect": "fluid_drop"
-						},
-						{
 							"effect": "dot"
 						}
 					],

@@ -1,4 +1,4 @@
-import { world, system, MolangVariableMap, BlockVolume } from "@minecraft/server";
+import { world, system, BlockVolume } from "@minecraft/server";
 import {
   portalSP,
   portalDP,
@@ -55,12 +55,6 @@ export function changePortalGunMode(player, inventory, portalGunItem, mode, remo
  * @returns {Entity} The newly created portal entity.
  */
 export function spawnPortal(portalId, dimension, location, rotation, orientation, scale, ownerId, autoClose = false, bootleggedFluid = false) {
-  const variables = new MolangVariableMap();
-  if(orientation == 0){
-    variables.setFloat("variable.ray_orientation", 1);
-  } else {
-    variables.setFloat("variable.ray_orientation", 0);
-  }
 
   const searchArea = {
     location: location,
@@ -95,8 +89,6 @@ export function spawnPortal(portalId, dimension, location, rotation, orientation
 
   const entitiesToDamage = newPortal.dimension.getEntities(queryOptions);
   for (const entity of entitiesToDamage) entity.applyDamage(20);
-
-  newPortal.dimension.spawnParticle("ram_portalgun:portal_ray_particle", newPortal.location, variables);
   return newPortal;
 }
 

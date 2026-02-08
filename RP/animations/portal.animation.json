@@ -701,7 +701,8 @@
 			},
 			"particle_effects": {
 				"0.0": {
-					"effect": "fluid_drop"
+					"effect": "ray",
+					"locator": "locator"
 				}
 			}
 		},
