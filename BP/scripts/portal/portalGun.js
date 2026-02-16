@@ -142,7 +142,7 @@ export function usePortalGun(player, portalGunItem) {
   } else {
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
     const scale = portalGunItem.getDynamicProperty(portalGunDP.scale);
-    const cost = scale
+    const cost = scale * 2
     const gunObject = portalGuns.find((gun) => gun.id === portalGunItem.typeId);
 
     player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot", {stopExpression: "v.is_first_person"});

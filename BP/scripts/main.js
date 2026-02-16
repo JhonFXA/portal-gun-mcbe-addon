@@ -48,6 +48,7 @@ import { runCooldown, onTick, tagHandling} from "./portal/teleportLogic";
 
 import { openSynthesisGUI } from "./gui/synthesis_gui";
 
+
 system.runInterval(() => {
     runCooldown();
     onTick();
@@ -148,6 +149,8 @@ world.afterEvents.entityHitBlock.subscribe((event) => {
 //Used to detect when the player interacts with a portal gun.
 world.afterEvents.itemUse.subscribe((event) => {
   const { itemStack, source: player } = event;
+
+  world.sendMessage(`Item used: ${itemStack.typeId}`);
 
    // Ignore the event if the item is not a Portal Gun, discharged gun, or base component
   if (
@@ -389,4 +392,30 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
   } else {
     return removePortal(portalEntity, true);
   } 
+});
+
+
+world.afterEvents.itemCompleteUse.subscribe((eventData) => {
+  // Extract the player who used the item and the item stack from the event data
+  const { source, itemStack } = eventData;
+  const playerDrunkLevel = source.getDynamicProperty("ram_portalgun:drunkLevel") ?? 0;
+  // source.clearDynamicProperties();
+
+
+  if(itemStack.typeId === "ram_portalgun:flask") {
+    if(playerDrunkLevel < 3) {
+      source.setDynamicProperty("ram_portalgun:drunkLevel", playerDrunkLevel + 1);
+      system.runTimeout(() => {
+        const currentLevel = source.getDynamicProperty("ram_portalgun:drunkLevel") ?? 0;
+        if(currentLevel > 0) {
+          source.setDynamicProperty("ram_portalgun:drunkLevel", currentLevel - 1);
+        } else {
+          source.setDynamicProperty("ram_portalgun:drunkLevel", null);
+        }
+      }, 500);
+    } else {
+      source.addEffect("nausea", 500, {amplifier: 0, showParticles: false});
+      
+    }
+  }
 });

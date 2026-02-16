@@ -24,20 +24,26 @@
     "empty_tube": {
       "textures": "textures/items/empty_tube"
     },
+    "interdimensional_solution": {
+      "textures": "textures/items/solutions/interdimensional_solution"
+    },
     "portal_fluid": {
       "textures": "textures/items/portal_fluid"
     },
+    "interspatial_solution": {
+      "textures": "textures/items/solutions/interspatial_solution"
+    },
     "interspatial_portal_fluid": {
       "textures": "textures/items/interspatial_portal_fluid"
+    },
+    "extradimensional_solution": {
+      "textures": "textures/items/solutions/extradimensional_solution"
     },
     "extradimensional_portal_fluid": {
       "textures": "textures/items/extradimensional_portal_fluid"
     },
     "chip": {
       "textures": "textures/items/chip"
-    },
-    "quantum_shard": {
-      "textures": "textures/items/quantum_shard"
     },
     "rick_hair": {
       "textures": "textures/items/rick_hair"
@@ -47,6 +53,15 @@
     },
     "memory_rick_hair": {
       "textures": "textures/items/memory_rick_hair"
+    },
+    "flask": {
+      "textures": "textures/items/extra/flask"
+    },
+    "quantum_isotope": {
+      "textures": "textures/items/solutions/quantum_isotope"
+    },
+    "beaker": {
+      "textures": "textures/items/components/beaker"
     }
   }
 }

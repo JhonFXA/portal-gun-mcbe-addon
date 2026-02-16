@@ -17,8 +17,15 @@ item.ram_portalgun:extradimensional_portal_fluid.name=Extradimensional §gPortal
 
 ## COMPONENTS
 item.ram_portalgun:empty_tube.name=Empty Tube\n§uPortal Gun
-item.ram_portalgun:quantum_shard.name=Quantum Shard\n§uPortal Gun
 item.ram_portalgun:chip.name=Chip\n§uPortal Gun
+item.ram_portalgun:beaker.name=Beaker\n§uPortal Gun
+
+## SOLUTIONS
+item.ram_portalgun:quantum_isotope.name=Quantum Isotope R-426\n§uPortal Gun
+item.ram_portalgun:interspatial_solution.name=Interspatial §9Travel Solution\n§uPortal Gun
+item.ram_portalgun:interdimensional_solution.name=Interdimensional §aTravel Solution\n§uPortal Gun
+item.ram_portalgun:extradimensional_solution.name=Extradimensional §gTravel Solution\n§uPortal Gun
+
 
 ## GROUPS
 ram_portalgun:portal_gun_group=Portal Guns\n§uPortal Gun
@@ -32,3 +39,7 @@ tile.ram_portalgun:synthesis_bench.name=Synthesis Bench\n§uPortal Gun
 item.ram_portalgun:homesteader_rick_hair.name=§bHomesteader Rick's§r Hair\n§7Hit a block with it\nto change hair style\n§uPortal Gun
 item.ram_portalgun:rick_hair.name=§bRick Sanchez's §rHair\n§7Hit a block with it\nto change hair style\n§uPortal Gun
 item.ram_portalgun:memory_rick_hair.name=§bMemory Rick's §rHair\n§7Hit a block with it\nto change hair style\n§uPortal Gun
+
+## EXTRA
+item.ram_portalgun:flask.name=Flask
+item.ram_portalgun:etanol.name=Etanol

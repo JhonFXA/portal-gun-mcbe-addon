@@ -8,7 +8,7 @@
 					"*": "material.default",
 					"tube": "material.tube",
 					"fluid": "material.fluid",
-					"top": "material.fluid"
+					"fluid_outline": "material.fluid_outline"
 					
 				}
 			],

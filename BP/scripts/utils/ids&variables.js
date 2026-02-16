@@ -17,12 +17,13 @@ export const portalGuns = [
     projectileId: "ram_portalgun:fluid_projectile",
     bootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile",
     highPressureProjectileId: "ram_portalgun:fluid_projectile_high_pressure",
-    highPressureBootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile_high_pressure",
-    portalId: "ram_portalgun:green_portal"
+    highPressureBootlegProjectileId:
+      "ram_portalgun:bootleg_fluid_projectile_high_pressure",
+    portalId: "ram_portalgun:green_portal",
   }),
 
   //INTERSPATIAL PROTOTYPE PORTAL GUN
-    new PortalGun({
+  new PortalGun({
     id: "ram_portalgun:interspatial_prototype_portal_gun",
     baseId: "ram_portalgun:prototype_portal_gun_base",
     dischargedVersionId: "ram_portalgun:prototype_portal_gun_discharged",
@@ -31,9 +32,11 @@ export const portalGuns = [
     bootlegTubeId: "ram_portalgun:bootleg_portal_fluid",
     projectileId: "ram_portalgun:blue_fluid_projectile",
     bootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile",
-    highPressureProjectileId: "ram_portalgun:blue_fluid_projectile_high_pressure",
-    highPressureBootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile_high_pressure",
-    portalId: "ram_portalgun:interspatial_portal"
+    highPressureProjectileId:
+      "ram_portalgun:blue_fluid_projectile_high_pressure",
+    highPressureBootlegProjectileId:
+      "ram_portalgun:bootleg_fluid_projectile_high_pressure",
+    portalId: "ram_portalgun:interspatial_portal",
   }),
 
   //INTERDIMENSIONAL PROTOTYPE PORTAL GUN
@@ -47,44 +50,70 @@ export const portalGuns = [
     projectileId: "ram_portalgun:fluid_projectile",
     bootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile",
     highPressureProjectileId: "ram_portalgun:fluid_projectile_high_pressure",
-    highPressureBootlegProjectileId: "ram_portalgun:bootleg_fluid_projectile_high_pressure",
-    portalId: "ram_portalgun:green_portal"
-  })
-  
+    highPressureBootlegProjectileId:
+      "ram_portalgun:bootleg_fluid_projectile_high_pressure",
+    portalId: "ram_portalgun:green_portal",
+  }),
 ];
 
 export var ID = {
-  portalGunsIds : ["ram_portalgun:portal_gun", "ram_portalgun:prototype_portal_gun", "ram_portalgun:interspatial_prototype_portal_gun"],
-  dischargedPortalGuns : ["ram_portalgun:portal_gun_discharged", "ram_portalgun:prototype_portal_gun_discharged"],
+  portalGunsIds: [
+    "ram_portalgun:portal_gun",
+    "ram_portalgun:prototype_portal_gun",
+    "ram_portalgun:interspatial_prototype_portal_gun",
+  ],
+  dischargedPortalGuns: [
+    "ram_portalgun:portal_gun_discharged",
+    "ram_portalgun:prototype_portal_gun_discharged",
+  ],
   components: {
-    portalGunBases : ["ram_portalgun:portal_gun_base", "ram_portalgun:prototype_portal_gun_base"],
-    emptyTubes : ["ram_portalgun:empty_tube"],
-    chargedTubes : ["ram_portalgun:portal_fluid", "ram_portalgun:extradimensional_portal_fluid", "ram_portalgun:interspatial_portal_fluid"],
-    bootlegTubes : ["ram_portalgun:bootleg_portal_fluid"]
+    portalGunBases: [
+      "ram_portalgun:portal_gun_base",
+      "ram_portalgun:prototype_portal_gun_base",
+    ],
+    emptyTubes: ["ram_portalgun:empty_tube"],
+    chargedTubes: [
+      "ram_portalgun:portal_fluid",
+      "ram_portalgun:extradimensional_portal_fluid",
+      "ram_portalgun:interspatial_portal_fluid",
+    ],
+    bootlegTubes: ["ram_portalgun:bootleg_portal_fluid"],
   },
-  projectiles : ["ram_portalgun:fluid_projectile", "ram_portalgun:fluid_projectile_high_pressure", "ram_portalgun:blue_fluid_projectile", "ram_portalgun:blue_fluid_projectile_high_pressure"],
-  bootlegProjectiles: ["ram_portalgun:bootleg_fluid_projectile", "ram_portalgun:bootleg_fluid_projectile_high_pressure"],
+  projectiles: [
+    "ram_portalgun:fluid_projectile",
+    "ram_portalgun:fluid_projectile_high_pressure",
+    "ram_portalgun:blue_fluid_projectile",
+    "ram_portalgun:blue_fluid_projectile_high_pressure",
+  ],
+  bootlegProjectiles: [
+    "ram_portalgun:bootleg_fluid_projectile",
+    "ram_portalgun:bootleg_fluid_projectile_high_pressure",
+  ],
   portals: ["ram_portalgun:green_portal", "ram_portalgun:interspatial_portal"],
-  hair: ["ram_portalgun:rick_hair", "ram_portalgun:homesteader_rick_hair", "ram_portalgun:memory_rick_hair"]
+  hair: [
+    "ram_portalgun:rick_hair",
+    "ram_portalgun:homesteader_rick_hair",
+    "ram_portalgun:memory_rick_hair",
+  ],
 };
 
 export const PORTAL_MODES = {
-    FIFO: "FIFO",
-    LIFO: "LIFO",
-    MULTI_PAIR: "Multi-Pair",
-    ROOT: "Root",
-    CUSTOM: "CUSTOM"
+  FIFO: "FIFO",
+  LIFO: "LIFO",
+  MULTI_PAIR: "Multi-Pair",
+  ROOT: "Root",
+  CUSTOM: "CUSTOM",
 };
 
 (function (portalSP) {
   portalSP["isLinked"] = "ram_portalgun:is_linked";
   portalSP["rotation"] = "ram_portalgun:rotation";
   portalSP["orientation"] = "ram_portalgun:orientation";
-  portalSP["close"] = "ram_portalgun:close"
-  portalSP["scale"] = "ram_portalgun:portal_scale"
+  portalSP["close"] = "ram_portalgun:close";
+  portalSP["scale"] = "ram_portalgun:portal_scale";
 })(portalSP || (portalSP = {}));
 
-(function (portalDP){
+(function (portalDP) {
   portalDP["DualityPortalId"] = "ram_portalgun:dualityPortalId";
   portalDP["lastPortalUsed"] = "ram_portalgun:lastPortalUsed";
   portalDP["locationId"] = "ram_portalgun:location_id";
@@ -96,11 +125,11 @@ export const PORTAL_MODES = {
   portalDP["childList"] = "ram_portalgun:child_list";
 })(portalDP || (portalDP = {}));
 
-(function (playerDP){
+(function (playerDP) {
   playerDP["portalGunId"] = "ram_portalgun:portal_gun_id";
 })(playerDP || (playerDP = {}));
 
-(function (portalGunDP){
+(function (portalGunDP) {
   portalGunDP["id"] = "ram_portalgun:portal_gun_id";
   portalGunDP["lastUser"] = "ram_portalgun:last_user";
   portalGunDP["portalList"] = "ram_portalgun:portal_list";

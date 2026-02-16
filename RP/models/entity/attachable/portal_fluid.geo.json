@@ -1,5 +1,5 @@
 {
-	"format_version": "1.19.0",
+	"format_version": "1.21.0",
 	"minecraft:geometry": [
 		{
 			"description": {
@@ -39,7 +39,26 @@
 					"parent": "root",
 					"pivot": [0, 0, 0],
 					"cubes": [
-						{"origin": [-2.25, 0, -0.25], "size": [3.25, 5, 3.5], "uv": [0, 6]}
+						{"origin": [-2.1375, 0.1, -0.1375], "size": [3.0875, 4.75, 3.325], "uv": [0, 6]}
+					]
+				},
+				{
+					"name": "fluid_outline",
+					"parent": "root",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [1.05, 5.1, 3.3],
+							"size": [-3.35, -5.1, -3.6],
+							"uv": {
+								"north": {"uv": [4, 20], "uv_size": [-4, -6], "uv_rotation": 180},
+								"east": {"uv": [4, 20], "uv_size": [-4, -6], "uv_rotation": 180},
+								"south": {"uv": [4, 20], "uv_size": [-4, -6], "uv_rotation": 180},
+								"west": {"uv": [4, 20], "uv_size": [-4, -6], "uv_rotation": 180},
+								"up": {"uv": [4, 18], "uv_size": [-4, -4], "uv_rotation": 180},
+								"down": {"uv": [4, 14], "uv_size": [-4, 4], "uv_rotation": 180}
+							}
+						}
 					]
 				}
 			]

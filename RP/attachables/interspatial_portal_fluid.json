@@ -9,7 +9,8 @@
             "materials": {
                 "default": "entity_alphatest",
                 "tube": "entity_alphablend",
-                "fluid": "entity_emissive_alpha"
+                "fluid": "entity_emissive_alpha",
+                "fluid_outline": "entity_emissive_alpha_one_sided"
             },
             "textures": {
                 "default": "textures/attachable/interspatial_portal_fluid"
