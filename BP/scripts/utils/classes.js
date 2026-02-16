@@ -54,7 +54,7 @@ export class PortalGun {
       };
 
       const highPressure =
-        portalGunItem.getDynamicProperty(portalGunDP.highPressure) === true;
+        portalGunItem.getDynamicProperty(portalGunDP.behavior.highPressure) === true;
       const bootleggedFluid =
         portalGunItem.getDynamicProperty(portalGunDP.bootleggedFluid) === true;
 

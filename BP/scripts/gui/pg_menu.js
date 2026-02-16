@@ -728,8 +728,8 @@ function openSettingsForm(player, inventory, portalGunItem) {
 function openBehaviorSettingsForm(player, portalGunItem, inventory) {
   playPlayerAnimation(player);
   player.dimension.playSound("ram_portalgun:button_click", player.location);
-  let autoClose = portalGunItem.getDynamicProperty(portalGunDP.autoClose);
-  let scale = portalGunItem.getDynamicProperty(portalGunDP.scale);
+  let autoClose = portalGunItem.getDynamicProperty(portalGunDP.behavior.autoClose);
+  let scale = portalGunItem.getDynamicProperty(portalGunDP.behavior.scale);
 
   let form = new ModalFormData()
     .title("Behavior Settings")
@@ -739,14 +739,14 @@ function openBehaviorSettingsForm(player, portalGunItem, inventory) {
         "If enabled, portals will automatically\nclose after player enters them.",
     })
     .toggle("High Pressure Mode", {
-      defaultValue: portalGunItem.getDynamicProperty(portalGunDP.highPressure)
+      defaultValue: portalGunItem.getDynamicProperty(portalGunDP.behavior.highPressure)
         ? true
         : false,
       tooltip:
         "If enabled, portal gun will shoot\na high pressure projectile that\ncan reach further distances.",
     })
     .toggle("Safe Placement", {
-      defaultValue: portalGunItem.getDynamicProperty(portalGunDP.safePlacement)
+      defaultValue: portalGunItem.getDynamicProperty(portalGunDP.behavior.safePlacement)
         ? true
         : false,
       tooltip:
@@ -767,7 +767,7 @@ function openBehaviorSettingsForm(player, portalGunItem, inventory) {
     })
     .toggle("Fast Location Change", {
       defaultValue: portalGunItem.getDynamicProperty(
-        portalGunDP.fastLocationChange,
+        portalGunDP.behavior.fastLocationChange,
       )
         ? true
         : false,
@@ -783,36 +783,36 @@ function openBehaviorSettingsForm(player, portalGunItem, inventory) {
       return;
     } else {
       portalGunItem.setDynamicProperty(
-        portalGunDP.autoClose,
+        portalGunDP.behavior.autoClose,
         response.formValues[0],
       );
       portalGunItem.setDynamicProperty(
-        portalGunDP.highPressure,
+        portalGunDP.behavior.highPressure,
         response.formValues[1],
       );
       portalGunItem.setDynamicProperty(
-        portalGunDP.safePlacement,
+        portalGunDP.behavior.safePlacement,
         response.formValues[2],
       );
       portalGunItem.setDynamicProperty(
-        portalGunDP.fastLocationChange,
+        portalGunDP.behavior.fastLocationChange,
         response.formValues[4],
       );
       switch (response.formValues[3]) {
         case 1:
-          portalGunItem.setDynamicProperty(portalGunDP.scale, 0.5);
+          portalGunItem.setDynamicProperty(portalGunDP.behavior.scale, 0.5);
           break;
         case 2:
-          portalGunItem.setDynamicProperty(portalGunDP.scale, 1);
+          portalGunItem.setDynamicProperty(portalGunDP.behavior.scale, 1);
           break;
         case 3:
-          portalGunItem.setDynamicProperty(portalGunDP.scale, 1.5);
+          portalGunItem.setDynamicProperty(portalGunDP.behavior.scale, 1.5);
           break;
         case 4:
-          portalGunItem.setDynamicProperty(portalGunDP.scale, 2);
+          portalGunItem.setDynamicProperty(portalGunDP.behavior.scale, 2);
           break;
         default:
-          portalGunItem.setDynamicProperty(portalGunDP.scale, 1);
+          portalGunItem.setDynamicProperty(portalGunDP.behavior.scale, 1);
           break;
       }
 
@@ -1233,16 +1233,16 @@ function getGunConfig(player, inventory, portalGunItem) {
   const id = portalGunItem.getDynamicProperty(portalGunDP.id);
   const lastUser = portalGunItem.getDynamicProperty(portalGunDP.lastUser);
   const mode = portalGunItem.getDynamicProperty(portalGunDP.mode);
-  const autoClose = portalGunItem.getDynamicProperty(portalGunDP.autoClose)
+  const autoClose = portalGunItem.getDynamicProperty(portalGunDP.behavior.autoClose)
     ? true
     : false;
   const highPressure = portalGunItem.getDynamicProperty(
-    portalGunDP.highPressure,
+    portalGunDP.behavior.highPressure,
   )
     ? true
     : false;
   const safePlacement = portalGunItem.getDynamicProperty(
-    portalGunDP.safePlacement,
+    portalGunDP.behavior.safePlacement,
   )
     ? true
     : false;
@@ -1251,9 +1251,9 @@ function getGunConfig(player, inventory, portalGunItem) {
   )
     ? true
     : false;
-  const scale = portalGunItem.getDynamicProperty(portalGunDP.scale);
+  const scale = portalGunItem.getDynamicProperty(portalGunDP.behavior.scale);
   const fastLocationChange = portalGunItem.getDynamicProperty(
-    portalGunDP.fastLocationChange,
+    portalGunDP.behavior.fastLocationChange,
   );
   const quantPortalsActive = portalList.length;
   const charge = portalGunItem.getDynamicProperty(portalGunDP.charge) ?? 0;

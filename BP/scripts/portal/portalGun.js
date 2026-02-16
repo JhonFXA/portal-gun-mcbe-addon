@@ -81,11 +81,11 @@ function initializePortalGun(portalGunItem) {
   const portalGunId = Math.floor(Math.random() * 10000);
   portalGunItem.setDynamicProperty(portalGunDP.mode, PORTAL_MODES.FIFO);
   portalGunItem.setDynamicProperty(portalGunDP.id, portalGunId);
-  portalGunItem.setDynamicProperty(portalGunDP.highPressure, false);
-  portalGunItem.setDynamicProperty(portalGunDP.autoClose, false);
-  portalGunItem.setDynamicProperty(portalGunDP.safePlacement, false);
-  portalGunItem.setDynamicProperty(portalGunDP.scale, 1);
-  portalGunItem.setDynamicProperty(portalGunDP.fastLocationChange, true);
+  portalGunItem.setDynamicProperty(portalGunDP.behavior.highPressure, false);
+  portalGunItem.setDynamicProperty(portalGunDP.behavior.autoClose, false);
+  portalGunItem.setDynamicProperty(portalGunDP.behavior.safePlacement, false);
+  portalGunItem.setDynamicProperty(portalGunDP.behavior.scale, 1);
+  portalGunItem.setDynamicProperty(portalGunDP.behavior.fastLocationChange, true);
   portalGunItem.setDynamicProperty(portalGunDP.portalList, JSON.stringify([]));
   return portalGunId;
 }
@@ -145,7 +145,7 @@ export function usePortalGun(player, portalGunItem) {
     // openPortalGunMenu(player, null, portalGunItem.typeId);
   } else {
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
-    const scale = portalGunItem.getDynamicProperty(portalGunDP.scale);
+    const scale = portalGunItem.getDynamicProperty(portalGunDP.behavior.scale);
     const cost = scale * 2
     // const gunObject = portalGuns.find((gun) => gun.id === portalGunItem.typeId);
 
@@ -382,8 +382,8 @@ function handleCustomMode(player, portalGunItem, itemObject, inventory, newPorta
   const loc = JSON.parse(locJson);
   const fixedLoc = { ...loc };
   const locId = loc.id;
-  const safePlacement = portalGunItem.getDynamicProperty(portalGunDP.safePlacement);
-  const autoClose = portalGunItem.getDynamicProperty(portalGunDP.autoClose);
+  const safePlacement = portalGunItem.getDynamicProperty(portalGunDP.behavior.safePlacement);
+  const autoClose = portalGunItem.getDynamicProperty(portalGunDP.behavior.autoClose);
   const dim = world.getDimension(loc.dimensionId);
   const tickingAreaName = `portal_${player.name}_${Math.floor(Math.random() * 10000)}`;
 
@@ -503,8 +503,8 @@ export function summonPortal(player, target, bootleggedFluid = false) {
 
     const portalGunMode = portalGunItem.getDynamicProperty(portalGunDP.mode);
     const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
-    const scale = portalGunItem.getDynamicProperty(portalGunDP.scale);
-    const autoClose = portalGunItem.getDynamicProperty(portalGunDP.autoClose);
+    const scale = portalGunItem.getDynamicProperty(portalGunDP.behavior.scale);
+    const autoClose = portalGunItem.getDynamicProperty(portalGunDP.behavior.autoClose);
 
     const portalListJson = portalGunItem.getDynamicProperty(
       portalGunDP.portalList

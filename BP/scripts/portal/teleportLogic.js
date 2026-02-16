@@ -304,7 +304,7 @@ function playerUsePortal(portal, dualPortal, player) {
     const portalGunId = portal.getDynamicProperty(portalDP.ownerPortalGun); 
     const portalGunItem = findPortalGunInInventory(player, portalGunId)?.item;
     if (portalGunItem) {
-        const autoClose = portalGunItem.getDynamicProperty(portalGunDP.autoClose);
+        const autoClose = portalGunItem.getDynamicProperty(portalGunDP.behavior.autoClose);
         if (autoClose) {
             portal.setDynamicProperty(portalDP.autoClose, true);
             dualPortal.setDynamicProperty(portalDP.autoClose, true);

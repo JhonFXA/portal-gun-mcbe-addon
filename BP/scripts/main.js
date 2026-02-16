@@ -259,7 +259,7 @@ world.afterEvents.entityHitBlock.subscribe((event) => {
   const item = inventory?.container.getItem(player.selectedSlotIndex);
   if (!item) return;
   if (!ID.portalGunsIds.includes(item.typeId)) return;
-  const fastLocationChange = item.getDynamicProperty(portalGunDP.fastLocationChange);
+  const fastLocationChange = item.getDynamicProperty(portalGunDP.behavior.fastLocationChange);
   if (!fastLocationChange) return;
 
   let savedLocationsJson = item.getDynamicProperty(portalGunDP.savedLocations);

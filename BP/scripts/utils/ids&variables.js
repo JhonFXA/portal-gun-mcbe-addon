@@ -159,12 +159,13 @@ export const PORTAL_MODES = {
   portalGunDP["customLocationIndex"] = "ram_portalgun:custom_location_index";
   portalGunDP["savedLocations"] = "ram_portalgun:saved_locations";
   portalGunDP["historyLocations"] = "ram_portalgun:history_locations";
-  portalGunDP["autoClose"] = "ram_portalgun:auto_close";
-  portalGunDP["highPressure"] = "ram_portalgun:high_pressure";
-  portalGunDP["safePlacement"] = "ram_portalgun:safe_placement";
   portalGunDP["charge"] = "ram_portalgun:charge";
-  portalGunDP["scale"] = "ram_portalgun:portal_scale";
-  portalGunDP["fastLocationChange"] = "ram_portalgun:fast_location_change";
-  portalGunDP["infiniteCharge"] = "ram_portalgun:infinite_charge";
   portalGunDP["bootleggedFluid"] = "ram_portalgun:bootlegged_fluid";
+  portalGunDP["behavior"] = {
+      autoClose: "ram_portalgun:auto_close",
+      highPressure: "ram_portalgun:high_pressure",
+      safePlacement: "ram_portalgun:safe_placement",
+      fastLocationChange: "ram_portalgun:fast_location_change",
+      scale: "ram_portalgun:portal_scale",
+  }
 })(portalGunDP || (portalGunDP = {}));
