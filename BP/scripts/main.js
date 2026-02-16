@@ -182,11 +182,11 @@ world.afterEvents.itemUse.subscribe((event) => {
     // Determine which gun type to create based on the tube in the offhand
     let newGunType;
     if (itemOffhand?.typeId === gunInstance.chargedTubeId) {
-      newGunType = gunInstance.id;
+      newGunType = gunInstance.typeId;
     } else if (itemOffhand?.typeId === gunInstance.emptyTubeId) {
       newGunType = gunInstance.dischargedVersionId;
     } else if( ID.components.bootlegTubes.includes(itemOffhand?.typeId)){
-      newGunType = gunInstance.id;
+      newGunType = gunInstance.typeId;
       player.onScreenDisplay.setActionBar("§cWeird fluid detected...");
       player.dimension.playSound("ram_portalgun:error_sound", player.location);
     }

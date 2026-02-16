@@ -228,7 +228,7 @@ export function findPortalGunInInventory(player, portalGunId) {
   for (let i = 0; i < container.size; i++) {
     const item = container.getItem(i);
 
-    if (item && (portalGuns.some(gun => gun.id === item.typeId) || ID.dischargedPortalGuns.includes(item.typeId) || ID.components.portalGunBases.includes(item.typeId))) {
+    if (item && (portalGuns.some(gun => gun.typeId === item.typeId) || ID.dischargedPortalGuns.includes(item.typeId) || ID.components.portalGunBases.includes(item.typeId))) {
       let gunId = item.getDynamicProperty(portalGunDP.id);
       if (gunId == portalGunId) return { item, slotIndex: i };
     }
@@ -314,4 +314,15 @@ export function dealPortalFluidDamage(entity){
   entity.dimension.spawnParticle("ram_portalgun:fluid_poison_particle", entity.location);
   entity.dimension.spawnParticle("ram_portalgun:fluid_ground_drop", entity.location);
   entity.dimension.playSound("ram_portalgun:fluid_burn", entity.location);
+}
+
+/**
+ * Retrieves the Portal Gun instance associated with a given Portal Gun item stack.
+ * 
+ * @param {ItemStack} portalGunItem 
+ * @returns {Object|undefined} The gun object if found, otherwise undefined.
+ */
+export function getGunInstance(portalGunItem){
+  const gunObject = portalGuns.find((gun) => gun.typeId === portalGunItem.typeId || gun.dischargedVersionId === portalGunItem.typeId);
+  return gunObject;
 }

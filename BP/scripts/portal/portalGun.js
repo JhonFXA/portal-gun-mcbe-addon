@@ -13,6 +13,7 @@ import {
   savePortalList,
   spawnPortal,
   findNearbyAir,
+  getGunInstance
 } from "../utils/my_API";
 
 import {
@@ -135,20 +136,23 @@ export function usePortalGun(player, portalGunItem) {
     inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
   }
 
+  const gunInstance = getGunInstance(portalGunItem);
+
   // Validate the portal list to remove invalid portal IDs
   validatePortalList(portalGunItem, inventory, player.selectedSlotIndex);
   if (player.isSneaking) {
-    openPortalGunMenu(player, null, portalGunItem.typeId);
+    gunInstance.openInterface(player, portalGunItem);
+    // openPortalGunMenu(player, null, portalGunItem.typeId);
   } else {
     const charge = portalGunItem.getDynamicProperty(portalGunDP.charge);
     const scale = portalGunItem.getDynamicProperty(portalGunDP.scale);
     const cost = scale * 2
-    const gunObject = portalGuns.find((gun) => gun.id === portalGunItem.typeId);
+    // const gunObject = portalGuns.find((gun) => gun.id === portalGunItem.typeId);
 
     player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot", {stopExpression: "v.is_first_person"});
 
     if (charge > 0) {
-      portalGunItem = gunObject.decreaseCharge(
+      portalGunItem = gunInstance.decreaseCharge(
         player,
         portalGunItem,
         charge,
@@ -157,7 +161,7 @@ export function usePortalGun(player, portalGunItem) {
       player.setDynamicProperty(playerDP.portalGunId, portalGunId);
       portalGunItem.setDynamicProperty(portalGunDP.lastUser, player.name);
       inventory.container.setItem(player.selectedSlotIndex, portalGunItem);
-      gunObject.fireProjectile(player, portalGunItem);
+      gunInstance.fireProjectile(player, portalGunItem);
     } else {
       player.dimension.playSound(
         "ram_portalgun:empty_portal_gun",
@@ -495,9 +499,7 @@ export function summonPortal(player, target, bootleggedFluid = false) {
       return;
     }
 
-    const gunInstance = portalGuns.find(
-      (gun) => gun.id === portalGunItem.typeId || gun.dischargedVersionId === portalGunItem.typeId || gun.baseId === portalGunItem.typeId
-    );
+    const gunInstance = getGunInstance(portalGunItem);
 
     const portalGunMode = portalGunItem.getDynamicProperty(portalGunDP.mode);
     const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);

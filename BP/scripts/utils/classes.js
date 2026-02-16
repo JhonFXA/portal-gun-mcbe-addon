@@ -1,13 +1,11 @@
-import {
-  ItemStack, world
-} from "@minecraft/server";
-import {
-  portalGunDP,
-} from "../utils/ids&variables";
+import { ItemStack, world } from "@minecraft/server";
+import { findPortalGunInInventory } from "../utils/my_API";
+import { portalGunDP } from "../utils/ids&variables";
+import { openPortalGunMenu } from "../gui/pg_menu";
 
 export class PortalGun {
   constructor({
-    id,
+    typeId,
     baseId,
     dischargedVersionId,
     emptyTubeId,
@@ -17,9 +15,10 @@ export class PortalGun {
     bootlegProjectileId,
     highPressureProjectileId,
     highPressureBootlegProjectileId,
-    portalId
+    portalId,
+    interfaceTextures,
   }) {
-    this.id = id;
+    this.typeId = typeId;
     this.baseId = baseId;
     this.dischargedVersionId = dischargedVersionId;
     this.emptyTubeId = emptyTubeId;
@@ -30,6 +29,18 @@ export class PortalGun {
     this.highPressureProjectileId = highPressureProjectileId;
     this.highPressureBootlegProjectileId = highPressureBootlegProjectileId;
     this.portalId = portalId;
+    this.interfaceTextures = interfaceTextures;
+  }
+
+  openInterface(player, portalGunItem) {
+    try {
+      openPortalGunMenu(player, portalGunItem, this);
+    } catch (error) {
+      player.sendMessage(
+        `§c[Portal Gun] Failed to open interface: \n§e[!] ${error}§r`,
+      );
+      player.dimension.playSound("ram_portalgun:error_sound", player.location);
+    }
   }
 
   fireProjectile(player, portalGunItem) {
@@ -42,13 +53,26 @@ export class PortalGun {
         z: headLocation.z,
       };
 
-      const highPressure = portalGunItem.getDynamicProperty(portalGunDP.highPressure) === true;
-      const bootleggedFluid = portalGunItem.getDynamicProperty(portalGunDP.bootleggedFluid) === true;
+      const highPressure =
+        portalGunItem.getDynamicProperty(portalGunDP.highPressure) === true;
+      const bootleggedFluid =
+        portalGunItem.getDynamicProperty(portalGunDP.bootleggedFluid) === true;
 
-      const projectileType = highPressure? (bootleggedFluid? this.highPressureBootlegProjectileId: this.highPressureProjectileId): (bootleggedFluid? this.bootlegProjectileId: this.projectileId);
-  
-      const projectile = player.dimension.spawnEntity(projectileType, spawnPosition);
-      const projectileComponent = projectile.getComponent("minecraft:projectile");
+      const projectileType = highPressure
+        ? bootleggedFluid
+          ? this.highPressureBootlegProjectileId
+          : this.highPressureProjectileId
+        : bootleggedFluid
+          ? this.bootlegProjectileId
+          : this.projectileId;
+
+      const projectile = player.dimension.spawnEntity(
+        projectileType,
+        spawnPosition,
+      );
+      const projectileComponent = projectile.getComponent(
+        "minecraft:projectile",
+      );
 
       if (projectileComponent) {
         projectileComponent.owner = player;
@@ -57,7 +81,9 @@ export class PortalGun {
 
       player.dimension.playSound("ram_portalgun:fire_portal", player.location);
     } catch (error) {
-      player.sendMessage(`§c[Portal Gun] Failed to fire projectile: \n§e[!] ${error}§r`);
+      player.sendMessage(
+        `§c[Portal Gun] Failed to fire projectile: \n§e[!] ${error}§r`,
+      );
       player.dimension.playSound("ram_portalgun:error_sound", player.location);
     }
   }
@@ -69,9 +95,15 @@ export class PortalGun {
       const dischargedId = this.dischargedVersionId;
       const dischargedPortalGun = new ItemStack(dischargedId, 1);
       for (const id of portalGunItem.getDynamicPropertyIds()) {
-        dischargedPortalGun.setDynamicProperty(id, portalGunItem.getDynamicProperty(id));
+        dischargedPortalGun.setDynamicProperty(
+          id,
+          portalGunItem.getDynamicProperty(id),
+        );
       }
-      player.dimension.playSound("ram_portalgun:power_off_portal_gun", player.location);
+      player.dimension.playSound(
+        "ram_portalgun:power_off_portal_gun",
+        player.location,
+      );
       portalGunItem = dischargedPortalGun;
     }
     return portalGunItem;

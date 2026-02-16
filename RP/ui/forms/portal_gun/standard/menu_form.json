@@ -170,10 +170,19 @@
           ],
           "layer": 2,
           "type": "image",
-          "texture": "textures/ui/pg_ui/menu/custom_back",
+          "texture": "#texture",
           "anchor_from": "center",
           "anchor_to": "center",
-          "bindings": [],
+          "bindings": [
+            {
+              "binding_name": "#form_text"
+            },
+            {
+              "binding_type": "view",
+              "source_property_name": "((%.100s * (#form_text - (%.0s * #form_text))) - '\t')",
+              "target_property_name": "#texture"
+            }
+          ],
           "controls": [
             {
               "menu-collection_panel": {
@@ -263,12 +272,15 @@
                       "font_size": "medium",
                       "anchor_from": "top_left",
                       "anchor_to": "top_left",
-                      "text": "#form_text",
+                      "text": "#info_text",
                       "layer": 8,
                       "offset": [155, 85],
                       "bindings": [
+                        { "binding_name": "#form_text" },
                         {
-                          "binding_name": "#form_text"
+                          "binding_type": "view",
+                          "source_property_name": "(#form_text - (%.100s * #form_text))",
+                          "target_property_name": "#info_text"
                         }
                       ]
                     }

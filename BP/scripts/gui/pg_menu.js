@@ -8,8 +8,57 @@ import {
   changePortalGunMode,
   findPortalGunInInventory,
   removeAllPortals,
+  getGunInstance
 } from "../utils/my_API";
 import { portalGunDP, ID, portalGuns } from "../utils/ids&variables";
+
+
+/**
+ * This function abjusts text so that its Unicode length is equal to the specified value, so that it can then be used in JsonUI.
+ * Why you can't just use .slice() and .padEnd() -> https://wiki.bedrock.dev/json-ui/json-ui-intro#unicode-character-width
+ * @param {String} text
+ * @param {Number} maxLineLength
+*/
+export function abjustTextLength(text, maxLineLength) {
+  text = String(text ?? "");              // garante string
+  maxLineLength = Number(maxLineLength) || 0;
+
+  let unicodeSize = getUnicodeSize(text);
+
+  while (unicodeSize > maxLineLength && text.length > 0) {
+    const lastChar = text.at(-1);         // último char ou undefined
+    if (!lastChar) break;
+
+    unicodeSize -= getUnicodeSize(lastChar);
+    text = text.slice(0, -1);             // remove 1 char
+  }
+
+  const pad = Math.max(0, maxLineLength - unicodeSize);
+  return text + "\t".repeat(pad);
+}
+
+function toUnicode(char) {
+	return (char.slice(0, 1).charCodeAt(0).toString(16).padStart(4, '0')).split('').map(convertFrom16XNumber)
+}
+
+/** @param {String} str @returns {Number} */
+function convertFrom16XNumber(str) {
+	return Number(str) || { '0': 0, 'a': 10, 'b': 11, 'c': 12, 'd': 13, 'e': 14, 'f': 15 }[str];
+}
+
+function getUnicodeSize(text) {
+  if (text == null) return 0;             // evita undefined/null
+  text = String(text);
+
+  let totalSize = 0;
+  for (let char of text.split("")) {
+    const code = toUnicode(char);
+    if (code[2] < 8 && code[0] == 0 && code[1] == 0) totalSize += 1;
+    else if (code[1] < 8 && code[0] == 0) totalSize += 2;
+    else totalSize += 3;
+  }
+  return totalSize;
+}
 
 /**
  * @param {Player} player
@@ -30,7 +79,6 @@ function playPlayerAnimation(player) {
  * Forces player to stop any animation he is playing.
  */
 function stopPlayerAnimation(player) {
-  // player.runCommand("camera @s clear");
   player.playAnimation("animation.ram_portalgun.player.reset");
 }
 
@@ -43,16 +91,13 @@ function stopPlayerAnimation(player) {
  * Saved Locations, Set Coordinates, Select Mode, and Settings.
  */
 
-export function openPortalGunMenu(player, portalGunId = null, typeId) {
+export function openPortalGunMenu(player, portalGunItem, gunInstance = null) {
   const inventory = player.getComponent("inventory");
-  let itemObject;
-  let portalGunItem;
-  if (portalGunId) {
-    itemObject = findPortalGunInInventory(player, portalGunId);
-    portalGunItem = itemObject.item;
-  } else {
-    portalGunItem = inventory.container.getItem(player.selectedSlotIndex);
+
+  if(!gunInstance){
+    gunInstance = getGunInstance(portalGunItem);
   }
+
   const charge = portalGunItem.getDynamicProperty(portalGunDP.charge) ?? 0;
 
   const totalBars = 10;
@@ -73,35 +118,21 @@ export function openPortalGunMenu(player, portalGunId = null, typeId) {
     }
   }
 
-  let title, rickFigure, gunFigure;
-
-  if (
-    typeId == "ram_portalgun:portal_gun" ||
-    typeId == "ram_portalgun:portal_gun_discharged"
-  ) {
-    title = "Portal Gun Menu";
-    rickFigure = "saved_locations_ui";
-    gunFigure = "portal_gun";
-  } else if (
-    typeId == "ram_portalgun:prototype_portal_gun" ||
-    typeId == "ram_portalgun:prototype_portal_gun_discharged" ||
-    typeId == "ram_portalgun:interspatial_prototype_portal_gun"
-  ) {
-    title = "Prototype";
-    rickFigure = "prototype_sv_ui";
-    gunFigure = "prototype_portal_gun";
-  } else {
-    title = "Portal Gun Menu";
-    rickFigure = "saved_locations_ui";
-    gunFigure = "portal_gun";
+  let {title, avatar, gun, background, dischargedBg} = gunInstance.interfaceTextures ?? {};
+  if(charge == 0){
+    background = dischargedBg ?? background;
   }
+
 
   const customUi = new ActionFormData()
     .title(`${title}`)
-    .body(`Charge: ${chargeBars}`)
-    .button("Saved Locations", `textures/ui/pg_ui/menu/${rickFigure}`)
+    .body([
+      abjustTextLength(`${background}`, 100),
+      `Charge: ${chargeBars}`
+    ].join(""))
+    .button("Saved Locations", `textures/ui/pg_ui/menu/${avatar}`)
     .button("Set Coordinates", "textures/ui/pg_ui/menu/set_coordinates_ui")
-    .button("Select Mode", `textures/items/${gunFigure}`)
+    .button("Select Mode", `textures/items/${gun}`)
     .button("", "textures/ui/pg_ui/menu/settings_ui")
     .button("", "textures/ui/pg_ui/menu/close_menu")
     .button("", "textures/ui/pg_ui/menu/unplug_tube");
@@ -194,8 +225,7 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
     } else if (response.selection === 2) {
       openSearchForm(player, inventory, portalGunItem, savedLocations);
     } else if (response.selection === 3) {
-      const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
-      openPortalGunMenu(player, portalGunId, portalGunItem.typeId);
+      openPortalGunMenu(player, portalGunItem);
     } else if (response.selection !== undefined) {
       const selectedLocation = savedLocations[response.selection - 4];
       portalGunItem.setDynamicProperty(
@@ -495,8 +525,7 @@ function openDimensionSelectForm(player, inventory, portalGunItem) {
         );
         break;
       case 3:
-        const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
-        openPortalGunMenu(player, portalGunId, portalGunItem.typeId);
+        openPortalGunMenu(player, portalGunItem);
         break;
       default:
         stopPlayerAnimation(player);
@@ -627,8 +656,7 @@ function openSelectModeForm(player, inventory, portalGunItem) {
         stopPlayerAnimation(player);
         break;
       case 4:
-        const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
-        openPortalGunMenu(player, portalGunId, portalGunItem.typeId);
+        openPortalGunMenu(player, portalGunItem);
         break;
       default:
         stopPlayerAnimation(player);
@@ -664,8 +692,7 @@ function openSettingsForm(player, inventory, portalGunItem) {
         openBehaviorSettingsForm(player, portalGunItem, inventory);
         break;
       case 1:
-        const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
-        openPortalGunMenu(player, portalGunId, portalGunItem.typeId);
+        openPortalGunMenu(player, portalGunItem);
         break;
       case 2:
         openHistoryForm(player, inventory, portalGunItem);
@@ -1280,23 +1307,19 @@ function getDimensionLabel(dimensionId) {
  * @param {EntityInventoryComponent} inventory
  */
 function dismountPortalGun(player, portalGunItem, inventory) {
-  const gunObject = portalGuns.find(
-    (gun) =>
-      gun.id === portalGunItem.typeId ||
-      gun.dischargedVersionId === portalGunItem.typeId,
-  );
+  const gunInstance = getGunInstance(portalGunItem);
 
-  if (!gunObject) {
+  if (!gunInstance) {
     player.sendMessage(
       "§c[Portal Gun Error]§r Unknown or unsupported Portal Gun.",
     );
     return;
   }
 
-  const chargedTubeId = gunObject.chargedTubeId;
-  const emptyTubeId = gunObject.emptyTubeId;
-  const bootlegTubeId = gunObject.bootlegTubeId;
-  const gunBaseId = gunObject.baseId;
+  const chargedTubeId = gunInstance.chargedTubeId;
+  const emptyTubeId = gunInstance.emptyTubeId;
+  const bootlegTubeId = gunInstance.bootlegTubeId;
+  const gunBaseId = gunInstance.baseId;
 
   stopPlayerAnimation(player);
 

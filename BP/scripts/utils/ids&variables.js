@@ -8,7 +8,7 @@ export var portalGunDP;
 export const portalGuns = [
   //STANDARD PORTAL GUN
   new PortalGun({
-    id: "ram_portalgun:portal_gun",
+    typeId: "ram_portalgun:portal_gun",
     baseId: "ram_portalgun:portal_gun_base",
     dischargedVersionId: "ram_portalgun:portal_gun_discharged",
     emptyTubeId: "ram_portalgun:empty_tube",
@@ -20,11 +20,18 @@ export const portalGuns = [
     highPressureBootlegProjectileId:
       "ram_portalgun:bootleg_fluid_projectile_high_pressure",
     portalId: "ram_portalgun:green_portal",
+    interfaceTextures: {
+      title: "Portal Gun Menu",
+      avatar: "saved_locations_ui",
+      gun: "portal_gun",
+      background: "textures/ui/pg_ui/menu/custom_back",
+      dischargedBg: "textures/ui/pg_ui/menu/bg_discharged_standard",
+    },
   }),
 
   //INTERSPATIAL PROTOTYPE PORTAL GUN
   new PortalGun({
-    id: "ram_portalgun:interspatial_prototype_portal_gun",
+    typeId: "ram_portalgun:interspatial_prototype_portal_gun",
     baseId: "ram_portalgun:prototype_portal_gun_base",
     dischargedVersionId: "ram_portalgun:prototype_portal_gun_discharged",
     emptyTubeId: "ram_portalgun:empty_tube",
@@ -37,11 +44,18 @@ export const portalGuns = [
     highPressureBootlegProjectileId:
       "ram_portalgun:bootleg_fluid_projectile_high_pressure",
     portalId: "ram_portalgun:interspatial_portal",
+    interfaceTextures: {
+      title: "Prototype",
+      avatar: "prototype_sv_ui",
+      gun: "interspatial_prototype_portal_gun",
+      background: "textures/ui/pg_ui/menu/custom_back_blue_prototype",
+      dischargedBg: "textures/ui/pg_ui/menu/bg_discharged_prototype",
+    },
   }),
 
   //INTERDIMENSIONAL PROTOTYPE PORTAL GUN
   new PortalGun({
-    id: "ram_portalgun:prototype_portal_gun",
+    typeId: "ram_portalgun:prototype_portal_gun",
     baseId: "ram_portalgun:prototype_portal_gun_base",
     dischargedVersionId: "ram_portalgun:prototype_portal_gun_discharged",
     emptyTubeId: "ram_portalgun:empty_tube",
@@ -53,6 +67,13 @@ export const portalGuns = [
     highPressureBootlegProjectileId:
       "ram_portalgun:bootleg_fluid_projectile_high_pressure",
     portalId: "ram_portalgun:green_portal",
+    interfaceTextures: {
+      title: "Prototype",
+      avatar: "prototype_sv_ui",
+      gun: "prototype_portal_gun",
+      background: "textures/ui/pg_ui/menu/custom_back_prototype",
+      dischargedBg: "textures/ui/pg_ui/menu/bg_discharged_prototype",
+    },
   }),
 ];
 
