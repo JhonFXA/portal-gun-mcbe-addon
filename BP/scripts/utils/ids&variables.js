@@ -88,7 +88,7 @@ export const portalGuns = [
       background:
         "textures/ram_pg/ui/pg_ui/menu/standard_pg",
       dischargedBg:
-        "textures/ram_pg/ui/pg_ui/menu/bg_discharged_standard",
+        "textures/ram_pg/ui/pg_ui/menu/standard_pg_discharged",
     },
   }),
 

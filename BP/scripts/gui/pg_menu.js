@@ -8,7 +8,7 @@ import {
   changePortalGunMode,
   findPortalGunInInventory,
   removeAllPortals,
-  getGunInstance
+  getGunInstance,
 } from "../utils/my_API";
 import { portalGunDP, ID, portalGuns } from "../utils/ids&variables";
 import { abjustTextLength } from "../utils/string-slicing";
@@ -21,8 +21,7 @@ import { abjustTextLength } from "../utils/string-slicing";
 function playPlayerAnimation(player) {
   player.playAnimation("animation.ram_pg.player.portal_gun_interface", {
     blendOutTime: 0.5,
-    stopExpression:
-      "query.is_moving",
+    stopExpression: "query.is_moving",
   });
 }
 
@@ -39,6 +38,8 @@ function stopPlayerAnimation(player) {
  * Opens the main Portal Gun menu for the player.
  *
  * @param {Player} player - The player interacting with the Portal Gun.
+ * @param {ItemStack} portalGunItem - The Portal Gun item stack being used.
+ * @param {PortalGun} gunInstance - The Portal Gun instance containing specific data and textures.
  *
  * Displays the main options such as:
  * Saved Locations, Set Coordinates, Select Mode, and Settings.
@@ -47,7 +48,7 @@ function stopPlayerAnimation(player) {
 export function openPortalGunMenu(player, portalGunItem, gunInstance = null) {
   const inventory = player.getComponent("inventory");
 
-  if(!gunInstance){
+  if (!gunInstance) {
     gunInstance = getGunInstance(portalGunItem);
   }
 
@@ -71,20 +72,24 @@ export function openPortalGunMenu(player, portalGunItem, gunInstance = null) {
     }
   }
 
-  let {title, avatar, gun, background, dischargedBg} = gunInstance.interfaceTextures ?? {};
-  if(charge == 0){
+  let { title, avatar, gun, background, dischargedBg } =
+    gunInstance.interfaceTextures ?? {};
+  if (charge == 0) {
     background = dischargedBg ?? background;
   }
 
-
   const customUi = new ActionFormData()
     .title(`${title}`)
-    .body([
-      abjustTextLength(`${background}`, 100),
-      `Charge: ${chargeBars}`
-    ].join(""))
+    .body(
+      [abjustTextLength(`${background}`, 100), `Charge: ${chargeBars}`].join(
+        "",
+      ),
+    )
     .button("Saved Locations", `textures/ram_pg/ui/pg_ui/menu/${avatar}`)
-    .button("Set Coordinates", "textures/ram_pg/ui/pg_ui/menu/set_coordinates_ui")
+    .button(
+      "Set Coordinates",
+      "textures/ram_pg/ui/pg_ui/menu/set_coordinates_ui",
+    )
     .button("Select Mode", `textures/ram_pg/items/portal_gun/${gun}`)
     .button("", "textures/ram_pg/ui/pg_ui/menu/settings_ui")
     .button("", "textures/ram_pg/ui/pg_ui/menu/close_menu")
@@ -99,7 +104,7 @@ export function openPortalGunMenu(player, portalGunItem, gunInstance = null) {
         openSavedLocationsForm(player, inventory, portalGunItem);
         break;
       case 1:
-        openDimensionSelectForm(player, inventory, portalGunItem);
+        openSetCoordinatesForm(player, inventory, portalGunItem);
         break;
       case 2:
         openSelectModeForm(player, inventory, portalGunItem);
@@ -141,7 +146,10 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
       "textures/ram_pg/ui/pg_ui/saved_locations/delete_location_ui",
     )
     .divider()
-    .button("Search Location", "textures/ram_pg/ui/pg_ui/saved_locations/search_ui")
+    .button(
+      "Search Location",
+      "textures/ram_pg/ui/pg_ui/saved_locations/search_ui",
+    )
     .button("Back to Menu", "textures/ram_pg/ui/pg_ui/back_button")
     .divider();
 
@@ -242,10 +250,7 @@ function openSearchForm(
           savedLocations,
           `No locations found matching '${searchTerm}'.`,
         );
-        player.dimension.playSound(
-          "ram_pg:error_sound",
-          player.location,
-        );
+        player.dimension.playSound("ram_pg:error_sound", player.location);
         return;
       }
       openFilteredLocationsForm(
@@ -435,58 +440,6 @@ function openDeleteLocationForm(
 }
 
 /**
- *  Opens the dimension selection form for setting coordinates.
- * @param {Player} player
- * @param {EntityInventoryComponent} inventory
- * @param {ItemStack} portalGunItem
- */
-function openDimensionSelectForm(player, inventory, portalGunItem) {
-  playPlayerAnimation(player);
-  player.dimension.playSound("ram_pg:button_click", player.location);
-  let form = new ActionFormData()
-    .title("Select Dimension")
-    .button("Overworld", "textures/ram_pg/ui/pg_ui/saved_locations/Overworld")
-    .button("Nether", "textures/ram_pg/ui/pg_ui/saved_locations/Nether")
-    .button("The End", "textures/ram_pg/ui/pg_ui/saved_locations/The End")
-    .divider()
-    .button("Cancel", "textures/ram_pg/ui/pg_ui/back_button");
-
-  form.show(player).then((response) => {
-    switch (response.selection) {
-      case 0:
-        openSetCoordinatesForm(
-          player,
-          inventory,
-          portalGunItem,
-          "minecraft:overworld",
-        );
-        break;
-      case 1:
-        openSetCoordinatesForm(
-          player,
-          inventory,
-          portalGunItem,
-          "minecraft:nether",
-        );
-        break;
-      case 2:
-        openSetCoordinatesForm(
-          player,
-          inventory,
-          portalGunItem,
-          "minecraft:the_end",
-        );
-        break;
-      case 3:
-        openPortalGunMenu(player, portalGunItem);
-        break;
-      default:
-        stopPlayerAnimation(player);
-    }
-  });
-}
-
-/**
  * Opens the form to set custom coordinates for the Portal Gun.
  * Allows the player to input X, Y, Z, and select the dimension.
  *
@@ -494,29 +447,23 @@ function openDimensionSelectForm(player, inventory, portalGunItem) {
  * @param {EntityInventoryComponent} inventory
  * @param {ItemStack} portalGunItem
  */
-function openSetCoordinatesForm(
-  player,
-  inventory,
-  portalGunItem,
-  dimensionId = "minecraft:overworld",
-) {
+function openSetCoordinatesForm(player, inventory, portalGunItem) {
   playPlayerAnimation(player);
   player.dimension.playSound("ram_pg:button_click", player.location);
   let form = new ModalFormData()
     .title("Set Coordinates")
-    .textField("", "X")
-    .textField("", "Y")
-    .textField("", "Z");
+    .label("Example:\n100 64 200 overworld")
+    .textField("", "x y z (optional: dimension)");
 
   form.show(player).then((response) => {
-    if (response == undefined) {
+    if (response.formValues === undefined) {
       return stopPlayerAnimation(player);
     }
-    const x = parseInt(response.formValues[0]);
-    const y = parseInt(response.formValues[1]);
-    const z = parseInt(response.formValues[2]);
 
-    if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(z)) {
+    const coordinates = response.formValues[1].split(" ");
+    const { x, y, z, dimensionId } = parseCoordinates(player, coordinates);
+
+    if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(z) || !dimensionId) {
       player.onScreenDisplay.setActionBar(`§cInvalid coordinates entered.§r`);
       player.dimension.playSound("ram_pg:error_sound", player.location);
     } else if (
@@ -533,9 +480,9 @@ function openSetCoordinatesForm(
       const newLocationData = {
         name: "Unnamed Location",
         id: -Math.floor(Math.random() * 10000),
-        x: parseInt(response.formValues[0]),
-        y: parseInt(response.formValues[1]),
-        z: parseInt(response.formValues[2]),
+        x: x,
+        y: y,
+        z: z,
         dimensionId: dimensionId,
       };
 
@@ -558,6 +505,36 @@ function openSetCoordinatesForm(
   });
 }
 
+function parseCoordinates(player, coordinates) {
+  if (coordinates.length < 3 || coordinates.length > 4) {
+    return { x: NaN, y: NaN, z: NaN, dimensionId: null };
+  }
+
+  let dimensionId = player.dimension.id;
+
+  if (coordinates.length === 4) {
+    let dimensionInp = coordinates[3].toLowerCase();
+
+    if (!dimensionInp.includes("minecraft:")) {
+      dimensionInp = `minecraft:${dimensionInp}`;
+    }
+
+    try {
+      world.getDimension(dimensionInp);
+      dimensionId = dimensionInp;
+    } catch {
+      return { x: NaN, y: NaN, z: NaN, dimensionId: null };
+    }
+  }
+
+  return {
+    x: parseInt(coordinates[0]),
+    y: parseInt(coordinates[1]),
+    z: parseInt(coordinates[2]),
+    dimensionId: dimensionId,
+  };
+}
+
 /**
  * Opens the Portal Gun mode selection menu.
  * Player can switch between FIFO, LIFO, Multi-Pair, or Root mode.
@@ -573,13 +550,22 @@ function openSelectModeForm(player, inventory, portalGunItem) {
   let form = new ActionFormData()
     .title("Select Mode")
     .body(`Current Mode: §e${currentMode}§r`)
-    .button("FIFO Mode", "textures/ram_pg/ui/pg_ui/select_mode/fifo_mode_button")
-    .button("LIFO Mode", "textures/ram_pg/ui/pg_ui/select_mode/lifo_mode_button")
+    .button(
+      "FIFO Mode",
+      "textures/ram_pg/ui/pg_ui/select_mode/fifo_mode_button",
+    )
+    .button(
+      "LIFO Mode",
+      "textures/ram_pg/ui/pg_ui/select_mode/lifo_mode_button",
+    )
     .button(
       "Multi-Pair Mode",
       "textures/ram_pg/ui/pg_ui/select_mode/multipair_mode_button",
     )
-    .button("Root Mode", "textures/ram_pg/ui/pg_ui/select_mode/root_mode_button")
+    .button(
+      "Root Mode",
+      "textures/ram_pg/ui/pg_ui/select_mode/root_mode_button",
+    )
     .divider()
     .label(
       "Modes explained:\n\n§eFIFO§r - First In First Out:\nAfter having 2 portals active, each new portal will replace the oldest one.\n\n§eLIFO§r - Last In First Out:\nAfter having 2 portals active, each new portal will replace the newest one.\n\n§eMulti-Pair§r:\nAllows you to have multiple pairs of portals active at the same time (maximum of 10). You can enter any portal and come out from its pair.\n\n§eRoot§r:\nShoots a portal that acts as an anchor. You can shoot multiple portals (maximum of 10), but when you enter one, you will always come out from the root portal (the first one created). Entering the root portal will take you back to the last portal you shooted.\n\n§eCUSTOM§r:\nAct exactly as Root mode, but the root portal is always in the custom location you've set. This mode is only active when you set a custom location.",
@@ -634,8 +620,14 @@ function openSettingsForm(player, inventory, portalGunItem) {
     .button("Back to Menu", "textures/ram_pg/ui/pg_ui/back_button")
     .divider()
     .button("History", "textures/ram_pg/ui/pg_ui/settings/history")
-    .button("Close All Portals", "textures/ram_pg/ui/pg_ui/settings/close_all_portals")
-    .button("Reset Portal Gun", "textures/ram_pg/ui/pg_ui/settings/reset_portal_gun")
+    .button(
+      "Close All Portals",
+      "textures/ram_pg/ui/pg_ui/settings/close_all_portals",
+    )
+    .button(
+      "Reset Portal Gun",
+      "textures/ram_pg/ui/pg_ui/settings/reset_portal_gun",
+    )
     .button("How to Use", "textures/ram_pg/ui/pg_ui/settings/question_mark")
     .button("Terminal", "textures/ram_pg/ui/pg_ui/settings/terminal");
 
@@ -681,7 +673,9 @@ function openSettingsForm(player, inventory, portalGunItem) {
 function openBehaviorSettingsForm(player, portalGunItem, inventory) {
   playPlayerAnimation(player);
   player.dimension.playSound("ram_pg:button_click", player.location);
-  let autoClose = portalGunItem.getDynamicProperty(portalGunDP.behavior.autoClose);
+  let autoClose = portalGunItem.getDynamicProperty(
+    portalGunDP.behavior.autoClose,
+  );
   let scale = portalGunItem.getDynamicProperty(portalGunDP.behavior.scale);
 
   let form = new ModalFormData()
@@ -692,14 +686,18 @@ function openBehaviorSettingsForm(player, portalGunItem, inventory) {
         "If enabled, portals will automatically\nclose after player enters them.",
     })
     .toggle("High Pressure Mode", {
-      defaultValue: portalGunItem.getDynamicProperty(portalGunDP.behavior.highPressure)
+      defaultValue: portalGunItem.getDynamicProperty(
+        portalGunDP.behavior.highPressure,
+      )
         ? true
         : false,
       tooltip:
         "If enabled, portal gun will shoot\na high pressure projectile that\ncan reach further distances.",
     })
     .toggle("Safe Placement", {
-      defaultValue: portalGunItem.getDynamicProperty(portalGunDP.behavior.safePlacement)
+      defaultValue: portalGunItem.getDynamicProperty(
+        portalGunDP.behavior.safePlacement,
+      )
         ? true
         : false,
       tooltip:
@@ -1186,7 +1184,9 @@ function getGunConfig(player, inventory, portalGunItem) {
   const id = portalGunItem.getDynamicProperty(portalGunDP.id);
   const lastUser = portalGunItem.getDynamicProperty(portalGunDP.lastUser);
   const mode = portalGunItem.getDynamicProperty(portalGunDP.mode);
-  const autoClose = portalGunItem.getDynamicProperty(portalGunDP.behavior.autoClose)
+  const autoClose = portalGunItem.getDynamicProperty(
+    portalGunDP.behavior.autoClose,
+  )
     ? true
     : false;
   const highPressure = portalGunItem.getDynamicProperty(
@@ -1319,8 +1319,5 @@ function dismountPortalGun(player, portalGunItem, inventory) {
     }
   }
 
-  player.dimension.playSound(
-    "ram_pg:portal_gun_unplug",
-    player.location,
-  );
+  player.dimension.playSound("ram_pg:portal_gun_unplug", player.location);
 }
