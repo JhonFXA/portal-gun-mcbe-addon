@@ -5,8 +5,8 @@ export function openSynthesisGUI(player, points = 0){
     const ui = new ActionFormData()
     .title("Synthesis Bench")
     .body("\"Solve some equations to gain attribute points.\"")
-    .button("Solve Equations", "textures/ui/sb_ui/btn1_indicator")
-    .button("Calibrate Fluid", "textures/ui/sb_ui/btn2_indicator")
+    .button("Solve Equations", "textures/ram_pg/ui/sb_ui/btn1_indicator")
+    .button("Calibrate Fluid", "textures/ram_pg/ui/sb_ui/btn2_indicator")
     .button("", "")
 
     ui.show(player).then(response => {
@@ -46,12 +46,12 @@ function openCalibrateFluidForm(player){
         const standardFluid = (phase === 8) && (concentration === 42) && (flux === 314) && (cohesion === 73);
         const inventory = player.getComponent("minecraft:inventory").container;
         const item = inventory.getItem(player.selectedSlotIndex);
-        if(item.typeId !== "ram_portalgun:bootleg_portal_fluid" && item.typeId !== "ram_portalgun:portal_fluid"){
+        if(item.typeId !== "ram_pg:bootleg_portal_fluid" && item.typeId !== "ram_pg:portal_fluid"){
             player.sendMessage("You must hold a fluid in your hand to calibrate it.");
             return;
         }
         if(standardFluid){
-            const calibratedFluid = new ItemStack("ram_portalgun:portal_fluid", 1);
+            const calibratedFluid = new ItemStack("ram_pg:portal_fluid", 1);
             inventory.setItem(player.selectedSlotIndex, calibratedFluid);
             player.dimension.playSound("random.potion.brewed", player.location, {volume: 1, pitch: 1});
             player.dimension.createExplosion(player.location, 1, {allowUnderwater: true, breaksBlocks: false, causesFire: false, source: player});

@@ -4,8 +4,8 @@
 	"padding": 8,
 	"num_mip_levels": 4,
 	"texture_data": {
-		"synthesis_bench": {
-			"textures": "textures/blocks/synthesis_bench"
+		"ram_pg_synthesis_bench": {
+			"textures": "textures/ram_pg/blocks/synthesis_bench"
 		}
 	}
 }

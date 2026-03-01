@@ -149,7 +149,7 @@ export function usePortalGun(player, portalGunItem) {
     const cost = scale * 2
     // const gunObject = portalGuns.find((gun) => gun.id === portalGunItem.typeId);
 
-    player.playAnimation("animation.ram_portalgun.player.portal_gun_shoot", {stopExpression: "v.is_first_person"});
+    player.playAnimation("animation.ram_pg.player.portal_gun_shoot", {stopExpression: "v.is_first_person"});
 
     if (charge > 0) {
       portalGunItem = gunInstance.decreaseCharge(
@@ -164,7 +164,7 @@ export function usePortalGun(player, portalGunItem) {
       gunInstance.fireProjectile(player, portalGunItem);
     } else {
       player.dimension.playSound(
-        "ram_portalgun:empty_portal_gun",
+        "ram_pg:empty_portal_gun",
         player.location
       );
     }

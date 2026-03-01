@@ -1,0 +1,62 @@
+{
+    "format_version": "1.10.0",
+    "minecraft:client_entity": {
+        "description": {
+            "identifier": "ram_pg:green_portal",
+            "materials": {
+                "default": "portal_material",
+                "glow": "entity_beam_additive"
+            },
+            "textures": {
+                "default": "textures/ram_pg/entity/portal/green_portal/green_portal_animated_texture",
+                "glow": "textures/ram_pg/entity/portal/green_portal/glow"
+            },
+            "geometry": {
+                "green_portal": "geometry.ram_pg_green_portal"
+            },
+            "render_controllers": [
+                "controller.render.portal",
+                "controller.render.glow"
+            ],
+            "particle_effects": {
+                "fluid_drop": "ram_pg:green_fluid_drop_particle",
+                "dot": "ram_pg:green_portal_dot_particle",
+                "ray": "ram_pg:green_portal_ray_particle"
+            },
+            "sound_effects": {
+                "open_portal": "ram_pg:portal_spawn",
+                "close_portal": "ram_pg:portal_close",
+                "pass_through_portal": "ram_pg:portal_enter"
+            },
+            "scripts": {
+                "pre_animation": [
+                    "variable.is_linked = query.property('ram_pg:is_linked');",
+                    "variable.orientation = query.property('ram_pg:orientation');",
+                    "variable.rotation = query.property('ram_pg:rotation');",
+                    "variable.close = query.property('ram_pg:close');",
+                    "variable.scale = query.property('ram_pg:portal_scale');"
+                ],
+                "animate": [
+                    "open",
+                    "orientation",
+                    "rotation",
+                    "pass",
+                    "scale"
+                ]
+            },
+            "animations": {
+                "orientation": "controller.animation.ram_pg.portal.orientation",
+                "default": "animation.ram_pg.portal.default",
+                "up": "animation.ram_pg.portal.up",
+                "down": "animation.ram_pg.portal.down",
+                "rotation": "animation.ram_pg.portal.rotation",
+                "pass": "animation.ram_pg.portal.pass",
+                "open": "animation.ram_pg.portal.open",
+                "close": "animation.ram_pg.portal.close",
+                "close_up": "animation.ram_pg.portal.close_up",
+                "close_down": "animation.ram_pg.portal.close_down",
+                "scale": "animation.ram_pg.portal.scale"
+            }
+        }
+    }
+}

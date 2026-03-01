@@ -39,7 +39,7 @@ export function changePortalGunMode(
   removePortals = true,
 ) {
   portalGunItem.setDynamicProperty(portalGunDP.mode, mode);
-  player.dimension.playSound("ram_portalgun:selection", player.location);
+  player.dimension.playSound("ram_pg:selection", player.location);
   if (removePortals) removeAllPortals(player, portalGunItem);
   const portalGunId = portalGunItem.getDynamicProperty(portalGunDP.id);
   const itemObject = findPortalGunInInventory(player, portalGunId);
@@ -340,14 +340,14 @@ export function dealPortalFluidDamage(entity) {
   });
 
   entity.dimension.spawnParticle(
-    "ram_portalgun:fluid_poison_particle",
+    "ram_pg:fluid_poison_particle",
     entity.location,
   );
   entity.dimension.spawnParticle(
-    "ram_portalgun:fluid_ground_drop",
+    "ram_pg:fluid_ground_drop",
     entity.location,
   );
-  entity.dimension.playSound("ram_portalgun:fluid_burn", entity.location);
+  entity.dimension.playSound("ram_pg:fluid_burn", entity.location);
 }
 
 /**

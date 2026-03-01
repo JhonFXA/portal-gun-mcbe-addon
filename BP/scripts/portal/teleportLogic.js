@@ -2,8 +2,8 @@ import {system, world} from "@minecraft/server";
 import { portalGunDP, portalDP, portalSP} from "../utils/ids&variables";
 import { calculateEuclideanDistance, findPortalGunInInventory, linkPortals, removePortal, dealPortalFluidDamage} from "../utils/my_API";
 
-const TELEPORTED_TAG = "ram_portalgun:teleported";
-const OBJECTIVE_ID = "ram_portalgun:cooldownTime";
+const TELEPORTED_TAG = "ram_pg:teleported";
+const OBJECTIVE_ID = "ram_pg:cooldownTime";
 
 
 // Handles teleport cooldown tags for entities in all dimensions
@@ -61,7 +61,7 @@ export function onTick() {
 
     dimensions.forEach(dimId => {
         const dimension = world.getDimension(dimId);
-        const portals = dimension.getEntities({ families: ["ram_portalgun:portal"] });
+        const portals = dimension.getEntities({ families: ["ram_pg:portal"] });
 
         portals.forEach(portal => {
             const dualityPortalId = portal.getDynamicProperty(portalDP.DualityPortalId);
@@ -201,9 +201,9 @@ function filterSmallEntities(entities) {
 function playPortalAnimation(portal, dualPortal) {
     const animation_length = 0.4; // duration in seconds
     const tickDelay = animation_length * 20; // convert to game ticks (20 ticks/sec)
-    portal.playAnimation("animation.ram_portalgun.portal.pass");
+    portal.playAnimation("animation.ram_pg.portal.pass");
     system.runTimeout(() => {
-        dualPortal?.playAnimation("animation.ram_portalgun.portal.pass");
+        dualPortal?.playAnimation("animation.ram_pg.portal.pass");
     }, tickDelay);
 }
 
@@ -238,20 +238,20 @@ function playInAnimation(portal, player) {
 
             // If dot > 0 player is looking toward the portal position -> front animation
             animation = dot > 0
-                ? "animation.ram_portalgun.player.portal_in_front"
-                : "animation.ram_portalgun.player.portal_in_back";
+                ? "animation.ram_pg.player.portal_in_front"
+                : "animation.ram_pg.player.portal_in_back";
             break;
         }
         case 1: {
-            animation = "animation.ram_portalgun.player.portal_in_up";
+            animation = "animation.ram_pg.player.portal_in_up";
             break;
         }
         case 2: {
-            animation = player.isSprinting ? "animation.ram_portalgun.player.portal_in_down_dive" : "animation.ram_portalgun.player.portal_in_down";
+            animation = player.isSprinting ? "animation.ram_pg.player.portal_in_down_dive" : "animation.ram_pg.player.portal_in_down";
             break;
         }
         default: {
-            animation = "animation.ram_portalgun.player.portal_in_front";
+            animation = "animation.ram_pg.player.portal_in_front";
         }
     }
     player.playAnimation(animation);
@@ -268,15 +268,15 @@ function playOutAnimation(portal, player) {
     let animation;
     switch (orientation) {
         case 0: {
-            animation = "animation.ram_portalgun.player.portal_out_front"
+            animation = "animation.ram_pg.player.portal_out_front"
             break;
         }
         case 1: {
-            animation = "animation.ram_portalgun.player.portal_out_up"
+            animation = "animation.ram_pg.player.portal_out_up"
             break;
         }
         case 2: {
-            animation = "animation.ram_portalgun.player.portal_out_down"
+            animation = "animation.ram_pg.player.portal_out_down"
             break;
         }
     }
@@ -354,7 +354,7 @@ function activateCooldown(entity, ticks = 20) {
  * @return {Array<Entity>} An array of entities near the portal eligible for teleport.
  */
 function findEntitiesNearPortal(dimension, location, radius) {
-    const excludeFamilies = ["ram_portalgun:portal", "ram_portalgun:projectile", "dragon"];
+    const excludeFamilies = ["ram_pg:portal", "ram_pg:projectile", "dragon"];
 
     const queryOptions = {
         location,

@@ -39,7 +39,7 @@ export class PortalGun {
       player.sendMessage(
         `§c[Portal Gun] Failed to open interface: \n§e[!] ${error}§r`,
       );
-      player.dimension.playSound("ram_portalgun:error_sound", player.location);
+      player.dimension.playSound("ram_pg:error_sound", player.location);
     }
   }
 
@@ -79,12 +79,12 @@ export class PortalGun {
         projectileComponent.shoot(viewDirection);
       }
 
-      player.dimension.playSound("ram_portalgun:fire_portal", player.location);
+      player.dimension.playSound("ram_pg:fire_portal", player.location);
     } catch (error) {
       player.sendMessage(
         `§c[Portal Gun] Failed to fire projectile: \n§e[!] ${error}§r`,
       );
-      player.dimension.playSound("ram_portalgun:error_sound", player.location);
+      player.dimension.playSound("ram_pg:error_sound", player.location);
     }
   }
 
@@ -101,7 +101,7 @@ export class PortalGun {
         );
       }
       player.dimension.playSound(
-        "ram_portalgun:power_off_portal_gun",
+        "ram_pg:power_off_portal_gun",
         player.location,
       );
       portalGunItem = dischargedPortalGun;

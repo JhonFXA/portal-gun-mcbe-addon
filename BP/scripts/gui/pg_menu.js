@@ -11,54 +11,7 @@ import {
   getGunInstance
 } from "../utils/my_API";
 import { portalGunDP, ID, portalGuns } from "../utils/ids&variables";
-
-
-/**
- * This function abjusts text so that its Unicode length is equal to the specified value, so that it can then be used in JsonUI.
- * Why you can't just use .slice() and .padEnd() -> https://wiki.bedrock.dev/json-ui/json-ui-intro#unicode-character-width
- * @param {String} text
- * @param {Number} maxLineLength
-*/
-export function abjustTextLength(text, maxLineLength) {
-  text = String(text ?? "");              // garante string
-  maxLineLength = Number(maxLineLength) || 0;
-
-  let unicodeSize = getUnicodeSize(text);
-
-  while (unicodeSize > maxLineLength && text.length > 0) {
-    const lastChar = text.at(-1);         // último char ou undefined
-    if (!lastChar) break;
-
-    unicodeSize -= getUnicodeSize(lastChar);
-    text = text.slice(0, -1);             // remove 1 char
-  }
-
-  const pad = Math.max(0, maxLineLength - unicodeSize);
-  return text + "\t".repeat(pad);
-}
-
-function toUnicode(char) {
-	return (char.slice(0, 1).charCodeAt(0).toString(16).padStart(4, '0')).split('').map(convertFrom16XNumber)
-}
-
-/** @param {String} str @returns {Number} */
-function convertFrom16XNumber(str) {
-	return Number(str) || { '0': 0, 'a': 10, 'b': 11, 'c': 12, 'd': 13, 'e': 14, 'f': 15 }[str];
-}
-
-function getUnicodeSize(text) {
-  if (text == null) return 0;             // evita undefined/null
-  text = String(text);
-
-  let totalSize = 0;
-  for (let char of text.split("")) {
-    const code = toUnicode(char);
-    if (code[2] < 8 && code[0] == 0 && code[1] == 0) totalSize += 1;
-    else if (code[1] < 8 && code[0] == 0) totalSize += 2;
-    else totalSize += 3;
-  }
-  return totalSize;
-}
+import { abjustTextLength } from "../utils/string-slicing";
 
 /**
  * @param {Player} player
@@ -66,7 +19,7 @@ function getUnicodeSize(text) {
  * Causes the player to perform a button-click animation on the portal gun.
  */
 function playPlayerAnimation(player) {
-  player.playAnimation("animation.ram_portalgun.player.portal_gun_interface", {
+  player.playAnimation("animation.ram_pg.player.portal_gun_interface", {
     blendOutTime: 0.5,
     stopExpression:
       "query.is_moving",
@@ -79,7 +32,7 @@ function playPlayerAnimation(player) {
  * Forces player to stop any animation he is playing.
  */
 function stopPlayerAnimation(player) {
-  player.playAnimation("animation.ram_portalgun.player.reset");
+  player.playAnimation("animation.ram_pg.player.reset");
 }
 
 /**
@@ -130,15 +83,15 @@ export function openPortalGunMenu(player, portalGunItem, gunInstance = null) {
       abjustTextLength(`${background}`, 100),
       `Charge: ${chargeBars}`
     ].join(""))
-    .button("Saved Locations", `textures/ui/pg_ui/menu/${avatar}`)
-    .button("Set Coordinates", "textures/ui/pg_ui/menu/set_coordinates_ui")
-    .button("Select Mode", `textures/items/${gun}`)
-    .button("", "textures/ui/pg_ui/menu/settings_ui")
-    .button("", "textures/ui/pg_ui/menu/close_menu")
-    .button("", "textures/ui/pg_ui/menu/unplug_tube");
+    .button("Saved Locations", `textures/ram_pg/ui/pg_ui/menu/${avatar}`)
+    .button("Set Coordinates", "textures/ram_pg/ui/pg_ui/menu/set_coordinates_ui")
+    .button("Select Mode", `textures/ram_pg/items/portal_gun/${gun}`)
+    .button("", "textures/ram_pg/ui/pg_ui/menu/settings_ui")
+    .button("", "textures/ram_pg/ui/pg_ui/menu/close_menu")
+    .button("", "textures/ram_pg/ui/pg_ui/menu/unplug_tube");
 
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:open_menu", player.location);
+  player.dimension.playSound("ram_pg:open_menu", player.location);
 
   customUi.show(player).then((response) => {
     switch (response.selection) {
@@ -176,20 +129,20 @@ export function openPortalGunMenu(player, portalGunItem, gunInstance = null) {
  */
 function openSavedLocationsForm(player, inventory, portalGunItem) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   const form = new ActionFormData()
     .title("Saved Locations")
     .button(
       "Save Current Location",
-      "textures/ui/pg_ui/saved_locations/save_ui",
+      "textures/ram_pg/ui/pg_ui/saved_locations/save_ui",
     )
     .button(
       "Delete Location",
-      "textures/ui/pg_ui/saved_locations/delete_location_ui",
+      "textures/ram_pg/ui/pg_ui/saved_locations/delete_location_ui",
     )
     .divider()
-    .button("Search Location", "textures/ui/pg_ui/saved_locations/search_ui")
-    .button("Back to Menu", "textures/ui/pg_ui/back_button")
+    .button("Search Location", "textures/ram_pg/ui/pg_ui/saved_locations/search_ui")
+    .button("Back to Menu", "textures/ram_pg/ui/pg_ui/back_button")
     .divider();
 
   // Retrieve saved locations from the Portal Gun's dynamic property
@@ -205,7 +158,7 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
       const { dimName, color } = getDimensionLabel(dimensionId);
       form.button(
         `§0${name}§r\nX: ${x}, Y: ${y}, Z: ${z}`,
-        `textures/ui/pg_ui/saved_locations/${dimName}`,
+        `textures/ram_pg/ui/pg_ui/saved_locations/${dimName}`,
       );
     });
   } else {
@@ -241,7 +194,7 @@ function openSavedLocationsForm(player, inventory, portalGunItem) {
       player.onScreenDisplay.setActionBar(
         `§aSet to location: ${selectedLocation.name} (§eX:${selectedLocation.x} Y:${selectedLocation.y} Z:${selectedLocation.z}§r)§r`,
       );
-      player.dimension.playSound("ram_portalgun:selection", player.location);
+      player.dimension.playSound("ram_pg:selection", player.location);
       stopPlayerAnimation(player);
     } else {
       stopPlayerAnimation(player);
@@ -265,7 +218,7 @@ function openSearchForm(
   error = null,
 ) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   const form = new ModalFormData()
     .title("Search Location")
     .textField("Enter Location Name", "");
@@ -290,7 +243,7 @@ function openSearchForm(
           `No locations found matching '${searchTerm}'.`,
         );
         player.dimension.playSound(
-          "ram_portalgun:error_sound",
+          "ram_pg:error_sound",
           player.location,
         );
         return;
@@ -324,7 +277,7 @@ function openFilteredLocationsForm(
   searchTerm,
 ) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   const lowerSearch = searchTerm.toLowerCase().trim();
   const resultsForm = new ActionFormData()
     .title("Search Results")
@@ -339,12 +292,12 @@ function openFilteredLocationsForm(
 
     resultsForm.button(
       `§0${highlightedName}§r\nX: ${x}, Y: ${y}, Z: ${z}`,
-      `textures/ui/pg_ui/saved_locations/${dimName}`,
+      `textures/ram_pg/ui/pg_ui/saved_locations/${dimName}`,
     );
   });
   resultsForm
     .divider()
-    .button("Back to Saved Locations", "textures/ui/pg_ui/back_button");
+    .button("Back to Saved Locations", "textures/ram_pg/ui/pg_ui/back_button");
   resultsForm.show(player).then((resultsResponse) => {
     if (resultsResponse.selection === filteredLocations.length) {
       openSavedLocationsForm(player, inventory, portalGunItem);
@@ -363,7 +316,7 @@ function openFilteredLocationsForm(
       player.onScreenDisplay.setActionBar(
         `§aSet to location: ${selectedLocation.name} (§eX:${selectedLocation.x} Y:${selectedLocation.y} Z:${selectedLocation.z}§r)§r`,
       );
-      player.dimension.playSound("ram_portalgun:selection", player.location);
+      player.dimension.playSound("ram_pg:selection", player.location);
       stopPlayerAnimation(player);
     } else {
       stopPlayerAnimation(player);
@@ -385,7 +338,7 @@ function openSaveCurrentLocationForm(
   savedLocations,
 ) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   const form = new ModalFormData()
     .title("Save Current Location")
     .textField("Set The Location Name", "");
@@ -414,7 +367,7 @@ function openSaveCurrentLocationForm(
       const itemObject = findPortalGunInInventory(player, portalGunId);
       inventory.container.setItem(itemObject.slotIndex, portalGunItem);
 
-      player.dimension.playSound("ram_portalgun:selection", player.location);
+      player.dimension.playSound("ram_pg:selection", player.location);
       openSavedLocationsForm(player, inventory, portalGunItem);
     } else {
       stopPlayerAnimation(player);
@@ -438,14 +391,14 @@ function openDeleteLocationForm(
   savedLocations,
 ) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   const form = new ActionFormData()
     .title("Delete Location")
     .body("Select a location to delete.");
 
   if (savedLocations.length === 0) {
     player.onScreenDisplay.setActionBar(`§cNo saved locations to delete.§r`);
-    player.dimension.playSound("ram_portalgun:error_sound", player.location);
+    player.dimension.playSound("ram_pg:error_sound", player.location);
     stopPlayerAnimation(player);
     return;
   }
@@ -454,10 +407,10 @@ function openDeleteLocationForm(
     const { dimName, color } = getDimensionLabel(dimensionId);
     form.button(
       `§0${name}§r\nX: ${x}, Y: ${y}, Z: ${z}`,
-      `textures/ui/pg_ui/saved_locations/${dimName}`,
+      `textures/ram_pg/ui/pg_ui/saved_locations/${dimName}`,
     );
   });
-  form.divider().button("Cancel", "textures/ui/pg_ui/back_button");
+  form.divider().button("Cancel", "textures/ram_pg/ui/pg_ui/back_button");
 
   form.show(player).then((response) => {
     if (response.selection == savedLocations.length) {
@@ -473,7 +426,7 @@ function openDeleteLocationForm(
       const itemObject = findPortalGunInInventory(player, portalGunId);
       inventory.container.setItem(itemObject.slotIndex, portalGunItem);
 
-      player.dimension.playSound("ram_portalgun:selection", player.location);
+      player.dimension.playSound("ram_pg:selection", player.location);
       openSavedLocationsForm(player, inventory, portalGunItem);
     } else {
       stopPlayerAnimation(player);
@@ -489,14 +442,14 @@ function openDeleteLocationForm(
  */
 function openDimensionSelectForm(player, inventory, portalGunItem) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   let form = new ActionFormData()
     .title("Select Dimension")
-    .button("Overworld", "textures/ui/pg_ui/saved_locations/Overworld")
-    .button("Nether", "textures/ui/pg_ui/saved_locations/Nether")
-    .button("The End", "textures/ui/pg_ui/saved_locations/The End")
+    .button("Overworld", "textures/ram_pg/ui/pg_ui/saved_locations/Overworld")
+    .button("Nether", "textures/ram_pg/ui/pg_ui/saved_locations/Nether")
+    .button("The End", "textures/ram_pg/ui/pg_ui/saved_locations/The End")
     .divider()
-    .button("Cancel", "textures/ui/pg_ui/back_button");
+    .button("Cancel", "textures/ram_pg/ui/pg_ui/back_button");
 
   form.show(player).then((response) => {
     switch (response.selection) {
@@ -548,7 +501,7 @@ function openSetCoordinatesForm(
   dimensionId = "minecraft:overworld",
 ) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   let form = new ModalFormData()
     .title("Set Coordinates")
     .textField("", "X")
@@ -565,7 +518,7 @@ function openSetCoordinatesForm(
 
     if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(z)) {
       player.onScreenDisplay.setActionBar(`§cInvalid coordinates entered.§r`);
-      player.dimension.playSound("ram_portalgun:error_sound", player.location);
+      player.dimension.playSound("ram_pg:error_sound", player.location);
     } else if (
       x > 3000000 ||
       x < -3000000 ||
@@ -575,7 +528,7 @@ function openSetCoordinatesForm(
       y < -64
     ) {
       player.onScreenDisplay.setActionBar(`§cCoordinates out of bounds.§r`);
-      player.dimension.playSound("ram_portalgun:error_sound", player.location);
+      player.dimension.playSound("ram_pg:error_sound", player.location);
     } else {
       const newLocationData = {
         name: "Unnamed Location",
@@ -596,7 +549,7 @@ function openSetCoordinatesForm(
       const itemObject = findPortalGunInInventory(player, portalGunId);
       inventory.container.setItem(itemObject.slotIndex, portalGunItem);
 
-      player.dimension.playSound("ram_portalgun:selection", player.location);
+      player.dimension.playSound("ram_pg:selection", player.location);
       player.onScreenDisplay.setActionBar(
         `§aSet to location: ${newLocationData.name} (§eX:${newLocationData.x} Y:${newLocationData.y} Z:${newLocationData.z}§r)§r`,
       );
@@ -615,23 +568,23 @@ function openSetCoordinatesForm(
  */
 function openSelectModeForm(player, inventory, portalGunItem) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   const currentMode = portalGunItem.getDynamicProperty(portalGunDP.mode);
   let form = new ActionFormData()
     .title("Select Mode")
     .body(`Current Mode: §e${currentMode}§r`)
-    .button("FIFO Mode", "textures/ui/pg_ui/select_mode/fifo_mode_button")
-    .button("LIFO Mode", "textures/ui/pg_ui/select_mode/lifo_mode_button")
+    .button("FIFO Mode", "textures/ram_pg/ui/pg_ui/select_mode/fifo_mode_button")
+    .button("LIFO Mode", "textures/ram_pg/ui/pg_ui/select_mode/lifo_mode_button")
     .button(
       "Multi-Pair Mode",
-      "textures/ui/pg_ui/select_mode/multipair_mode_button",
+      "textures/ram_pg/ui/pg_ui/select_mode/multipair_mode_button",
     )
-    .button("Root Mode", "textures/ui/pg_ui/select_mode/root_mode_button")
+    .button("Root Mode", "textures/ram_pg/ui/pg_ui/select_mode/root_mode_button")
     .divider()
     .label(
       "Modes explained:\n\n§eFIFO§r - First In First Out:\nAfter having 2 portals active, each new portal will replace the oldest one.\n\n§eLIFO§r - Last In First Out:\nAfter having 2 portals active, each new portal will replace the newest one.\n\n§eMulti-Pair§r:\nAllows you to have multiple pairs of portals active at the same time (maximum of 10). You can enter any portal and come out from its pair.\n\n§eRoot§r:\nShoots a portal that acts as an anchor. You can shoot multiple portals (maximum of 10), but when you enter one, you will always come out from the root portal (the first one created). Entering the root portal will take you back to the last portal you shooted.\n\n§eCUSTOM§r:\nAct exactly as Root mode, but the root portal is always in the custom location you've set. This mode is only active when you set a custom location.",
     )
-    .button("Back to Menu", "textures/ui/pg_ui/back_button");
+    .button("Back to Menu", "textures/ram_pg/ui/pg_ui/back_button");
 
   form.show(player).then((response) => {
     switch (response.selection) {
@@ -674,17 +627,17 @@ function openSelectModeForm(player, inventory, portalGunItem) {
  */
 function openSettingsForm(player, inventory, portalGunItem) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   let form = new ActionFormData()
     .title("Portal Gun Settings")
-    .button("Behavior Settings", "textures/ui/pg_ui/settings/toggle")
-    .button("Back to Menu", "textures/ui/pg_ui/back_button")
+    .button("Behavior Settings", "textures/ram_pg/ui/pg_ui/settings/toggle")
+    .button("Back to Menu", "textures/ram_pg/ui/pg_ui/back_button")
     .divider()
-    .button("History", "textures/ui/pg_ui/settings/history")
-    .button("Close All Portals", "textures/ui/pg_ui/settings/close_all_portals")
-    .button("Reset Portal Gun", "textures/ui/pg_ui/settings/reset_portal_gun")
-    .button("How to Use", "textures/ui/pg_ui/settings/question_mark")
-    .button("Terminal", "textures/ui/pg_ui/settings/terminal");
+    .button("History", "textures/ram_pg/ui/pg_ui/settings/history")
+    .button("Close All Portals", "textures/ram_pg/ui/pg_ui/settings/close_all_portals")
+    .button("Reset Portal Gun", "textures/ram_pg/ui/pg_ui/settings/reset_portal_gun")
+    .button("How to Use", "textures/ram_pg/ui/pg_ui/settings/question_mark")
+    .button("Terminal", "textures/ram_pg/ui/pg_ui/settings/terminal");
 
   form.show(player).then((response) => {
     switch (response.selection) {
@@ -700,7 +653,7 @@ function openSettingsForm(player, inventory, portalGunItem) {
       case 3:
         stopPlayerAnimation(player);
         removeAllPortals(player, portalGunItem);
-        player.dimension.playSound("ram_portalgun:selection", player.location);
+        player.dimension.playSound("ram_pg:selection", player.location);
         break;
       case 4:
         openResetForm(player, portalGunItem, inventory);
@@ -727,7 +680,7 @@ function openSettingsForm(player, inventory, portalGunItem) {
  */
 function openBehaviorSettingsForm(player, portalGunItem, inventory) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   let autoClose = portalGunItem.getDynamicProperty(portalGunDP.behavior.autoClose);
   let scale = portalGunItem.getDynamicProperty(portalGunDP.behavior.scale);
 
@@ -821,7 +774,7 @@ function openBehaviorSettingsForm(player, portalGunItem, inventory) {
       inventory.container.setItem(itemObject.slotIndex, portalGunItem);
 
       player.onScreenDisplay.setActionBar(`§aSettings updated.§r`);
-      player.dimension.playSound("ram_portalgun:selection", player.location);
+      player.dimension.playSound("ram_pg:selection", player.location);
       stopPlayerAnimation(player);
     }
   });
@@ -837,7 +790,7 @@ function openBehaviorSettingsForm(player, portalGunItem, inventory) {
  */
 function openHistoryForm(player, inventory, portalGunItem) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   const historyJson = portalGunItem.getDynamicProperty(
     portalGunDP.historyLocations,
   );
@@ -849,7 +802,7 @@ function openHistoryForm(player, inventory, portalGunItem) {
       "Here you can view your §eportal gun's teleportation history§r.\nSelect a location below to use it.\n\n§eLimit: 30 locations§r",
     )
     .divider()
-    .button("Back to Settings", "textures/ui/pg_ui/back_button")
+    .button("Back to Settings", "textures/ram_pg/ui/pg_ui/back_button")
     .divider();
 
   if (history.length == 0) {
@@ -860,7 +813,7 @@ function openHistoryForm(player, inventory, portalGunItem) {
       const { dimName, color } = getDimensionLabel(dimensionId);
       form.button(
         `§0${name}§r\nX:${x}, Y:${y}, Z:${z}`,
-        `textures/ui/pg_ui/saved_locations/${dimName}`,
+        `textures/ram_pg/ui/pg_ui/saved_locations/${dimName}`,
       );
     });
 
@@ -883,7 +836,7 @@ function openHistoryForm(player, inventory, portalGunItem) {
       player.onScreenDisplay.setActionBar(
         `§aSet to location: ${selectedLocation.name} (§eX:${selectedLocation.x} Y:${selectedLocation.y} Z:${selectedLocation.z}§r)§r`,
       );
-      player.dimension.playSound("ram_portalgun:selection", player.location);
+      player.dimension.playSound("ram_pg:selection", player.location);
       stopPlayerAnimation(player);
     } else {
       return stopPlayerAnimation(player);
@@ -901,7 +854,7 @@ function openHistoryForm(player, inventory, portalGunItem) {
  */
 function openResetForm(player, portalGunItem, inventory) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   let form = new MessageFormData()
     .title("Reset Portal Gun")
     .body(
@@ -930,7 +883,7 @@ function openResetForm(player, portalGunItem, inventory) {
       const itemObject = findPortalGunInInventory(player, portalGunId);
       inventory.container.setItem(itemObject.slotIndex, portalGunItem);
 
-      player.dimension.playSound("ram_portalgun:selection", player.location);
+      player.dimension.playSound("ram_pg:selection", player.location);
       player.onScreenDisplay.setActionBar(`§aPortal gun has been reset.§r`);
     } else if (response.selection == 1) {
       openSettingsForm(player, inventory, portalGunItem);
@@ -948,7 +901,7 @@ function openResetForm(player, portalGunItem, inventory) {
  */
 function openHowToUseForm(player, inventory, portalGunItem) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
   let form = new ActionFormData()
     .title("How to Use")
     .header("Controls")
@@ -964,7 +917,7 @@ function openHowToUseForm(player, inventory, portalGunItem) {
     .label(
       "§eFast Change Location§r  :mouse_left_button: while aiming\n\nat a block. :tip_virtual_button_sneak: + :mouse_left_button: to switch backwards.",
     )
-    .button("Back to Menu", "textures/ui/pg_ui/back_button");
+    .button("Back to Menu", "textures/ram_pg/ui/pg_ui/back_button");
   form.show(player).then((response) => {
     if (response.selection == 0) {
       openSettingsForm(player, inventory, portalGunItem);
@@ -1058,7 +1011,7 @@ Dimension: ${color}${dimName}§r`;
     const itemObject = findPortalGunInInventory(player, portalGunId);
     inventory.container.setItem(itemObject.slotIndex, portalGunItem);
 
-    player.dimension.playSound("ram_portalgun:selection", player.location);
+    player.dimension.playSound("ram_pg:selection", player.location);
 
     openTerminalForm(
       player,
@@ -1126,7 +1079,7 @@ Dimension: ${color}${dimName}§r`;
       const itemObject = findPortalGunInInventory(player, portalGunId);
       inventory.container.setItem(itemObject.slotIndex, portalGunItem);
 
-      player.dimension.playSound("ram_portalgun:selection", player.location);
+      player.dimension.playSound("ram_pg:selection", player.location);
       openTerminalForm(
         player,
         inventory,
@@ -1157,7 +1110,7 @@ Dimension: ${color}${dimName}§r`;
     const itemObject = findPortalGunInInventory(player, portalGunId);
     inventory.container.setItem(itemObject.slotIndex, portalGunItem);
 
-    player.dimension.playSound("ram_portalgun:selection", player.location);
+    player.dimension.playSound("ram_pg:selection", player.location);
     openTerminalForm(
       player,
       inventory,
@@ -1178,7 +1131,7 @@ Dimension: ${color}${dimName}§r`;
  */
 function openTerminalForm(player, inventory, portalGunItem, response = null) {
   playPlayerAnimation(player);
-  player.dimension.playSound("ram_portalgun:button_click", player.location);
+  player.dimension.playSound("ram_pg:button_click", player.location);
 
   let form = new ModalFormData()
     .title("Terminal")
@@ -1213,7 +1166,7 @@ function openTerminalForm(player, inventory, portalGunItem, response = null) {
         portalGunItem,
         `§cError: Unknown command '${command}'.\n§eType 'help' for a list of commands.§r`,
       );
-      player.dimension.playSound("ram_portalgun:error_sound", player.location);
+      player.dimension.playSound("ram_pg:error_sound", player.location);
     }
   });
 }
@@ -1367,7 +1320,7 @@ function dismountPortalGun(player, portalGunItem, inventory) {
   }
 
   player.dimension.playSound(
-    "ram_portalgun:portal_gun_unplug",
+    "ram_pg:portal_gun_unplug",
     player.location,
   );
 }

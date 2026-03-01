@@ -1,0 +1,30 @@
+{
+  "format_version": "1.21.130",
+  "minecraft:item": {
+    "description": {
+      "identifier": "ram_pg:flask",
+      "menu_category": {
+        "category": "equipment",
+        "group": "minecraft:itemGroup.name.miscFood"
+      }
+    },
+    "components": {
+      "minecraft:icon": "ram_pg_flask",
+      "minecraft:food": {
+        "nutrition": 0,
+        "using_converts_to": "ram_pg:flask"
+      },
+      "minecraft:display_name": {
+        "value": "item.ram_pg:flask.name"
+      },
+      "minecraft:use_animation": "drink",
+      "minecraft:use_modifiers": {
+        "use_duration": 1.6,
+        "movement_modifier": 0.33
+      },
+      "minecraft:tags": {
+        "tags": ["minecraft:is_food"]
+      }
+    }
+  }
+}

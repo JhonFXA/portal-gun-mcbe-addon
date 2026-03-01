@@ -1,9 +1,9 @@
 {
     "namespace": "synthesis_form",
     "custom_button": {
-        "$default_button_background_texture|default": "textures/ui/presets/red_ore-ui_style/glass_pane",
-        "$hover_button_background_texture|default": "textures/ui/presets/red_ore-ui_style/glass_pane_hover",
-        "$pressed_button_background_texture|default": "textures/ui/presets/red_ore-ui_style/button_black_hover",
+        "$default_button_background_texture|default": "textures/ram_pg/ui/presets/red_ore-ui_style/glass_pane",
+        "$hover_button_background_texture|default": "textures/ram_pg/ui/presets/red_ore-ui_style/glass_pane_hover",
+        "$pressed_button_background_texture|default": "textures/ram_pg/ui/presets/red_ore-ui_style/button_black_hover",
         "$button_size|default": [
         64,
         64
@@ -170,7 +170,7 @@
                     "offset": [0, 0],
                     "layer": 1,
                     "size":[540, 300],
-                    "texture":"textures/ui/sb_ui/background",
+                    "texture":"textures/ram_pg/ui/sb_ui/background",
                     "anchor_from": "center",
                     "anchor_to": "center",
                     "bindings": [],
@@ -178,7 +178,7 @@
                         {
                             "mw-image": {
                               "type":"image",
-                              "texture":"textures/ui/sb_ui/table",
+                              "texture":"textures/ram_pg/ui/sb_ui/table",
                               "size":[200,200],
                               "offset": [0, 0],
                               "anchor_from": "center",
@@ -188,7 +188,7 @@
                         {
                             "rick-image": {
                                 "type": "image",
-                                "texture": "textures/ui/sb_ui/rick_formula",
+                                "texture": "textures/ram_pg/ui/sb_ui/rick_formula",
                                 "size": [120, 120],
                                 "offset": [-180, 60],
                                 "anchor_from": "center",
@@ -238,9 +238,9 @@
                                 "controls": [
                                     {
                                         "solve_equations_btn@synthesis_form.custom_button": {
-                                            "$default_button_background_texture": "textures/ui/sb_ui/paper",
-                                            "$hover_button_background_texture": "textures/ui/sb_ui/paper_hover",
-                                            "$pressed_button_background_texture": "textures/ui/sb_ui/paper_pressed",
+                                            "$default_button_background_texture": "textures/ram_pg/ui/sb_ui/paper",
+                                            "$hover_button_background_texture": "textures/ram_pg/ui/sb_ui/paper_hover",
+                                            "$pressed_button_background_texture": "textures/ram_pg/ui/sb_ui/paper_pressed",
                                             "$button_offset": [0, 20],
                                             "$button_size": [70, 70],
                                             "anchor_from": "center",
@@ -260,9 +260,9 @@
                                     },
                                     {
                                         "calibrate_fluid_btn@synthesis_form.custom_button": {
-                                            "$default_button_background_texture": "textures/ui/sb_ui/microscope",
-                                            "$hover_button_background_texture": "textures/ui/sb_ui/microscope_hover",
-                                            "$pressed_button_background_texture": "textures/ui/sb_ui/microscope_pressed",
+                                            "$default_button_background_texture": "textures/ram_pg/ui/sb_ui/microscope",
+                                            "$hover_button_background_texture": "textures/ram_pg/ui/sb_ui/microscope_hover",
+                                            "$pressed_button_background_texture": "textures/ram_pg/ui/sb_ui/microscope_pressed",
                                             "$button_offset": [-45, -50],
                                             "$button_size": [100, 100],
                                             "anchor_from": "center",
@@ -283,7 +283,7 @@
                                     {
                                         "colored_tubes_image": {
                                             "type":"image",
-                                            "texture":"textures/ui/sb_ui/colored_tubes",
+                                            "texture":"textures/ram_pg/ui/sb_ui/colored_tubes",
                                             "offset": [30, -40],
                                             "size":[100, 100],
                                             "anchor_from": "center",
@@ -293,7 +293,7 @@
                                     {
                                         "liquid_image": {
                                             "type":"image",
-                                            "texture":"textures/ui/sb_ui/liquid",
+                                            "texture":"textures/ram_pg/ui/sb_ui/liquid",
                                             "offset": [48, -15],
                                             "layer": 6,
                                             "size":[100, 100],
@@ -303,9 +303,9 @@
                                     },
                                     {
                                         "close-btn@synthesis_form.custom_button": { 
-                                            "$default_button_background_texture": "textures/ui/sb_ui/close",
-                                            "$hover_button_background_texture": "textures/ui/sb_ui/close_hover",
-                                            "$pressed_button_background_texture": "textures/ui/sb_ui/close_hover",
+                                            "$default_button_background_texture": "textures/ram_pg/ui/sb_ui/close",
+                                            "$hover_button_background_texture": "textures/ram_pg/ui/sb_ui/close_hover",
+                                            "$pressed_button_background_texture": "textures/ram_pg/ui/sb_ui/close_hover",
                                             "$button_offset": [200, -100],
                                             "$button_size": [30, 30],
                                             "anchor_from": "center",
@@ -328,7 +328,7 @@
                     "offset": [0, 0],
                     "layer": 0,
                     "size": [800, 800],
-                    "texture": "textures/ui/sb_ui/bg",
+                    "texture": "textures/ram_pg/ui/sb_ui/bg",
                     "anchor_from": "center",
                     "anchor_to": "center",
                     "bindings": []

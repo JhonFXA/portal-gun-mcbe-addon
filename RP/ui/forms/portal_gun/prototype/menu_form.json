@@ -2,9 +2,9 @@
   "namespace": "prototype_menu_form",
 
   "custom_button@standard_menu_form.custom_button": {
-    "$default_button_background_texture": "textures/ui/presets/green_ore-ui_style/green_default_button",
-    "$hover_button_background_texture": "textures/ui/presets/green_ore-ui_style/green_hover_button",
-    "$pressed_button_background_texture": "textures/ui/presets/green_ore-ui_style/green_hover_button"
+    "$default_button_background_texture": "textures/ram_pg/ui/presets/green_ore-ui_style/green_default_button",
+    "$hover_button_background_texture": "textures/ram_pg/ui/presets/green_ore-ui_style/green_hover_button",
+    "$pressed_button_background_texture": "textures/ram_pg/ui/presets/green_ore-ui_style/green_hover_button"
   },
 
   "menu": {
@@ -139,9 +139,9 @@
                   },
                   {
                     "close-button@prototype_menu_form.custom_button": {
-                      "$default_button_background_texture": "textures/ui/presets/red_ore-ui_style/red_default_button",
-                      "$hover_button_background_texture": "textures/ui/presets/red_ore-ui_style/red_hover_button",
-                      "$pressed_button_background_texture": "textures/ui/presets/red_ore-ui_style/red_pressed_button",
+                      "$default_button_background_texture": "textures/ram_pg/ui/presets/red_ore-ui_style/red_default_button",
+                      "$hover_button_background_texture": "textures/ram_pg/ui/presets/red_ore-ui_style/red_hover_button",
+                      "$pressed_button_background_texture": "textures/ram_pg/ui/presets/red_ore-ui_style/red_pressed_button",
                       "$button_offset": [70, -10],
                       "$button_size": [30, 30],
                       "layer": 6,

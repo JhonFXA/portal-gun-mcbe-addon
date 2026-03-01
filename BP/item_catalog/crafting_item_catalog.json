@@ -7,10 +7,10 @@
         "groups": [
           {
             "group_identifier": {
-              "icon": "ram_portalgun:portal_gun",
-              "name": "ram_portalgun:portal_gun_group"
+              "icon": "ram_pg:standard_portal_gun",
+              "name": "ram_pg:portal_gun_group"
             },
-            "items": ["ram_portalgun:portal_gun", "ram_portalgun:prototype_portal_gun", "ram_portalgun:interspatial_prototype_portal_gun"]
+            "items": ["ram_pg:standard_portal_gun", "ram_pg:prototype_portal_gun", "ram_pg:interspatial_prototype_portal_gun"]
           }
         ]
       },
@@ -19,10 +19,10 @@
         "groups": [
           {
             "group_identifier": {
-              "icon": "ram_portalgun:rick_hair",
-              "name": "ram_portalgun:head_accessories_group"
+              "icon": "ram_pg:rick_hair",
+              "name": "ram_pg:head_accessories_group"
             },
-            "items": ["ram_portalgun:rick_hair", "ram_portalgun:homesteader_rick_hair", "ram_portalgun:memory_rick_hair"]
+            "items": ["ram_pg:rick_hair", "ram_pg:homesteader_rick_hair", "ram_pg:memory_rick_hair"]
           }
         ]
       },
@@ -31,10 +31,10 @@
         "groups": [
           {
             "group_identifier": {
-              "icon": "ram_portalgun:portal_fluid",
-              "name": "ram_portalgun:portal_fluid_group"
+              "icon": "ram_pg:green_portal_fluid",
+              "name": "ram_pg:portal_fluid_group"
             },
-            "items": ["ram_portalgun:portal_fluid", "ram_portalgun:interspatial_portal_fluid", "ram_portalgun:extradimensional_portal_fluid"]
+            "items": ["ram_pg:green_portal_fluid", "ram_pg:blue_portal_fluid", "ram_pg:yellow_portal_fluid"]
           }
         ]
       }

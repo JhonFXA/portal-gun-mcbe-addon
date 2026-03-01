@@ -1,45 +1,47 @@
 ## PORTAL GUNS
-item.ram_portalgun:portal_gun.name=§aPortal Gun\n§uPortal Gun
-item.ram_portalgun:portal_gun_discharged.name=Portal Gun §e(Discharged)\n§uPortal Gun
-item.ram_portalgun:portal_gun_base.name=Portal Gun Base\n§uPortal Gun
+item.ram_pg:standard_portal_gun.name=§aPortal Gun\n§uPortal Gun
+item.ram_pg:standard_portal_gun_discharged.name=Portal Gun §e(Discharged)\n§uPortal Gun
+item.ram_pg:standard_portal_gun_base.name=Portal Gun Base\n§uPortal Gun
 
-item.ram_portalgun:prototype_portal_gun.name=§aPrototype Portal Gun\n§uPortal Gun
-item.ram_portalgun:prototype_portal_gun_discharged.name=Prototype Portal Gun §e(Discharged)\n§uPortal Gun
-item.ram_portalgun:prototype_portal_gun_base.name=Prototype Portal Gun Base\n§uPortal Gun
-item.ram_portalgun:interspatial_prototype_portal_gun.name=Interspatial §9Prototype Portal Gun\n§uPortal Gun
+item.ram_pg:prototype_portal_gun.name=§aPrototype Portal Gun\n§uPortal Gun
+item.ram_pg:prototype_portal_gun_discharged.name=Prototype Portal Gun §e(Discharged)\n§uPortal Gun
+item.ram_pg:prototype_portal_gun_base.name=Prototype Portal Gun Base\n§uPortal Gun
+item.ram_pg:interspatial_prototype_portal_gun.name=Interspatial §9Prototype Portal Gun\n§uPortal Gun
 
 
 ## PORTAL FLUID
-item.ram_portalgun:portal_fluid.name=Interdimensional §aPortal Fluid\n§uPortal Gun
-item.ram_portalgun:bootleg_portal_fluid.name=Bootleg §aPortal Fluid\n§uPortal Gun
-item.ram_portalgun:interspatial_portal_fluid.name=Interspatial §9Portal Fluid\n§uPortal Gun
-item.ram_portalgun:extradimensional_portal_fluid.name=Extradimensional §gPortal Fluid\n§uPortal Gun
+item.ram_pg:green_portal_fluid.name=Interdimensional §aPortal Fluid\n§uPortal Gun
+item.ram_pg:bootleg_portal_fluid.name=Bootleg §aPortal Fluid\n§uPortal Gun
+item.ram_pg:blue_portal_fluid.name=Interspatial §9Portal Fluid\n§uPortal Gun
+item.ram_pg:yellow_portal_fluid.name=Extradimensional §ePortal Fluid\n§uPortal Gun
 
 ## COMPONENTS
-item.ram_portalgun:empty_tube.name=Empty Tube\n§uPortal Gun
-item.ram_portalgun:chip.name=Chip\n§uPortal Gun
-item.ram_portalgun:beaker.name=Beaker\n§uPortal Gun
+item.ram_pg:empty_tube.name=Empty Tube\n§uPortal Gun
+item.ram_pg:chip.name=Chip\n§uPortal Gun
+item.ram_pg:beaker.name=Beaker\n§uPortal Gun
 
 ## SOLUTIONS
-item.ram_portalgun:quantum_isotope.name=Quantum Isotope R-426\n§uPortal Gun
-item.ram_portalgun:interspatial_solution.name=Interspatial §9Travel Solution\n§uPortal Gun
-item.ram_portalgun:interdimensional_solution.name=Interdimensional §aTravel Solution\n§uPortal Gun
-item.ram_portalgun:extradimensional_solution.name=Extradimensional §gTravel Solution\n§uPortal Gun
+item.ram_pg:quantum_isotope.name=Quantum Isotope R-426\n§uPortal Gun
+item.ram_pg:interspatial_solution.name=Interspatial §9Travel Solution\n§uPortal Gun
+item.ram_pg:interdimensional_solution.name=Interdimensional §aTravel Solution\n§uPortal Gun
+item.ram_pg:extradimensional_solution.name=Extradimensional §gTravel Solution\n§uPortal Gun
 
 
 ## GROUPS
-ram_portalgun:portal_gun_group=Portal Guns\n§uPortal Gun
-ram_portalgun:head_accessories_group=Head Accessories\n§uPortal Gun
-ram_portalgun:portal_fluid_group=Portal Fluids\n§uPortal Gun
+ram_pg:portal_gun_group=Portal Guns\n§uPortal Gun
+ram_pg:head_accessories_group=Head Accessories\n§uPortal Gun
+ram_pg:portal_fluid_group=Portal Fluids\n§uPortal Gun
 
 ## BLOCKS
-tile.ram_portalgun:synthesis_bench.name=Synthesis Bench\n§uPortal Gun
+tile.ram_pg:synthesis_bench.name=Synthesis Bench\n§uPortal Gun
 
 ## ARMOR
-item.ram_portalgun:homesteader_rick_hair.name=§bHomesteader Rick's§r Hair\n§7Hit a block with it\nto change hair style\n§uPortal Gun
-item.ram_portalgun:rick_hair.name=§bRick Sanchez's §rHair\n§7Hit a block with it\nto change hair style\n§uPortal Gun
-item.ram_portalgun:memory_rick_hair.name=§bMemory Rick's §rHair\n§7Hit a block with it\nto change hair style\n§uPortal Gun
+item.ram_pg:homesteader_rick_hair.name=§bHomesteader Rick's§r Hair\n§7Hit a block with it\nto change hair style\n§uPortal Gun
+item.ram_pg:rick_hair.name=§bRick Sanchez's §rHair\n§7Hit a block with it\nto change hair style\n§uPortal Gun
+item.ram_pg:memory_rick_hair.name=§bMemory Rick's §rHair\n§7Hit a block with it\nto change hair style\n§uPortal Gun
+
+## DEVICES
 
 ## EXTRA
-item.ram_portalgun:flask.name=Flask
-item.ram_portalgun:etanol.name=Etanol
+item.ram_pg:flask.name=Flask
+item.ram_pg:etanol.name=Etanol

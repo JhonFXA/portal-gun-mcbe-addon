@@ -92,7 +92,7 @@ world.beforeEvents.playerInteractWithBlock.subscribe((event) => {
 
     const {block, itemStack, player} = event;
 
-    if(block.typeId != "ram_portalgun:synthesis_bench") return;
+    if(block.typeId != "ram_pg:synthesis_bench") return;
   
     if(!itemStack || !ID.components.bootlegTubes.includes(itemStack?.typeId)){
       player.sendMessage("§eInteract with the workbench using a Bootleg Portal Fluid.");
@@ -132,14 +132,14 @@ world.afterEvents.entityHitBlock.subscribe((event) => {
     return;
   }
 
-  if (itemStack.typeId == "ram_portalgun:rick_hair") {
-    const newHair = new ItemStack("ram_portalgun:homesteader_rick_hair", 1);
+  if (itemStack.typeId == "ram_pg:rick_hair") {
+    const newHair = new ItemStack("ram_pg:homesteader_rick_hair", 1);
     inventory.setItem(player.selectedSlotIndex, newHair);
-  } else if (itemStack.typeId == "ram_portalgun:homesteader_rick_hair") {
-    const newHair = new ItemStack("ram_portalgun:memory_rick_hair", 1);
+  } else if (itemStack.typeId == "ram_pg:homesteader_rick_hair") {
+    const newHair = new ItemStack("ram_pg:memory_rick_hair", 1);
     inventory.setItem(player.selectedSlotIndex, newHair);
-  } else if (itemStack.typeId == "ram_portalgun:memory_rick_hair") {
-    const newHair = new ItemStack("ram_portalgun:rick_hair", 1);
+  } else if (itemStack.typeId == "ram_pg:memory_rick_hair") {
+    const newHair = new ItemStack("ram_pg:rick_hair", 1);
     inventory.setItem(player.selectedSlotIndex, newHair);
   }
 
@@ -188,7 +188,7 @@ world.afterEvents.itemUse.subscribe((event) => {
     } else if( ID.components.bootlegTubes.includes(itemOffhand?.typeId)){
       newGunType = gunInstance.typeId;
       player.onScreenDisplay.setActionBar("§cWeird fluid detected...");
-      player.dimension.playSound("ram_portalgun:error_sound", player.location);
+      player.dimension.playSound("ram_pg:error_sound", player.location);
     }
     
     if (!newGunType) return; // if tube doesn't match, do nothing
@@ -227,9 +227,9 @@ world.afterEvents.itemUse.subscribe((event) => {
     
     // Replace base with assembled Portal Gun and play plug sound
     inventory.setItem(player.selectedSlotIndex, portalGun);
-    player.playAnimation("animation.ram_portalgun.player.portal_gun_plug", {blendOutTime: 1});
+    player.playAnimation("animation.ram_pg.player.portal_gun_plug", {blendOutTime: 1});
     player.dimension.playSound(
-      "ram_portalgun:portal_gun_plug",
+      "ram_pg:portal_gun_plug",
       player.location
     );
     return;
@@ -237,7 +237,7 @@ world.afterEvents.itemUse.subscribe((event) => {
   
   const portalGunTypeId = itemStack.typeId;
 
-  const cooldownName = portalGunTypeId.replace("ram_portalgun:", "") + "_cooldown";
+  const cooldownName = portalGunTypeId.replace("ram_pg:", "") + "_cooldown";
   const cooldownComponent = itemStack.getComponent("cooldown");
   const cooldown = player.getItemCooldown(cooldownName);
   const cooldownTicks = cooldownComponent.cooldownTicks;
@@ -301,7 +301,7 @@ world.afterEvents.entityHitBlock.subscribe((event) => {
   }
 
   inventory.container.setItem(player.selectedSlotIndex, item);
-  player.dimension.playSound("ram_portalgun:selection", player.location);
+  player.dimension.playSound("ram_pg:selection", player.location);
   player.onScreenDisplay.setActionBar(
     `Location: §a${savedLocations[currentIndex].name}§r (${currentIndex + 1}/${
       savedLocations.length
@@ -345,7 +345,7 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
   if (event.damagingEntity.typeId !== "minecraft:player") return;
   const player = event.damagingEntity;
   const portalEntity = event.hitEntity;
-  if (!portalEntity.matches({ families: ["ram_portalgun:portal"] })) return;
+  if (!portalEntity.matches({ families: ["ram_pg:portal"] })) return;
 
   const portalGunItem = player.getComponent("inventory").container.getItem(player.selectedSlotIndex);
 
@@ -398,19 +398,19 @@ world.afterEvents.entityHitEntity.subscribe((event) => {
 world.afterEvents.itemCompleteUse.subscribe((eventData) => {
   // Extract the player who used the item and the item stack from the event data
   const { source, itemStack } = eventData;
-  const playerDrunkLevel = source.getDynamicProperty("ram_portalgun:drunkLevel") ?? 0;
+  const playerDrunkLevel = source.getDynamicProperty("ram_pg:drunkLevel") ?? 0;
   // source.clearDynamicProperties();
 
 
-  if(itemStack.typeId === "ram_portalgun:flask") {
+  if(itemStack.typeId === "ram_pg:flask") {
     if(playerDrunkLevel < 3) {
-      source.setDynamicProperty("ram_portalgun:drunkLevel", playerDrunkLevel + 1);
+      source.setDynamicProperty("ram_pg:drunkLevel", playerDrunkLevel + 1);
       system.runTimeout(() => {
-        const currentLevel = source.getDynamicProperty("ram_portalgun:drunkLevel") ?? 0;
+        const currentLevel = source.getDynamicProperty("ram_pg:drunkLevel") ?? 0;
         if(currentLevel > 0) {
-          source.setDynamicProperty("ram_portalgun:drunkLevel", currentLevel - 1);
+          source.setDynamicProperty("ram_pg:drunkLevel", currentLevel - 1);
         } else {
-          source.setDynamicProperty("ram_portalgun:drunkLevel", null);
+          source.setDynamicProperty("ram_pg:drunkLevel", null);
         }
       }, 500);
     } else {

@@ -1,0 +1,36 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "ram_pg:phase_distiller",
+      "materials": {
+        "default": "entity_alphablend"
+      },
+      "textures": {
+        "default": "textures/ram_pg/entity/devices/phase_distiller"
+      },
+      "geometry": {
+        "default": "geometry.ram_pg.phase_distiller"
+      },
+      "scripts": {
+        "should_update_bones_and_effects_offscreen": true,
+        "animate": [
+          "scale",
+          "default",
+          { "place": "!q.property('ram_pg:placed')" }
+        ]
+      },
+      "animations": {
+        "scale": "animation.ram_pg.phase_distiller.scale",
+        "place": "animation.ram_pg.phase_distiller.place",
+        "break": "animation.ram_pg.phase_distiller.break",
+        "default": "controller.animation.ram_pg.phase_distiller.default"
+      },
+      "particle_effects": {
+        "distiller_break": "ram_pg:distiller_break",
+        "place_square": "ram_pg:place_particle"
+      },
+      "render_controllers": ["controller.render.ram_pg.phase_distiller"]
+    }
+  }
+}
